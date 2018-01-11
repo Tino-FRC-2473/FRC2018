@@ -5,7 +5,9 @@
 
 2. Next, you need to download Eclipse. You can download it [here](http://www.eclipse.org/home/index.php "Eclipse").
 
-3. Install WPILIB.
+3. After that, download git. Click [here](http://www.git-scm.com/download) to do so.
+
+4. Install WPILIB.
 
 		After Eclipse starts:
 		
@@ -23,7 +25,7 @@
 			
 		f. Click "OK".
 
-4. Install the CTRE Talon libraries
+5. Install the CTRE Talon libraries
 
 		For Windows Users:
 			
