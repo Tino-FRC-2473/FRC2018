@@ -51,7 +51,7 @@
 			
 			8. Type in "cd java" and press Enter.
 			
-			9. Type in "cd libe" and press Enter.
+			9. Type in "cd lib" and press Enter.
 			
 			10. Type in "open ." and press Enter. 
 			
