@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;pow&apos; in &apos;org.usfirst.frc.team6038.robot.commands.TestDrive.test(...)&apos; to &apos;throttle&apos;&#x0D;&#x0A;- Original project: &apos;Movement&apos;&#x0D;&#x0A;- Original element: &apos;org.usfirst.frc.team6038.robot.commands.TestDrive.test(double, double).pow&apos;&#x0D;&#x0A;- Renamed element: &apos;pow&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;pow&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;org.usfirst.frc.team6038.robot.commands{TestDrive.java[TestDrive~test~D~D@pow!1329!1338!1336!1338!D!0!true" name="throttle" references="true" stamp="1511236763350" version="1.0"/>
+</session>

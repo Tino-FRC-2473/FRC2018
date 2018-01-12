@@ -1,0 +1,20 @@
+1512442682232	Rename method 'close'
+1512442736475	Rename field 'server'
+1512445615401	Rename method 'end'
+1512445634590	Rename method 'end'
+1512616338812	Rename field 'CVangle'
+1512616485758	Rename method 'pan'
+1512617842941	Rename type 'DriveStraight_Auto'
+1512617852539	Rename type 'DriveStraight_CV'
+1512617882828	Rename type 'DriveStraight_Teleop'
+1512618823671	Delete element
+1512624065424	Rename field 'distance'
+1512671988096	Rename method 'turn'
+1512672863229	Rename field 'DIFF_OVER_POW_CV'
+1512703300191	Delete element
+1512711055706	Delete element
+1512854245914	Rename method 'stopTurning'
+1512856291290	Rename local variable 'pow'
+1512856329722	Rename field 'targetPow'
+1512856943518	Delete element
+1512861723468	Rename field 'startingEncoder'

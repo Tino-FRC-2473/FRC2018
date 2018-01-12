@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="org.usfirst.frc.team6038.robot.commands.DriveStraight"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team6038.robot.commands.TestDrive"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team6038.framework.components.Trackers"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team6038.framework.readers.DeviceReader"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team6038.framework.readers.ControlsReader"/>
+<fullyQualifiedTypeName name="com.ctre.CANTalon.TalonControlMode"/>
+<fullyQualifiedTypeName name="javax.swing.plaf.synth.SynthSeparatorUI"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.SPI.Port"/>
+<fullyQualifiedTypeName name="java.io.OutputStream"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team6038.framework.components.Devices"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team6038.robot.RobotMap"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team6038.framework.trackers.GyroTracker"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team6038.robot.commands.CVSegments"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team6038.framework.Database"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team6038.framework.Networking"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team6038.robot.commands.SimpleDriveStraight"/>
+<fullyQualifiedTypeName name="com.ctre.CANTalon"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team6038.robot.Robot"/>
+</qualifiedTypeNameHistroy>
