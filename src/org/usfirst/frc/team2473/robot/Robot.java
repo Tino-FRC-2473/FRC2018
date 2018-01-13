@@ -1,16 +1,18 @@
-
 package org.usfirst.frc.team2473.robot;
+import org.usfirst.frc.team2473.framework.components.Devices;
+import org.usfirst.frc.team2473.framework.components.Trackers;
+import org.usfirst.frc.team2473.framework.readers.DeviceReader;
+import org.usfirst.frc.team2473.framework.trackers.EncoderTracker;
+import org.usfirst.frc.team2473.framework.trackers.NavXTracker;
+import org.usfirst.frc.team2473.framework.trackers.NavXTracker.NavXTarget;
+import org.usfirst.frc.team2473.robot.commands.RouteTest;
+import org.usfirst.frc.team2473.robot.commands.SimpleDriveStraight;
+import org.usfirst.frc.team2473.robot.subsystems.PIDriveTrain;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc.team2473.robot.commands.ExampleCommand;
-import org.usfirst.frc.team2473.robot.subsystems.ExampleSubsystem;
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -19,12 +21,24 @@ import org.usfirst.frc.team2473.robot.subsystems.ExampleSubsystem;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	
+	
+	Preferences prefTest;
+	double test;
+	public static OP oi;
+	
+	public static boolean isNetwork = false;
 
-	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-	public static OI oi;
+	public static PIDriveTrain piDriveTrain;
+	
+	public static DeviceReader deviceReader;
+	
+	private static final double AUTO_ENCODER_LIMIT = 100000;
+	private static final double AUTO_POW = 0.5;
 
-	Command autonomousCommand;
-	SendableChooser<Command> chooser = new SendableChooser<>();
+//	Command autonomousCommand;
+//	Command teleopCommand;
+	CommandGroup commandGroup;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -32,10 +46,17 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		oi = new OI();
-		chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", chooser);
+		Robot.addDevices();
+		Robot.addTrackers();
+		prefTest = Preferences.getInstance();
+		test = prefTest.getDouble("Test", 5);
+		System.out.println(test);
+		System.out.println("Test pref done");
+		piDriveTrain = new PIDriveTrain();
+		System.out.println("PIDrivetrain initialized");
+//		autonomousCommand = new PointTurn(45, AUTO_POW);
+		commandGroup = new RouteTest(0.5, 0.3);
+		System.out.println("auto command initialized");
 	}
 
 	/**
@@ -45,8 +66,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
+		SimpleDriveStraight.resetEncoders();
 	}
+
 
 	@Override
 	public void disabledPeriodic() {
@@ -66,18 +88,14 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = chooser.getSelected();
-
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-
-		// schedule the autonomous command (example)
-		if (autonomousCommand != null)
-			autonomousCommand.start();
+		piDriveTrain.enable();
+		System.out.println("Autonomous Init started...");
+		
+//		if (autonomousCommand != null)
+//			autonomousCommand.start();
+		if (commandGroup != null) {
+			commandGroup.start();
+		}
 	}
 
 	/**
@@ -90,12 +108,14 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-		if (autonomousCommand != null)
-			autonomousCommand.cancel();
+		System.out.println("teleop init");
+		// TODO
+//		if (autonomousCommand != null) {
+//			autonomousCommand.cancel();
+//			piDriveTrain.disable();
+//		}
+//		teleopCommand.start();
+
 	}
 
 	/**
@@ -104,6 +124,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		Devices.getInstance().getTalon((RobotMap.FRONT_LEFT)).set(0.1);
+		System.out.println(Devices.getInstance().getTalon(RobotMap.FRONT_LEFT).getPosition());
 	}
 
 	/**
@@ -111,6 +133,19 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		LiveWindow.run();
+	}
+
+	private static void addDevices(){
+		Devices.getInstance().addTalon(RobotMap.BACK_RIGHT);
+		Devices.getInstance().addTalon(RobotMap.BACK_LEFT);
+		Devices.getInstance().addTalon(RobotMap.FRONT_LEFT);
+		Devices.getInstance().addTalon(RobotMap.FRONT_RIGHT);
+	}
+
+	private static void addTrackers(){
+		Trackers.getInstance().addTracker(new EncoderTracker(RobotMap.FRONT_RIGHT_ENC, RobotMap.FRONT_RIGHT));
+		Trackers.getInstance().addTracker(new EncoderTracker(RobotMap.FRONT_LEFT_ENC, RobotMap.FRONT_LEFT));
+		Trackers.getInstance().addTracker(new NavXTracker(RobotMap.GYRO_YAW, NavXTarget.YAW));
+		Trackers.getInstance().addTracker(new NavXTracker(RobotMap.GYRO_RATE, NavXTarget.RATE));
 	}
 }
