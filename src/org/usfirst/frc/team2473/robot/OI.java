@@ -7,6 +7,10 @@
 
 package org.usfirst.frc.team2473.robot;
 
+import org.usfirst.frc.team2473.robot.commands.ClimbDown;
+import org.usfirst.frc.team2473.robot.commands.ClimbFaster;
+import org.usfirst.frc.team2473.robot.commands.ClimbUp;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -18,11 +22,16 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
 	
 	Joystick stick = new Joystick(0);
-	Button button = new JoystickButton(stick, 1);
+	Button AscendButton = new JoystickButton(stick,0);
+	Button DescendButton = new JoystickButton(stick,1);
+	Button FastButton = new JoystickButton(stick,2);
 	
-	public boolean isButton1Pressed() {
-		return button.get();
+	public OI() {
+		AscendButton.whileHeld(new ClimbUp());
+		DescendButton.whileHeld(new ClimbDown());
+		FastButton.whileHeld(new ClimbFaster());
 	}
+	
 	
 	
 	//// CREATING BUTTONS

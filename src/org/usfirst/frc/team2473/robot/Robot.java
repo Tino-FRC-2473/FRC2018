@@ -112,4 +112,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 	}
+	
+	public void addDevices() {
+		Devices.getInstance().addTalon(0);
+		Devices.getInstance().addTalon(1);
+	}	
+		
 }
