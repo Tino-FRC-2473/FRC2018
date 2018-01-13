@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ClimbUp extends Command {
+public class HookDown extends Command {
 
-    public ClimbUp() {
+    public HookDown() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
