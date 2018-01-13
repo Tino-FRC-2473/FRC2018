@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem;
 import org.usfirst.frc.team2473.robot.subsystems.DriveTrain;
 
 /**
@@ -24,6 +26,8 @@ import org.usfirst.frc.team2473.robot.subsystems.DriveTrain;
 public class Robot extends TimedRobot {
 	public static final DriveTrain kExampleSubsystem
 			= new DriveTrain();
+	public static final ClimbSystem climber
+	= new ClimbSystem();
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
