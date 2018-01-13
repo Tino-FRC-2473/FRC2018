@@ -21,15 +21,19 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class OI {
 	
-	Joystick stick = new Joystick(0);
-	Button AscendButton = new JoystickButton(stick,0);
-	Button DescendButton = new JoystickButton(stick,1);
-	Button FastButton = new JoystickButton(stick,2);
+	static Joystick stick = new Joystick(0);
+	static Button AscendButton = new JoystickButton(stick,0);
+	static Button DescendButton = new JoystickButton(stick,1);
+	static Button FastButton = new JoystickButton(stick,2);
 	
 	public OI() {
 		AscendButton.whileHeld(new HookUp());
 		DescendButton.whileHeld(new HookDown());
 		FastButton.whileHeld(new ClimbFaster());
+	}
+	
+	public static double getY() {
+		return stick.getY();
 	}
 	
 	
