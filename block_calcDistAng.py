@@ -20,8 +20,8 @@ class BlockCalcDistAng:
 		self.FIELD_OF_VIEW_RAD = 70.42 * math.pi / 180.0 #note: total not just half of the screen
 		
 		#make this less sketch
-		self.SCREEN_WIDTH = 1080
-		self.SCREEN_HEIGHT = 1920
+		self.SCREEN_WIDTH = 1920
+		self.SCREEN_HEIGHT = 1080
 		self.ANGLE_CONST = (self.SCREEN_WIDTH / 2.0) / math.tan(self.FIELD_OF_VIEW_RAD / 2.0)
 		
 		#calc angle
@@ -30,13 +30,17 @@ class BlockCalcDistAng:
 
 	#calculates the distance to the back of the board with the peg on it
 	#+/- about an inch depending on the case
-	def calcDist(self, length): #the length of the rectangle
+	def calcDistPerpendicular(self, length): #the length of the rectangle
 		#the distance and size is inversely proportional
 		#uses formula dist * rectSize = constant
 		if(length > 0):
 			return self.DIST_CONSTANT / length;
 		return -1;
 
+	#calculates the supposedly actual distance
+	#angle is in degrees
+	def calcDistHypotenuseDeg(self, length, angle):
+		return self.calcDistPerpendicular(length) / math.cos(angle*math.pi/180)
 
 	#calculates the angle in degrees
 	#we need to turn to be centered with the back of the board
@@ -69,6 +73,8 @@ class BlockCalcDistAng:
 		retx = x + w/2.0
 		return retx;
 
+
+
 	def runCV(self, camera):
 		#These are the values that the thing will return...
 		distance = -1
@@ -96,8 +102,10 @@ class BlockCalcDistAng:
 
 		#50 * 2.55, 65*2.55
 		#81.5, 96*2.55, 
+
+		#53, 27 (68.85), 75 (181.25)
 		yellow = np.array([27.5, 127.5, 181.05])
-		low_yellow = np.array([24, 100, 130])
+		low_yellow = np.array([24, 80, 130]) #used to be 100 for the middle
 		high_yellow = np.array([30, 255, 255])
 		mask = cv2.inRange(hsv, low_yellow, high_yellow)
 
@@ -179,12 +187,12 @@ class BlockCalcDistAng:
 				th = h
 		if(max_area > 0):
 			#draws a green rect on the biggest rectangle found
-			cv2.rectangle(frame,(mx,my),(mx+mw,my+mh),(0,255,0),thickness=3)
+			cv2.rectangle(frame,(mx,my),(mx+mw,my+mh),(0,255,0),thickness=1)
 			
 			modmx, modmy, modmw, modmh = mx, my, mw, mh
 
 			if(secmax_area > 0):
-				cv2.rectangle(frame,(sx,sy),(sx+sw,sy+sh),(0,0,255),thickness=3)
+				cv2.rectangle(frame,(sx,sy),(sx+sw,sy+sh),(0,0,255),thickness=1)
 
 				errorThres = 15 #change this on the jetson probably
 				
@@ -198,12 +206,13 @@ class BlockCalcDistAng:
 					
 					(sy < my or sy+sh > my+mh)): #we need the y coordinate to be outside the box
 					modmx, modmy, modmw, modmh = mx, sy, mw, mh + my-sy
-					cv2.rectangle(frame,(mx,sy),(mx+mw,my+mh),(255,0,255),thickness=3)
-					cv2.rectangle(frame,(modmx,modmy),(modmx+modmw,modmy+modmh),(255,255,0),thickness=3)
+					cv2.rectangle(frame,(mx,sy),(mx+mw,my+mh),(255,0,255),thickness=1)
+					cv2.rectangle(frame,(modmx,modmy),(modmx+modmw,modmy+modmh),(255,255,0),thickness=1)
 			
 
 			angle = self.calcAngleDeg(self.pinPositionX(modmx, modmw, modmy, modmh));
-			distance = self.calcDist(modmh)
+			distance = self.calcDistPerpendicular(modmh)
+			distanceHyp = self.calcDistHypotenuseDeg(modmh, angle)
 
 			cv2.circle(frame, self.pinPosition(modmx, modmw, modmy, modmh), 1, (255, 0, 0), thickness=5)
 
@@ -213,8 +222,9 @@ class BlockCalcDistAng:
 			cv2.putText(frame, "DIST: " + str(distance), (0, 100), cv2.FONT_HERSHEY_SIMPLEX, 2, 255)
 
 			#displays the lengths of the original rectangles
-			cv2.putText(frame, "mh: " + str(modmh) + ", mw: " + str(modmw), (0, 300), cv2.FONT_HERSHEY_SIMPLEX, 2, 255)
+			cv2.putText(frame, "mh: " + str(modmh) + ", mw: " + str(modmw), (0, 150), cv2.FONT_HERSHEY_SIMPLEX, 2, 255)
 			
+			cv2.putText(frame, "DIST HYP: " + str(distanceHyp), (0, 200), cv2.FONT_HERSHEY_SIMPLEX, 2, 255)
 
 
 			#displays data on the console such as the angle and distance
@@ -230,10 +240,18 @@ class BlockCalcDistAng:
 		cv2.waitKey(3)
 		cv2.imshow("Frame", frame)
 		return distance, angle, onedge
+		#return frame
+
 
 foo = BlockCalcDistAng()
-camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(1)
+
+#fourcc = cv2.VideoWriter_fourcc(*'XVID')
+#out = cv2.VideoWriter('output.avi',fourcc, 29.97, (foo.SCREEN_WIDTH, foo.SCREEN_HEIGHT))
 while True:
 	foo.runCV(camera)
+	#out.write(frame)
+
+#out.close()
 	
 
