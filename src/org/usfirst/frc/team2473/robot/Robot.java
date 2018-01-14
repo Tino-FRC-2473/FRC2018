@@ -5,7 +5,8 @@ import org.usfirst.frc.team2473.framework.readers.DeviceReader;
 import org.usfirst.frc.team2473.framework.trackers.EncoderTracker;
 import org.usfirst.frc.team2473.framework.trackers.NavXTracker;
 import org.usfirst.frc.team2473.framework.trackers.NavXTracker.NavXTarget;
-import org.usfirst.frc.team2473.robot.commands.RouteTest;
+import org.usfirst.frc.team2473.robot.RobotMap.Route;
+import org.usfirst.frc.team2473.robot.commands.AutonomousRoute;
 import org.usfirst.frc.team2473.robot.commands.SimpleDriveStraight;
 import org.usfirst.frc.team2473.robot.subsystems.PIDriveTrain;
 
@@ -13,6 +14,8 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -23,7 +26,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 public class Robot extends IterativeRobot {
 	
 	
-	Preferences prefTest;
+	Preferences pref;
 	double test;
 	public static OP oi;
 	
@@ -35,7 +38,8 @@ public class Robot extends IterativeRobot {
 	
 	private static final double AUTO_ENCODER_LIMIT = 100000;
 	private static final double AUTO_POW = 0.5;
-
+	SendableChooser<CommandGroup> chooser;
+	double delay;
 //	Command autonomousCommand;
 //	Command teleopCommand;
 	CommandGroup commandGroup;
@@ -46,16 +50,18 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		piDriveTrain = new PIDriveTrain();
+		chooser = new SendableChooser<CommandGroup>();
+		chooser.addDefault("LeftDriveStraight", new AutonomousRoute(Route.LEFT_DRIVESTRAIGHT));
+		chooser.addDefault("RightDriveStraight", new AutonomousRoute(Route.RIGHT_DRIVESTRAIGHT));
+		SmartDashboard.putData("AutoChooser", chooser);
 		Robot.addDevices();
 		Robot.addTrackers();
-		prefTest = Preferences.getInstance();
-		test = prefTest.getDouble("Test", 5);
-		System.out.println(test);
-		System.out.println("Test pref done");
-		piDriveTrain = new PIDriveTrain();
+		pref = Preferences.getInstance();
+		
+
 		System.out.println("PIDrivetrain initialized");
 //		autonomousCommand = new PointTurn(45, AUTO_POW);
-		commandGroup = new RouteTest(0.5, 0.3);
 		System.out.println("auto command initialized");
 	}
 
@@ -88,14 +94,17 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		delay = pref.getDouble("delay", 0);
+		System.out.println(delay);
+		double maxTime = delay + System.currentTimeMillis()/1000.0;
+		while (maxTime>System.currentTimeMillis()/1000.0){
+		}
+		
+		if (chooser.getSelected() != null) {
+			chooser.getSelected().start();
+		}
 		piDriveTrain.enable();
 		System.out.println("Autonomous Init started...");
-		
-//		if (autonomousCommand != null)
-//			autonomousCommand.start();
-		if (commandGroup != null) {
-			commandGroup.start();
-		}
 	}
 
 	/**

@@ -17,11 +17,15 @@ public class SimpleDriveStraight extends Command {
 								// stops
 	private double power;
 
-	public SimpleDriveStraight(double maxEncoder, double power) {
+	public SimpleDriveStraight(double maxFeet, double power) {
 		requires(Robot.piDriveTrain);
-		this.maxEncoder = maxEncoder;
+		this.maxEncoder = convertFeetToEncoder(maxFeet);
 		this.power = cap(power);
 		System.out.println("Simple drive straight constructor passed.");
+	}
+	
+	private double convertFeetToEncoder(double feet) {
+		return feet / (RobotMap.INCH_OVER_ENCODER / 12);
 	}
 
 	private double cap(double power) {
