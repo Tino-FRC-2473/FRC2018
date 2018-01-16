@@ -18,27 +18,26 @@ public class RobotMap {
 	public static final String TESTING_ENC_KEY = "T_ENC";
 	public static final String TESTING_ANALOG_GYRO_KEY = "A_G";
 
-	public static final int MOTOR = 6;
-	public static final int SERVO = 0;
-	public static final int GYRO = 0;
+//	public static final int MOTOR = 6;
+//	public static final int SERVO = 0;
+//	public static final int GYRO = 0;
 
 	public static final String NO_TRIALS = "NA";
 
 	// keys
-	public static final String MOTOR_ENCODER_KEY = "encoder key";
-	public static final String MOTOR_VOLTAGE_KEY = "voltage key";
-	public static final String MOTOR_CURRENT_KEY = "current key";
-	public static final String MOTOR_POWER_KEY = "power key";
-	public static final String MOTOR_SPEED_KEY = "speed key";
-	public static final String SERVO_POSITION_KEY = "servo position key";
-	public static final String SERVO_POWER_KEY = "servo power key";
-	public static final String GYRO_HEADING_KEY = "gyro key";
+//	public static final String MOTOR_ENCODER_KEY = "encoder key";
+//	public static final String MOTOR_VOLTAGE_KEY = "voltage key";
+//	public static final String MOTOR_CURRENT_KEY = "current key";
+//	public static final String MOTOR_POWER_KEY = "power key";
+//	public static final String MOTOR_SPEED_KEY = "speed key";
+//	public static final String SERVO_POSITION_KEY = "servo position key";
+//	public static final String SERVO_POWER_KEY = "servo power key";
+//	public static final String GYRO_HEADING_KEY = "gyro key";
 
 	public static final String PEG_DISTANCE = "peg distance";
 	public static final String PEG_ANGLE = "peg angle";
 	public static final String FUNCTION_TRIGGER = "function trigger";
 	public static final String STOP_TRIGGER = "stop trigger";
-
 	public static final String GYRO_YAW = "gyro yaw";
 	public static final String GYRO_RATE = "gyro rate";
 
@@ -66,7 +65,18 @@ public class RobotMap {
 	public static final double DRIVE_STRAIGHT_POWER = 0.5;
 	public static final double TURN_POWER = 0.3;
 	
+	// All specifications are in inches
+	public static final double WALL_TO_AUTOLINE = 120.08;
+	public static final double WALL_TO_SWITCH = 140;
+	public static final double HALF_SWITCH_LENGTH = 24;
+	public static final double AUTOLINE_TO_SWITCH = 19.92;
+	public static final double EXCHANGE_ZONE_LENGTH = 36;
+	public static final double SIDE_START_TO_SWITCH = 55.56;
+	
+	public static final double HALF_ROBOT_WIDTH = 24.5/2;
+	public static final double ROBOT_LENGTH = 28.3;
+	
 	public enum Route {
-		LEFT_DRIVESTRAIGHT, RIGHT_DRIVESTRAIGHT
+		LEFT, RIGHT, CENTER, LEFT_CENTER, RIGHT_CENTER
 	}
 }

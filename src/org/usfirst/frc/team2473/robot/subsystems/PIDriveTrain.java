@@ -1,7 +1,6 @@
 package org.usfirst.frc.team2473.robot.subsystems;
 
 import org.usfirst.frc.team2473.framework.components.Devices;
-import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.RobotMap;
 
 import com.ctre.CANTalon;
@@ -16,35 +15,47 @@ public class PIDriveTrain extends PIDSubsystem {
 	// P: 0.018, D: 0.03
 	private static final double KP = 0.0179;
 	private static final double KI = 0;
-	private static final double KD = 0.03; 
-	
+	private static final double KD = 0.03;
+
 	private RobotDrive driver;
 
 	private double rotateToAngleRate; // the value changed by PID
 
-	private CANTalon frontLeft, frontRight, backLeft, backRight;
+//	private CANTalon frontLeft, frontRight, backLeft, backRight;
 
-	private static final double K_TOLERANCE_DEGREES = 2.0f; // the absolute error that is tolerable in the PID system
+	private static final double K_TOLERANCE_DEGREES = 2.0f; // the absolute
+															// error that is
+															// tolerable in the
+															// PID system
 
 	public PIDriveTrain() {
-		super(KP, KI, KD); // creates a PID controller with the KP, KI, and KD values
+		super(KP, KI, KD); // creates a PID controller with the KP, KI, and KD
+							// values
 
 		rotateToAngleRate = 0;
 
 		Devices.getInstance().getNavXGyro().zeroYaw();
 
-		setInputRange(-180.0f, 180.0f); // sets the maximum and minimum values expected from the gyro
+		setInputRange(-180.0f, 180.0f); // sets the maximum and minimum values
+										// expected from the gyro
 		setOutputRange(-1.0, 1.0); // sets the maximum and minimum output values
-		setAbsoluteTolerance(K_TOLERANCE_DEGREES); // sets the absolute error that is tolerable in the PID system
-		getPIDController().setContinuous(true); // sets the PID Controller to think of the gyro input as continuous
-		
+		setAbsoluteTolerance(K_TOLERANCE_DEGREES); // sets the absolute error
+													// that is tolerable in the
+													// PID system
+		getPIDController().setContinuous(true); // sets the PID Controller to
+												// think of the gyro input as
+												// continuous
+
 		// Creates a robot driver
-		driver = new RobotDrive(Devices.getInstance().getTalon(RobotMap.FRONT_LEFT), Devices.getInstance().getTalon(RobotMap.BACK_LEFT), Devices.getInstance().getTalon(RobotMap.FRONT_RIGHT), Devices.getInstance().getTalon(RobotMap.BACK_RIGHT));
-//		Devices.getInstance().getTalon(RobotMap.FRONT_LEFT).changeControlMode(TalonControlMode.);
+		driver = new RobotDrive(Devices.getInstance().getTalon(RobotMap.FRONT_LEFT),
+				Devices.getInstance().getTalon(RobotMap.BACK_LEFT),
+				Devices.getInstance().getTalon(RobotMap.FRONT_RIGHT),
+				Devices.getInstance().getTalon(RobotMap.BACK_RIGHT));
+		// Devices.getInstance().getTalon(RobotMap.FRONT_LEFT).changeControlMode(TalonControlMode.);
 	}
 
 	public void initDefaultCommand() {
-//		setDefaultCommand(new DriveStraight(1000));
+		// setDefaultCommand(new DriveStraight(1000));
 	}
 
 	/**

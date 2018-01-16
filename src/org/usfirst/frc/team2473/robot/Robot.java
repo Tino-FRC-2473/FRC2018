@@ -26,8 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 	
 	
-	Preferences pref;
-	double test;
+	private Preferences pref;
 	public static OP oi;
 	
 	public static boolean isNetwork = false;
@@ -36,13 +35,12 @@ public class Robot extends IterativeRobot {
 	
 	public static DeviceReader deviceReader;
 	
-	private static final double AUTO_ENCODER_LIMIT = 100000;
-	private static final double AUTO_POW = 0.5;
-	SendableChooser<CommandGroup> chooser;
-	double delay;
+//	private static final double AUTO_ENCODER_LIMIT = 100000;
+//	private static final double AUTO_POW = 0.5;
+	private SendableChooser<CommandGroup> chooser;
+	private double delay;
 //	Command autonomousCommand;
 //	Command teleopCommand;
-	CommandGroup commandGroup;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -52,8 +50,8 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		piDriveTrain = new PIDriveTrain();
 		chooser = new SendableChooser<CommandGroup>();
-		chooser.addDefault("LeftDriveStraight", new AutonomousRoute(Route.LEFT_DRIVESTRAIGHT));
-		chooser.addDefault("RightDriveStraight", new AutonomousRoute(Route.RIGHT_DRIVESTRAIGHT));
+		chooser.addDefault("LeftDriveStraight", new AutonomousRoute(Route.LEFT));
+		chooser.addDefault("RightDriveStraight", new AutonomousRoute(Route.RIGHT));
 		SmartDashboard.putData("AutoChooser", chooser);
 		Robot.addDevices();
 		Robot.addTrackers();
