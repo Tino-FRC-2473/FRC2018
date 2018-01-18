@@ -64,7 +64,7 @@ public class RobotMap {
 
 	public static final double DRIVE_STRAIGHT_POWER = 0.5;
 	public static final double TURN_POWER = 0.3;
-	
+
 	// All specifications are in inches
 	public static final double WALL_TO_AUTOLINE = 120.08;
 	public static final double WALL_TO_SWITCH = 140;
@@ -72,10 +72,12 @@ public class RobotMap {
 	public static final double AUTOLINE_TO_SWITCH = 19.92;
 	public static final double EXCHANGE_ZONE_LENGTH = 36;
 	public static final double SIDE_START_TO_SWITCH = 55.56;
-	
+
 	public static final double HALF_ROBOT_WIDTH = 24.5/2;
 	public static final double ROBOT_LENGTH = 28.3;
-	
+
+	public static final double DIAGONAL_MOVEMENT_LENGTH = 351.090432372;
+
 	public enum Route {
 		LEFT, RIGHT, CENTER, LEFT_CENTER, RIGHT_CENTER
 	}
