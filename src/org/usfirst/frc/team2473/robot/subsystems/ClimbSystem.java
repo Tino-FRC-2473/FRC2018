@@ -29,9 +29,7 @@ public class ClimbSystem extends Subsystem
     }
     
     public void setJoyPow() {
-    	
     	Devices.getInstance().getTalon(1).set(ControlMode.PercentOutput,OI.getY()*MAX_POW);
-
     }
 }
 

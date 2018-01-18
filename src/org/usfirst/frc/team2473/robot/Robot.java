@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem;
 import org.usfirst.frc.team2473.robot.subsystems.DriveTrain;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the TimedRobot
@@ -24,7 +26,6 @@ import org.usfirst.frc.team2473.robot.subsystems.DriveTrain;
  * project.
  */
 public class Robot extends TimedRobot {
-	public static OI oi;
 	public static final DriveTrain kExampleSubsystem
 			= new DriveTrain();
 	public static final ClimbSystem climber
@@ -86,6 +87,12 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.start();
 		}
+		
+		//methods to test (check once code is written)
+		//stopMotor()
+		//isAlive()
+		//setExpiration()
+		Devices.getInstance().getTalon(0).set(ControlMode.PercentOutput, 0.5);
 	}
 
 	/**
