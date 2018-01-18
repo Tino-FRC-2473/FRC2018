@@ -16,13 +16,17 @@ public class AutonomousRoute extends CommandGroup {
 		switch (r) {
 		case LEFT:
 			addDriveStraight(RobotMap.WALL_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH);
-			addTurn(90);
-			addDriveStraight(RobotMap.SIDE_START_TO_SWITCH);
+			if (!switchSide) {
+				addTurn(90);
+				addDriveStraight(RobotMap.SIDE_START_TO_SWITCH);
+			}
 			break;
 		case RIGHT:
 			addDriveStraight(RobotMap.WALL_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH);
-			addTurn(-90);
-			addDriveStraight(RobotMap.SIDE_START_TO_SWITCH);
+			if (switchSide) {
+				addTurn(-90);
+				addDriveStraight(RobotMap.SIDE_START_TO_SWITCH);
+			}
 			break;
 		case CENTER:
 			addDriveStraight(RobotMap.EXCHANGE_ZONE_LENGTH + RobotMap.ROBOT_LENGTH);
@@ -34,18 +38,22 @@ public class AutonomousRoute extends CommandGroup {
 			addDriveStraight(RobotMap.EXCHANGE_ZONE_LENGTH + RobotMap.ROBOT_LENGTH);
 			addTurn(-70);
 			addDriveStraight(RobotMap.DIAGONAL_MOVEMENT_LENGTH);
-			addTurn(70);
-			addDriveStraight(RobotMap.AUTOLINE_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH);
-			addTurn(90);
-			addDriveStraight(RobotMap.SIDE_START_TO_SWITCH + 10);
+			if (!switchSide) {
+				addTurn(70);
+				addDriveStraight(RobotMap.AUTOLINE_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH);
+				addTurn(90);
+				addDriveStraight(RobotMap.SIDE_START_TO_SWITCH + 10);
+			}
 		case RIGHT_CENTER:
-		addDriveStraight(RobotMap.EXCHANGE_ZONE_LENGTH + RobotMap.ROBOT_LENGTH);
-		addTurn(70);
-		addDriveStraight(RobotMap.DIAGONAL_MOVEMENT_LENGTH);
-		addTurn(-70);
-		addDriveStraight(RobotMap.AUTOLINE_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH);
-		addTurn(-90);
-		addDriveStraight(RobotMap.SIDE_START_TO_SWITCH + 10);
+			addDriveStraight(RobotMap.EXCHANGE_ZONE_LENGTH + RobotMap.ROBOT_LENGTH);
+			addTurn(70);
+			addDriveStraight(RobotMap.DIAGONAL_MOVEMENT_LENGTH);
+			if (switchSide) {
+				addTurn(-70);
+				addDriveStraight(RobotMap.AUTOLINE_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH);
+				addTurn(-90);
+				addDriveStraight(RobotMap.SIDE_START_TO_SWITCH + 10);
+			}
 		}
 	}
 
