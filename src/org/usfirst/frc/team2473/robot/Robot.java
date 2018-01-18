@@ -24,11 +24,16 @@ import org.usfirst.frc.team2473.robot.subsystems.DriveTrain;
  * project.
  */
 public class Robot extends TimedRobot {
+	public static OI oi;
 	public static final DriveTrain kExampleSubsystem
 			= new DriveTrain();
 	public static final ClimbSystem climber
 	= new ClimbSystem();
 	Command m_autonomousCommand;
+	Command Climb;
+	Command HookUp;
+	Command HookDown;
+	Command ClimbFaster;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	/**
@@ -100,6 +105,11 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
+		
+		if(Climb!=null) Climb.start();
+		if(HookDown!=null) HookDown.start();
+		if(HookUp!=null) HookUp.start();
+		if(ClimbFaster!=null) ClimbFaster.start();
 	}
 
 	/**
@@ -108,6 +118,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		
 	}
 
 	/**

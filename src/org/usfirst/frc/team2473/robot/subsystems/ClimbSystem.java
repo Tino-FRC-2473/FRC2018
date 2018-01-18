@@ -3,6 +3,8 @@ package org.usfirst.frc.team2473.robot.subsystems;
 import org.usfirst.frc.team2473.robot.Devices;
 import org.usfirst.frc.team2473.robot.OI;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -23,12 +25,12 @@ public class ClimbSystem extends Subsystem
     
     public void setPow(double pow) 
     {
-    	Devices.getInstance().getTalon(0).set(pow);
+    	Devices.getInstance().getTalon(0).set(ControlMode.PercentOutput, pow);
     }
     
-    public void setJoyPow(double pow) {
+    public void setJoyPow() {
     	
-    	Devices.getInstance().getTalon(1).set(MAX_POW*OI.getY());
+    	Devices.getInstance().getTalon(1).set(ControlMode.PercentOutput,OI.getY()*MAX_POW);
 
     }
 }
