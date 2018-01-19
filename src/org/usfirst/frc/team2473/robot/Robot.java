@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem;
 import org.usfirst.frc.team2473.robot.subsystems.DriveTrain;
 
@@ -36,6 +36,7 @@ public class Robot extends TimedRobot {
 	Command HookDown;
 	Command ClimbFaster;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	WPI_TalonSRX t = Devices.getInstance().getTalon(2);
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -92,7 +93,7 @@ public class Robot extends TimedRobot {
 		//stopMotor()
 		//isAlive()
 		//setExpiration()
-		Devices.getInstance().getTalon(0).set(ControlMode.PercentOutput, 0.5);
+		
 	}
 
 	/**
@@ -113,19 +114,40 @@ public class Robot extends TimedRobot {
 			m_autonomousCommand.cancel();
 		}
 		
-		if(Climb!=null) Climb.start();
+	/*	if(Climb!=null) Climb.start();
 		if(HookDown!=null) HookDown.start();
 		if(HookUp!=null) HookUp.start();
-		if(ClimbFaster!=null) ClimbFaster.start();
-	}
+		if(ClimbFaster!=null) ClimbFaster.start();*/
+		
+		Devices.getInstance().getTalon(2).set(ControlMode.PercentOutput, 0.5);
+		long setTime = System.currentTimeMillis();
+		while(System.currentTimeMillis() - setTime < 2000) {
+		}
+			Devices.getInstance().getTalon(2).stopMotor();
+			System.out.println("Motor stopped");
+			while(System.currentTimeMillis() - setTime < 4000) {
+			}
+			Devices.getInstance().getTalon(2).set(ControlMode.PercentOutput, 0.5);
+			
+			Devices.getInstance().getTalon(2).setExpiration(5);
+			System.out.println("Set expiration");
+
+
+		//	Devices.getInstance().getTalon(2).set(ControlMode.PercentOutput,0.5);
+				System.out.println("Adding Expiration");
+			//Devices.getInstance().getTalon(2).setExpiration(10);
+			//while(Devices.getInstance().getTalon(2).isAlive()) {
+				//System.out.println("The motor is still alive!");
+		//	}
+			//System.out.println("The motor is dead.");
+}
 
 	/**
 	 * This function is called periodically during operator control.
 	 */
 	@Override
 	public void teleopPeriodic() {
-		Scheduler.getInstance().run();
-		
+		Scheduler.getInstance().run();		
 	}
 
 	/**

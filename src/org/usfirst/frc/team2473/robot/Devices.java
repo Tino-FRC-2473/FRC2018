@@ -4,8 +4,7 @@ package org.usfirst.frc.team2473.robot;
 import java.util.ArrayList;
 
 
-import com.ctre.CANTalon;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -20,7 +19,7 @@ import edu.wpi.first.wpilibj.Servo;
  * @version 1.0
  */
 public class Devices {
-	private ArrayList<TalonSRX> talons; //collection of talons
+	private ArrayList<WPI_TalonSRX> talons; //collection of talons
 	private AnalogGyro[] gyros; //collection storing the singular gryo, size could be subject to change in the future if needed
 	private ArrayList<AnalogInput> analogs; //collection of analog input sensors
 	private ArrayList<DigitalInput> digitals; //collection of digital input sensors
@@ -33,7 +32,7 @@ public class Devices {
 	}
 		
 	private Devices() { //private constructor prevents the creation of such an object elsewhere, forcing the use of the public static getInstance()
-		talons = new ArrayList<TalonSRX>();
+		talons = new ArrayList<WPI_TalonSRX>();
 		gyros = new AnalogGyro[1];
 		analogs = new ArrayList<AnalogInput>();
 		servos = new ArrayList<Servo>();
@@ -53,7 +52,7 @@ public class Devices {
 	 * @param port an <code>int</code> value representing the device id of the talon to be removed.
 	 */
 	public void removeTalon(int port) {
-		for(TalonSRX talon : talons) //loop through the talons stored in this class
+		for(WPI_TalonSRX talon : talons) //loop through the talons stored in this class
 			if(talon.getDeviceID() == port) { //if the device id matches, remove the talon and break out of the loop
 				talons.remove(talon); 	
 				break;
@@ -65,13 +64,13 @@ public class Devices {
 	 * @param id an <code>int</code> value representing the device id of the talon
 	 * @return a <code>CANTalon</code> object with the given device id
 	 */
-	public TalonSRX getTalon(int id) {
+	public WPI_TalonSRX getTalon(int id) {
 		/* loop through the collection of existing talons:
 		 * if a talon exists in the collection, return it, effectively breaking out of the loop and the function
 		 * if the talon doesn't exist, the loop will go to completion, with nothing returned
 		 * after which the talon can be added through addTalon and then returned in the next line as the last element in the collection
 		 */
-		for(TalonSRX talon : talons) if(talon.getDeviceID() == id) return talon;
+		for(WPI_TalonSRX talon : talons) if(talon.getDeviceID() == id) return talon;
 		addTalon(id);
 		return talons.get(talons.size() - 1);
 	}
@@ -81,7 +80,7 @@ public class Devices {
 	 * @param id an <code>int</code> value representing the device id of the talon
 	 */
 	public void addTalon(int id) {
-		talons.add(new TalonSRX(id));
+		talons.add(new WPI_TalonSRX(id));
 	}
 
 	/**
