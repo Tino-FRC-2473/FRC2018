@@ -30,8 +30,9 @@ class BlockCalcDistAng:
 		self.angle = 404
 		#returns the left top and right bottom coordinates
 
-	def calcAngAndDist(self, length, x):
-		ang = self.calcAngleDeg(x);
+	def calcAngAndDist(self, x1, y1, x2, y2):
+		ang = self.calcAngleDeg((x1 + x2)/2.0)
+		length = math.fabs(y2 - y1)
 		dist = self.calcDistHypotenuseDeg(length, ang)
 
 		return dist, ang
