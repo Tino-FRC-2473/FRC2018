@@ -2,15 +2,18 @@ package org.usfirst.frc.team2473.robot;
 
 
 import java.util.ArrayList;
-
+import java.util.Map;
+import java.util.HashMap;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Solenoid;
 
 /**
  * This class stores all existing hardware devices on the robot.
@@ -25,6 +28,8 @@ public class Devices {
 	private ArrayList<DigitalInput> digitals; //collection of digital input sensors
 	private ArrayList<Servo> servos;	 //collection of servos
 	private ArrayList<Encoder> encoders;	 //collection of endcoders
+	private Map<Integer, Solenoid> solenoids;
+	private Map<String, DoubleSolenoid> doubleSolenoids;
 	private static Devices theInstance; //serves as the static instance to use at all times
 	
 	static { //construct theInstance as a static function
@@ -37,6 +42,8 @@ public class Devices {
 		analogs = new ArrayList<AnalogInput>();
 		servos = new ArrayList<Servo>();
 		encoders = new ArrayList<Encoder>();
+		solenoids = new HashMap<>();
+		doubleSolenoids = new HashMap<>();
 	}
 
 	/**
@@ -234,5 +241,31 @@ public class Devices {
 	 */
 	public void setGyro(int port) {
 		gyros[0] = new AnalogGyro(port);
+	}
+	
+	public Solenoid getSolenoid(int channel) {
+		if(!solenoids.keySet().contains(channel)) addSolenoid(channel);
+		return solenoids.get(channel);
+	}
+	
+	public void addSolenoid(int channel) {
+		solenoids.put(channel, new Solenoid(channel));
+	}
+	
+	public void removeSolenoid(int channel) {
+		if(solenoids.keySet().contains(channel)) solenoids.remove(channel);
+	}
+	
+	public DoubleSolenoid getDoubleSolenoid(int forward, int reverse) {
+		if(!doubleSolenoids.containsKey(forward + " " + reverse)) addDoubleSolenoid(forward, reverse);
+		return doubleSolenoids.get(forward + " " + reverse);
+	}
+	
+	public void addDoubleSolenoid(int forward, int reverse) {
+		if(!doubleSolenoids.containsKey(forward + " " + reverse)) doubleSolenoids.put(forward + " " + reverse, new DoubleSolenoid(forward, reverse));		
+	}
+	
+	public void removeDoubleSolenoid(int forward, int reverse) {
+		if(doubleSolenoids.containsKey(forward + " " + reverse)) doubleSolenoids.remove(forward + " " + reverse);				
 	}
 }

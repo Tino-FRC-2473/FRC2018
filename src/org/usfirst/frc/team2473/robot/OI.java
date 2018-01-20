@@ -7,8 +7,11 @@
 
 package org.usfirst.frc.team2473.robot;
 
+import org.usfirst.frc.team2473.robot.commands.CloseArms;
 import org.usfirst.frc.team2473.robot.commands.HookDown;
 import org.usfirst.frc.team2473.robot.commands.LowerBox;
+import org.usfirst.frc.team2473.robot.commands.OpenArms;
+import org.usfirst.frc.team2473.robot.commands.RaiseBox;
 import org.usfirst.frc.team2473.robot.commands.HookUp;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -25,11 +28,19 @@ public class OI {
 	static Button AscendButton = new JoystickButton(stick,0);
 	static Button DescendButton = new JoystickButton(stick,1);
 	static Button FastButton = new JoystickButton(stick,2);
+	static Button RaiseBoxButton = new JoystickButton(stick,3);
+	static Button LowerBoxButton = new JoystickButton(stick,4);
+	static Button OpenArmsButton = new JoystickButton(stick,5);
+	static Button CloseArmsButton = new JoystickButton(stick,6);
 	
 	public OI() {
 		AscendButton.whileHeld(new HookUp());
 		DescendButton.whileHeld(new HookDown());
 		FastButton.whileHeld(new LowerBox());
+		RaiseBoxButton.whileHeld(new RaiseBox());
+		LowerBoxButton.whileHeld(new LowerBox());
+		OpenArmsButton.whileHeld(new OpenArms());
+		CloseArmsButton.whileHeld(new CloseArms());
 	}
 	
 	public static double getY() {

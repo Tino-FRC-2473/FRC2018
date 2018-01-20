@@ -10,13 +10,13 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ClimbFaster extends Command {
 
     public ClimbFaster() {
-    	requires(Robot.climber);
+    	requires(Robot.CLIMBER);
         
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.climber.setPow(Robot.climber.fastPower);
+    	Robot.CLIMBER.setPow(Robot.CLIMBER.fastPower);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -30,7 +30,7 @@ public class ClimbFaster extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.climber.setPow(0);
+    	Robot.CLIMBER.setPow(0);
     }
 
     // Called when another command which requires one or more of the same

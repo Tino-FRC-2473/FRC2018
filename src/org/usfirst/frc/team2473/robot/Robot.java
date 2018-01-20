@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
 import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem;
 import org.usfirst.frc.team2473.robot.subsystems.DriveTrain;
 
@@ -28,8 +30,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 public class Robot extends TimedRobot {
 	public static final DriveTrain kExampleSubsystem
 			= new DriveTrain();
-	public static final ClimbSystem climber
-	= new ClimbSystem();
+	public static final ClimbSystem CLIMBER = new ClimbSystem();
+	public static final BoxSystem BOX = new BoxSystem();
+	public static boolean isBeamBroken = false;
 	Command m_autonomousCommand;
 	Command Climb;
 	Command HookUp;
@@ -102,6 +105,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		isBeamBroken = Devices.getInstance().getDigitalInput(4).get();
+			if(isBeamBroken) {
+				System.out.println("Box BreakBeam is Broken");
+			}
 	}
 
 	@Override
@@ -147,7 +154,11 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		Scheduler.getInstance().run();		
+		Scheduler.getInstance().run();	
+		isBeamBroken = Devices.getInstance().getDigitalInput(4).get();
+		if(isBeamBroken) {
+			System.out.println("Box BreakBeam is Broken");
+		}
 	}
 
 	/**
@@ -158,8 +169,14 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void addDevices() {
+		//Climber
 		Devices.getInstance().addTalon(0);
 		Devices.getInstance().addTalon(1);
+		//Box
+		Devices.getInstance().addTalon(2);
+		Devices.getInstance().addDoubleSolenoid(3, 4);
+		Devices.getInstance().addDoubleSolenoid(5, 6);
+		Devices.getInstance().addDigitalInput(7);
 	}	
 		
 }
