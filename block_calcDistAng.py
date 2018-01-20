@@ -4,6 +4,8 @@ import cv2
 import numpy as np
 #import os
 
+#import CalcDistAng as calc
+
 class BlockCalcDistAng:
 
 	def __init__(self):
@@ -11,7 +13,7 @@ class BlockCalcDistAng:
 		self.distance = -1
 		
 		self.DIST_CONSTANT = 15534.5065179
-		#self.DIST_CONSTANT = self.DIST_CONSTANT * 720 / 1080
+		self.DIST_CONSTANT = self.DIST_CONSTANT * 720 / 1080.0
 		#self.DIST_CONSTANT = 14964.5604214
 		#self.OLDDIST_CONSTANT = 3234.375 * 11 / 5
 
@@ -20,13 +22,19 @@ class BlockCalcDistAng:
 		self.FIELD_OF_VIEW_RAD = 70.42 * math.pi / 180.0 #note: total not just half of the screen
 		
 		#make this less sketch
-		self.SCREEN_WIDTH = 1920
-		self.SCREEN_HEIGHT = 1080
+		self.SCREEN_WIDTH = 1280
+		self.SCREEN_HEIGHT = 720
 		self.ANGLE_CONST = (self.SCREEN_WIDTH / 2.0) / math.tan(self.FIELD_OF_VIEW_RAD / 2.0)
 		
 		#calc angle
 		self.angle = 404
 		#returns the left top and right bottom coordinates
+
+	def calcAngAndDist(self, length, x):
+		ang = self.calcAngleDeg(x);
+		dist = self.calcDistHypotenuseDeg(length, ang)
+
+		return dist, ang
 
 	#calculates the distance to the back of the board with the peg on it
 	#+/- about an inch depending on the case
@@ -82,7 +90,7 @@ class BlockCalcDistAng:
 		onedge = False
 
 
-		print "run in method"
+		#print "run in method"
 		_, frame = camera.read()
 		
 		print str(frame.shape[:2])
@@ -243,13 +251,13 @@ class BlockCalcDistAng:
 		#return frame
 
 
-foo = BlockCalcDistAng()
-camera = cv2.VideoCapture(1)
+#foo = BlockCalcDistAng()
+#camera = cv2.VideoCapture(0)
 
 #fourcc = cv2.VideoWriter_fourcc(*'XVID')
 #out = cv2.VideoWriter('output.avi',fourcc, 29.97, (foo.SCREEN_WIDTH, foo.SCREEN_HEIGHT))
-while True:
-	foo.runCV(camera)
+#while True:
+	#foo.runCV(camera)
 	#out.write(frame)
 
 #out.close()
