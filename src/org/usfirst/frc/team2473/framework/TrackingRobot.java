@@ -109,7 +109,7 @@ public abstract class TrackingRobot extends TimedRobot {
 			if(jetsonThread != null) jetsonThread.start();
 			
 		} catch (Exception e) {
-			System.out.println("ERROR IN TRACKINGROBOT STARTUP");
+			System.out.println("ERROR IN TRACKINGROBOT STARTUP:");
 			e.printStackTrace();
 		}
 		

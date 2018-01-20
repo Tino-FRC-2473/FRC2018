@@ -46,17 +46,31 @@ public class DatabaseAndPingThread extends Thread {
 						uSocket.sendLine("c");
 					} else {
 						//do other stuff from what is received, generally putting information in Database
-						//format of what is received should be in the format of (key + " " + value)
-						String key = received.substring(0, received.indexOf(" "));
-						
-						if(key.equals("ang")) {
-							Database.getInstance().setNumeric(
-									received.substring(0, received.indexOf(" ")), 
-									Integer.parseInt(received.substring(received.indexOf(" ")+1)
-							));
-						} else {
-							//other possibilities
+						//format of what is received should generally be in the format of (key + " " + value)
+						System.out.println(received);
+						int[] spaces = new int[3];
+						int idx = 0;
+						for(int i = 0; i < received.length(); i++) {
+							if(received.charAt(i) == ' ') {
+								spaces[idx] = i;
+								idx++;
+								if(idx > 2)
+									break;
+							}
 						}
+						
+						Database.getInstance().setNumeric(
+								received.substring(0, spaces[0]),
+								Double.parseDouble(
+										received.substring(spaces[0]+1, spaces[1])
+								)
+						);
+						Database.getInstance().setNumeric(
+								received.substring(spaces[1]+1, spaces[2]),
+								Double.parseDouble(
+										received.substring(spaces[2]+1)
+								)
+						);
 					}
 					
 					received = uSocket.getLine();
