@@ -1,5 +1,9 @@
 import java.io.File;
+
 import java.util.ArrayList;
+
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 
 public class RemoveUnmatchedFiles {
 
@@ -12,8 +16,42 @@ public class RemoveUnmatchedFiles {
 	private ArrayList<String> fileValNames;
 	
 	public static void main (String args[]){
-		String dir1 = "/Users/work/Desktop/Tanupa DontCare 176-200/"; 
-		String dir2 = "/Users/work/Desktop/Tanupa DontCare 176-200/LabelData";
+		
+		JFrame frame = new JFrame("FrameDemo");
+		
+		JFileChooser dirChooserImages = new JFileChooser();
+		dirChooserImages.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		
+		dirChooserImages.showOpenDialog(frame);
+		
+		//System.out.println(dirChooserImages.getCurrentDirectory());
+		//System.out.println(dirChooserImages.getSelectedFile());
+		
+//		dirChooserImages.setCurrentDirectory(dirChooserImages.getSelectedFile());
+//		System.out.println(dirChooserImages.getCurrentDirectory());
+//		
+//		//Make this file chooser a lot less sketch
+//		//frame = new JFrame("FrameDemo");
+//		//dirChooserImages.showOpenDialog(frame);
+//		JFileChooser dirChooserLabels = new JFileChooser();
+//		dirChooserLabels.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//		
+//		dirChooserLabels.showOpenDialog(frame);
+//		
+//		System.out.println(dirChooserLabels.getCurrentDirectory());
+//		System.out.println(dirChooserLabels.getSelectedFile());
+//		
+//		dirChooserLabels.setCurrentDirectory(dirChooserLabels.getSelectedFile());
+//		System.out.println(dirChooserLabels.getCurrentDirectory());
+		
+		
+		
+		
+		String dir1 = dirChooserImages.getSelectedFile().getAbsolutePath(); 
+		//make this less sketch
+		String dir2 = dir1+"/LabelData";
+		
+		
 		RemoveUnmatchedFiles sys = new RemoveUnmatchedFiles(dir1, dir2);
 		//sys.deleteUnmatchedFile();
 		System.out.println(sys.findUnmatchedFiles().toString());
@@ -95,7 +133,7 @@ public class RemoveUnmatchedFiles {
 				pathName = addSpaceEscapeCommand(pathName);
 			}
 			if(pathName.contains(".DS_Store")){
-				System.out.println("contineu");
+				//System.out.println("contineu");
 				continue;
 			}
 			
@@ -112,7 +150,7 @@ public class RemoveUnmatchedFiles {
 				pathName = addSpaceEscapeCommand(pathName);
 			}
 			if(pathName.contains(".DS_Store")){
-				System.out.println("contineu");
+				//System.out.println("contineu");
 				continue;
 			}
 			
