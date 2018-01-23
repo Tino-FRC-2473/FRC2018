@@ -6,6 +6,7 @@ class CalcDistAng():
 		self.SCREEN_HEIGHT = 720
 		self.FIELD_OF_VIEW_RAD = 70.42 * math.pi / 180.0
 
+		#arbitrary distance in pixels from the camera to the background
 		self.ANGLE_CONST = (self.SCREEN_WIDTH / 2.0) / math.tan(self.FIELD_OF_VIEW_RAD / 2.0)
 
 
@@ -37,18 +38,18 @@ class CalcDistAng():
 
 
 	#calculates the angle to turn to face the item in degrees
-	def calcAngleDeg(self, x, angleConst=None, screenwidth=None):
+	def calcAngleDeg(self, x, angConst=None, screenwidth=None):
 		if angConst is None:
 			angConst = self.ANGLE_CONST
 
 		if screenwidth is None:
 			screenwidth = self.SCREEN_WIDTH
 
-		return self.calcAngleRad(x, angleConst, screenwidth) * 180.0 / math.pi
+		return self.calcAngleRad(x, angConst, screenwidth) * 180.0 / math.pi
 
 	#calculates the angle in radians
 	#we need to turn to be centered with the back of the board
-	def calcAngleRad(self, x, angleConst=None, screenwidth=None):
+	def calcAngleRad(self, x, angConst=None, screenwidth=None):
 		if angConst is None:
 			angConst = self.ANGLE_CONST
 
@@ -57,7 +58,7 @@ class CalcDistAng():
 
 		xRespectToCenter = self.calcXRespectToCenter(x, screenwidth)
 		#returns it in radians
-		return math.atan(xRespectToCenter / angleConst)
+		return math.atan(xRespectToCenter / angConst)
 
 	#helper method to calculate the horizontal distance
 	#between the center of the screen and the point in pixels
