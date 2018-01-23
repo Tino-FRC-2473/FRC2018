@@ -44,10 +44,10 @@ public class DatabaseAndPingThread extends Thread {
 					if(received.equals("s")) {
 						ifDebugPrint("server ping received");
 						uSocket.sendLine("c");
+						everyTick();
 					} else {
 						//do other stuff from what is received, generally putting information in Database
 						//format of what is received should generally be in the format of (key + " " + value)
-						System.out.println(received);
 						int[] spaces = new int[3];
 						int idx = 0;
 						for(int i = 0; i < received.length(); i++) {
@@ -71,14 +71,15 @@ public class DatabaseAndPingThread extends Thread {
 										received.substring(spaces[2]+1)
 								)
 						);
+						
+						System.out.println(Database.getInstance().getNumeric("dist") + " " + Database.getInstance().getNumeric("ang"));
 					}
-					
 					received = uSocket.getLine();
 					ifDebugPrint("received: " + received);
 				}
 				
-				everyTick();
-				Thread.sleep(20 - (System.currentTimeMillis()-startTime));
+				
+				Thread.sleep(Math.max(0, 20 - (System.currentTimeMillis()-startTime)));
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
