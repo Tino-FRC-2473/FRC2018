@@ -1,0 +1,5 @@
+Thu Dec 07 20:18:32 PST 2017, Robot init
+Thu Dec 07 20:18:32 PST 2017, Disabled init
+Thu Dec 07 20:18:35 PST 2017, Auto init
+Thu Dec 07 20:18:35 PST 2017, Exception, [org.usfirst.frc.team2473.robot.MemeError.<init>(MemeError.java:5), org.usfirst.frc.team2473.robot.TrackingRobot.autonomousInit(TrackingRobot.java:89), edu.wpi.first.wpilibj.IterativeRobot.startCompetition(IterativeRobot.java:110), edu.wpi.first.wpilibj.RobotBase.main(RobotBase.java:247)]
+Thu Dec 07 20:18:36 PST 2017, Disabled init
