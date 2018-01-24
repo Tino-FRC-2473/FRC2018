@@ -2,6 +2,7 @@ package org.usfirst.frc.team2473.robot.subsystems;
 
 import org.usfirst.frc.team2473.robot.Devices;
 import org.usfirst.frc.team2473.robot.OI;
+import org.usfirst.frc.team2473.robot.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
@@ -24,13 +25,21 @@ public class ClimbSystem extends Subsystem
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public void setPow(double pow) 
+    public void setArmPow(double pow) 
     {
-    	Devices.getInstance().getTalon(0).set(ControlMode.PercentOutput, pow);
+    	Devices.getInstance().getTalon(RobotMap.climbArmMotor).set(ControlMode.PercentOutput, pow);
     }
     
     public void setJoyPow() {
-    	Devices.getInstance().getTalon(1).set(ControlMode.PercentOutput,OI.getY()*MAX_POW);
+    	Devices.getInstance().getTalon(RobotMap.climbMotor).set(ControlMode.PercentOutput,OI.getY()*MAX_POW);
+    }
+    
+    public void stopArmMotor() {
+    	Devices.getInstance().getTalon(RobotMap.climbArmMotor).stopMotor();
+    }
+    
+    public void stopClimbMotor() {
+    	Devices.getInstance().getTalon(RobotMap.climbMotor).stopMotor();
     }
 }
 

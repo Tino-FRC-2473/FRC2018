@@ -8,11 +8,11 @@
 package org.usfirst.frc.team2473.robot;
 
 import org.usfirst.frc.team2473.robot.commands.CloseArms;
+import org.usfirst.frc.team2473.robot.RobotMap;
 import org.usfirst.frc.team2473.robot.commands.HookDown;
-import org.usfirst.frc.team2473.robot.commands.LowerBox;
 import org.usfirst.frc.team2473.robot.commands.OpenArms;
-import org.usfirst.frc.team2473.robot.commands.RaiseBox;
 import org.usfirst.frc.team2473.robot.commands.HookUp;
+import org.usfirst.frc.team2473.robot.commands.MoveArm;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -24,23 +24,25 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class OI {
 	
-	static Joystick stick = new Joystick(0);
-	static Button AscendButton = new JoystickButton(stick,0);
-	static Button DescendButton = new JoystickButton(stick,1);
-	static Button FastButton = new JoystickButton(stick,2);
-	static Button RaiseBoxButton = new JoystickButton(stick,3);
-	static Button LowerBoxButton = new JoystickButton(stick,4);
-	static Button OpenArmsButton = new JoystickButton(stick,5);
-	static Button CloseArmsButton = new JoystickButton(stick,6);
+	static Joystick stick = new Joystick(RobotMap.joystickNum);
+	static Button AscendButton = new JoystickButton(stick,RobotMap.ascendNum);
+	static Button DescendButton = new JoystickButton(stick,RobotMap.descendNum);
+	static Button OpenArmsButton = new JoystickButton(stick,RobotMap.openArmsNum);
+	static Button CloseArmsButton = new JoystickButton(stick,RobotMap.closeArmsNum);
+	static Button pos1 = new JoystickButton(stick,RobotMap.bottomElevatorNum);
+	static Button pos2 = new JoystickButton(stick,RobotMap.lowerMidElevatorNum);
+	static Button pos3 = new JoystickButton(stick,RobotMap.upperMidElevatorNum);
+	static Button pos4 = new JoystickButton(stick,RobotMap.topElevatorNum);
+	
 	
 	public OI() {
 		AscendButton.whileHeld(new HookUp());
-		DescendButton.whileHeld(new HookDown());
-		FastButton.whileHeld(new LowerBox());
-		RaiseBoxButton.whileHeld(new RaiseBox());
-		LowerBoxButton.whileHeld(new LowerBox());
-		OpenArmsButton.whileHeld(new OpenArms());
+		DescendButton.whileHeld(new HookDown());		OpenArmsButton.whileHeld(new OpenArms());
 		CloseArmsButton.whileHeld(new CloseArms());
+		pos1.whenPressed(new MoveArm(1));
+		pos2.whenPressed(new MoveArm(2));
+		pos3.whenPressed(new MoveArm(3));
+		pos4.whenPressed(new MoveArm(4));
 	}
 	
 	public static double getY() {

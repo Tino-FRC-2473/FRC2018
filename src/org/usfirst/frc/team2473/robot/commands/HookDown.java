@@ -16,7 +16,7 @@ public class HookDown extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.CLIMBER.setPow(-Robot.CLIMBER.power);
+    	Robot.CLIMBER.setArmPow(-Robot.CLIMBER.power);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -33,7 +33,7 @@ public class HookDown extends Command {
     // Called once after isFinished returns true
     protected void end() 
     {
-    	Robot.CLIMBER.setPow(0);
+    	Robot.CLIMBER.stopArmMotor();
     }
 
     // Called when another command which requires one or more of the same
