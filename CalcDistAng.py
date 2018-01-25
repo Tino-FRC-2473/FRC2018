@@ -14,7 +14,7 @@ class CalcDistAng():
 		self.DIST_CONSTANT = self.DIST_CONSTANT * 720 / 1080.0
 
 	def calcAngAndDist(self, x1, y1, x2, y2):
-		ang = self.calcAngleDeg((x1 + y1)/2.0)
+		ang = self.calcAngleDeg((x1 + x2)/2.0)
 		length = math.fabs(y2 - y1)
 		dist = self.calcDistHypotenuseDeg(length, ang)
 
@@ -68,7 +68,7 @@ class CalcDistAng():
 
 		#if the point is on the right side of the screen, POSITIVE
 		#point on left side of screen, NEGATIVE
-		return (x - screenwidth / 2);
+		return (x - screenwidth / 2.0);
 		#return math.fabs(pinX - SCREEN_WIDTH / 2);
 
 	#calculates the midpoint given the x value or the width
