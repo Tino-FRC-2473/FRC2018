@@ -59,6 +59,8 @@ public class RemoveUnmatchedFiles {
 		//System.out.println(sys.addSpaceEscapeCommand("i like pie yay more 1408sn "));
 		//System.out.println(sys.addSpaceEscapeCommand(" blah  blah   blah  "));
 		//System.out.println(sys.addSpaceEscapeCommand("nospacesinthistext"));
+
+		System.exit(0);
 	}
 
 	//input 2 strings
