@@ -4,6 +4,7 @@ import org.usfirst.frc.team2473.robot.Devices;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -16,6 +17,8 @@ public class BoxSystem extends Subsystem
 {
 	public final double POWER = 0.6;
 	int[] posArray = {1,2,3,4,5,6};
+	
+	DigitalInput x = new DigitalInput(0);
 	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -34,23 +37,31 @@ public class BoxSystem extends Subsystem
      }
      
     public void setPistonR() {
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidFChannel,RobotMap.solenoidRChannel).set(Value.kReverse);
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidLFChannel,RobotMap.solenoidLRChannel).set(Value.kReverse);
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidRFChannel,RobotMap.solenoidRRChannel).set(Value.kReverse);
+
     }
     public void setPistonOff(){
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidFChannel,RobotMap.solenoidRChannel).set(Value.kOff);
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidLFChannel,RobotMap.solenoidLRChannel).set(Value.kOff);
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidRFChannel,RobotMap.solenoidRRChannel).set(Value.kOff);
+
     }
     
     public void setPistonF() {
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidFChannel,RobotMap.solenoidRChannel).set(Value.kForward);
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidLFChannel,RobotMap.solenoidLRChannel).set(Value.kForward);
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidRFChannel,RobotMap.solenoidRRChannel).set(Value.kForward);
+
     }
     
     public int getCurPos() {
-    	for(int i : posArray) {
+    	//for(int i : posArray) {
     		//change .getTalon(i) to .getLimitSwitch(i)
-    		if(Devices.getInstance().getDigitalInput(i).get())
-    			return i;
-    	}
-    	return 0;
+    		if(x.get())
+    			System.out.println("hello");
+    		
+    		return 1;
+    	//}
+    	//return 0;
     }
 }
 

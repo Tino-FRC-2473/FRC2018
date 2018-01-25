@@ -32,12 +32,15 @@ public class Robot extends TimedRobot {
 			= new DriveTrain();
 	public static final ClimbSystem CLIMBER = new ClimbSystem();
 	public static final BoxSystem BOX = new BoxSystem();
+	public static OI OI = new OI();
 	public static boolean isBeamBroken = false;
 	Command m_autonomousCommand;
 	Command Climb;
 	Command HookUp;
 	Command HookDown;
 	Command ClimbFaster;
+	Command CloseArms;
+	Command OpenArms;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 	WPI_TalonSRX t = Devices.getInstance().getTalon(2);
 
@@ -105,10 +108,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		isBeamBroken = Devices.getInstance().getDigitalInput(4).get();
+		/*isBeamBroken = Devices.getInstance().getDigitalInput(4).get();
 			if(isBeamBroken) {
 				System.out.println("Box BreakBeam is Broken");
-			}
+			}*/
 	}
 
 	@Override
@@ -126,27 +129,6 @@ public class Robot extends TimedRobot {
 		if(HookUp!=null) HookUp.start();
 		if(ClimbFaster!=null) ClimbFaster.start();*/
 		
-		Devices.getInstance().getTalon(2).set(ControlMode.PercentOutput, 0.5);
-		long setTime = System.currentTimeMillis();
-		while(System.currentTimeMillis() - setTime < 2000) {
-		}
-			Devices.getInstance().getTalon(2).stopMotor();
-			System.out.println("Motor stopped");
-			while(System.currentTimeMillis() - setTime < 4000) {
-			}
-			Devices.getInstance().getTalon(2).set(ControlMode.PercentOutput, 0.5);
-			
-			Devices.getInstance().getTalon(2).setExpiration(5);
-			System.out.println("Set expiration");
-
-
-		//	Devices.getInstance().getTalon(2).set(ControlMode.PercentOutput,0.5);
-				System.out.println("Adding Expiration");
-			//Devices.getInstance().getTalon(2).setExpiration(10);
-			//while(Devices.getInstance().getTalon(2).isAlive()) {
-				//System.out.println("The motor is still alive!");
-		//	}
-			//System.out.println("The motor is dead.");
 }
 
 	/**
@@ -154,11 +136,11 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		//System.out.println(OI.OpenArmsButton.get());
 		Scheduler.getInstance().run();	
-		isBeamBroken = Devices.getInstance().getDigitalInput(4).get();
+		/*isBeamBroken = Devices.getInstance().getDigitalInput(4).get();
 		if(isBeamBroken) {
-			System.out.println("Box BreakBeam is Broken");
-		}
+			System.out.println("Box BreakBeam is Broken");*/
 	}
 
 	/**

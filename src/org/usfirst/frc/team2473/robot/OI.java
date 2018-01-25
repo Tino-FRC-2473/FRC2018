@@ -24,28 +24,29 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class OI {
 	
-	static Joystick stick = new Joystick(RobotMap.joystickNum);
-	static Button AscendButton = new JoystickButton(stick,RobotMap.ascendNum);
-	static Button DescendButton = new JoystickButton(stick,RobotMap.descendNum);
-	static Button OpenArmsButton = new JoystickButton(stick,RobotMap.openArmsNum);
-	static Button CloseArmsButton = new JoystickButton(stick,RobotMap.closeArmsNum);
-	static Button pos1 = new JoystickButton(stick,RobotMap.bottomElevatorNum);
-	static Button pos2 = new JoystickButton(stick,RobotMap.lowerMidElevatorNum);
-	static Button pos3 = new JoystickButton(stick,RobotMap.upperMidElevatorNum);
-	static Button pos4 = new JoystickButton(stick,RobotMap.topElevatorNum);
+	public Joystick stick = new Joystick(RobotMap.joystickNum);
+	public Button AscendButton = new JoystickButton(stick,RobotMap.ascendNum);
+	public Button DescendButton = new JoystickButton(stick,RobotMap.descendNum);
+	public Button OpenArmsButton = new JoystickButton(stick,RobotMap.openArmsNum);
+	public Button CloseArmsButton = new JoystickButton(stick,RobotMap.closeArmsNum);
+	public Button pos1 = new JoystickButton(stick,RobotMap.bottomElevatorNum);
+	public Button pos2 = new JoystickButton(stick,RobotMap.lowerMidElevatorNum);
+	public Button pos3 = new JoystickButton(stick,RobotMap.upperMidElevatorNum);
+	public Button pos4 = new JoystickButton(stick,RobotMap.topElevatorNum);
 	
 	
 	public OI() {
 		AscendButton.whileHeld(new HookUp());
-		DescendButton.whileHeld(new HookDown());		OpenArmsButton.whileHeld(new OpenArms());
-		CloseArmsButton.whileHeld(new CloseArms());
+		DescendButton.whileHeld(new HookDown());		
+		OpenArmsButton.whenPressed(new OpenArms());
+		CloseArmsButton.whenPressed(new CloseArms());
 		pos1.whenPressed(new MoveArm(1));
 		pos2.whenPressed(new MoveArm(2));
 		pos3.whenPressed(new MoveArm(3));
 		pos4.whenPressed(new MoveArm(4));
 	}
 	
-	public static double getY() {
+	public double getY() {
 		return stick.getY();
 	}
 	
