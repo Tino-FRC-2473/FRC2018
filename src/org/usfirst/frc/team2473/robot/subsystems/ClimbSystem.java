@@ -1,7 +1,8 @@
 package org.usfirst.frc.team2473.robot.subsystems;
 
+import org.usfirst.frc.team2473.framework.TrackableSubsystem;
+import org.usfirst.frc.team2473.robot.Controls;
 import org.usfirst.frc.team2473.robot.Devices;
-import org.usfirst.frc.team2473.robot.OI;
 import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.RobotMap;
 
@@ -12,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
-public class ClimbSystem extends Subsystem 
+public class ClimbSystem extends TrackableSubsystem 
 {
 	public static double power = 0.1;
 	public static double fastPower = 0.5;
@@ -32,7 +33,7 @@ public class ClimbSystem extends Subsystem
     }
     
     public void setJoyPow() {
-    	Devices.getInstance().getTalon(RobotMap.climbMotor).set(ControlMode.PercentOutput,Robot.OI.getY()*MAX_POW);
+    	Devices.getInstance().getTalon(RobotMap.climbMotor).set(ControlMode.PercentOutput, Controls.getInstance().getJoy().getY()*MAX_POW);
     }
     
     public void stopArmMotor() {
@@ -42,5 +43,15 @@ public class ClimbSystem extends Subsystem
     public void stopClimbMotor() {
     	Devices.getInstance().getTalon(RobotMap.climbMotor).stopMotor();
     }
+
+	@Override
+	public void stop() {
+		
+	}
+
+	@Override
+	public String getState() {
+		return null;
+	}
 }
 
