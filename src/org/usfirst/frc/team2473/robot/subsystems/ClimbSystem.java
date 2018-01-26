@@ -7,6 +7,7 @@ import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -18,9 +19,14 @@ public class ClimbSystem extends TrackableSubsystem
 	public static double power = 0.1;
 	public static double fastPower = 0.5;
 	private final double MAX_POW = 0.7;
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-
+	
+	private WPI_TalonSRX climbArm;
+	private WPI_TalonSRX climb;
+    
+	public ClimbSystem() {
+		climbArm = Devices.getInstance().getTalon(RobotMap.climbArmMotor);
+		climb = Devices.getInstance().getTalon(RobotMap.climbMotor);
+	}
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -29,19 +35,19 @@ public class ClimbSystem extends TrackableSubsystem
     
     public void setArmPow(double pow) 
     {
-    	Devices.getInstance().getTalon(RobotMap.climbArmMotor).set(ControlMode.PercentOutput, pow);
+    	climbArm.set(ControlMode.PercentOutput, pow);
     }
     
     public void setJoyPow() {
-    	Devices.getInstance().getTalon(RobotMap.climbMotor).set(ControlMode.PercentOutput, Controls.getInstance().getJoy().getY()*MAX_POW);
+    	climb.set(ControlMode.PercentOutput, Controls.getInstance().getJoy().getY()*MAX_POW);
     }
     
     public void stopArmMotor() {
-    	Devices.getInstance().getTalon(RobotMap.climbArmMotor).stopMotor();
+    	climbArm.stopMotor();
     }
     
     public void stopClimbMotor() {
-    	Devices.getInstance().getTalon(RobotMap.climbMotor).stopMotor();
+    	climb.stopMotor();
     }
 
 	@Override
@@ -51,7 +57,7 @@ public class ClimbSystem extends TrackableSubsystem
 
 	@Override
 	public String getState() {
-		return null;
+		return "" + climb.get() + " " + climbArm.get();
 	}
 }
 

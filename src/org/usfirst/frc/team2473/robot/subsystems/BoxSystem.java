@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2473.robot.subsystems;
 
+import org.usfirst.frc.team2473.framework.TrackableSubsystem;
 import org.usfirst.frc.team2473.robot.Devices;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -13,7 +14,7 @@ import org.usfirst.frc.team2473.robot.RobotMap;
 /**
  *
  */
-public class BoxSystem extends Subsystem 
+public class BoxSystem extends TrackableSubsystem 
 {
 	public final double POWER = 0.6;
 	int[] posArray = {1,2,3,4,5,6};
@@ -63,5 +64,16 @@ public class BoxSystem extends Subsystem
     	//}
     	//return 0;
     }
+
+	@Override
+	public void stop() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getState() {
+		return null;
+	}
 }
 

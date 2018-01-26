@@ -1,6 +1,8 @@
 package org.usfirst.frc.team2473.robot.commands;
 
+import org.usfirst.frc.team2473.robot.Controls;
 import org.usfirst.frc.team2473.robot.Robot;
+import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -8,16 +10,18 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class OpenArms extends Command {
-
+	private BoxSystem sub;
+	
     public OpenArms() {
-    	//requires(Robot.climber);
+    	sub = (BoxSystem)Robot.getSubsystem(BoxSystem.class);
+    	requires(sub);
         
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	if(Robot.OI.OpenArmsButton.get()) {
-    		Robot.BOX.setPistonF();
+    	if(Controls.getInstance().OpenArmsButton.get()) {
+    		sub.setPistonF();
     	}
     }
 
@@ -33,14 +37,14 @@ public class OpenArms extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return !Robot.OI.OpenArmsButton.get();
+    	return !Controls.getInstance().OpenArmsButton.get();
         
     }
 
     // Called once after isFinished returns true
     protected void end() {
     	//System.out.println("goodbye");
-    	Robot.BOX.setPistonOff();
+    	sub.setPistonOff();
     	//System.out.println("goodbye");
     //	Robot.BOX.setPistonOff();
     }
