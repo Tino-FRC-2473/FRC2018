@@ -1,21 +1,17 @@
 package org.usfirst.frc.team2473.robot;
-import org.usfirst.frc.team2473.framework.components.Devices;
-import org.usfirst.frc.team2473.framework.components.Trackers;
-import org.usfirst.frc.team2473.framework.readers.DeviceReader;
-import org.usfirst.frc.team2473.framework.trackers.EncoderTracker;
-import org.usfirst.frc.team2473.framework.trackers.NavXTracker;
-import org.usfirst.frc.team2473.framework.trackers.NavXTracker.NavXTarget;
-import org.usfirst.frc.team2473.robot.RobotMap.Route;
-import org.usfirst.frc.team2473.robot.commands.AutonomousRoute;
+import org.usfirst.frc.team2473.framework.Devices;
+import org.usfirst.frc.team2473.robot.commands.PointTurn;
 import org.usfirst.frc.team2473.robot.commands.SimpleDriveStraight;
 import org.usfirst.frc.team2473.robot.subsystems.PIDriveTrain;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -33,14 +29,12 @@ public class Robot extends IterativeRobot {
 
 	public static PIDriveTrain piDriveTrain;
 	
-	public static DeviceReader deviceReader;
-	
-//	private static final double AUTO_ENCODER_LIMIT = 100000;
-//	private static final double AUTO_POW = 0.5;
+	private static final double AUTO_ENCODER_LIMIT = 120;
+	private static final double AUTO_POW = 0.45;
+	private static final double TURN_POW = 0.3;
 	private SendableChooser<CommandGroup> chooser;
 	private double delay;
-//	Command autonomousCommand;
-//	Command teleopCommand;
+	Command autonomousCommand;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -49,17 +43,18 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		piDriveTrain = new PIDriveTrain();
-		chooser = new SendableChooser<CommandGroup>();
-		chooser.addDefault("LeftDriveStraight", new AutonomousRoute(Route.LEFT));
-		chooser.addDefault("RightDriveStraight", new AutonomousRoute(Route.RIGHT));
-		SmartDashboard.putData("AutoChooser", chooser);
+//		piDriveTrain.enable();
+//		chooser = new SendableChooser<CommandGroup>();
+//		chooser.addDefault("LeftDriveStraight", new AutonomousRoute(Route.LEFT));
+//		chooser.addDefault("RightDriveStraight", new AutonomousRoute(Route.RIGHT));
+//		SmartDashboard.putData("AutoChooser", chooser);
 		Robot.addDevices();
-		Robot.addTrackers();
-		pref = Preferences.getInstance();
+//		pref = Preferences.getInstance();
 		
 
 		System.out.println("PIDrivetrain initialized");
-//		autonomousCommand = new PointTurn(45, AUTO_POW);
+		autonomousCommand = new PointTurn(90, TURN_POW);
+//		autonomousCommand = new SimpleDriveStraight(AUTO_ENCODER_LIMIT, AUTO_POW);
 		System.out.println("auto command initialized");
 	}
 
@@ -92,16 +87,14 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		delay = pref.getDouble("delay", 0);
-		System.out.println(delay);
-		double maxTime = delay + System.currentTimeMillis()/1000.0;
-		while (maxTime>System.currentTimeMillis()/1000.0){
-		}
-		
-		if (chooser.getSelected() != null) {
-			chooser.getSelected().start();
-		}
+		Devices.getInstance().getNavXGyro().reset();
+		Devices.getInstance().getTalon(RobotMap.BL).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
+		Devices.getInstance().getTalon(RobotMap.BR).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
+		Devices.getInstance().getTalon(RobotMap.BL).setSelectedSensorPosition(0, 0, 5);
+		Devices.getInstance().getTalon(RobotMap.BR).setSelectedSensorPosition(0, 0, 5);
 		piDriveTrain.enable();
+		if (autonomousCommand!=null)
+			autonomousCommand.start();
 		System.out.println("Autonomous Init started...");
 	}
 
@@ -131,8 +124,10 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		Devices.getInstance().getTalon((RobotMap.FRONT_LEFT)).set(0.1);
-		System.out.println(Devices.getInstance().getTalon(RobotMap.FRONT_LEFT).getPosition());
+	}
+	
+	public int avg(int a, int b) {
+		return (Math.abs(a) + Math.abs(b))/2;
 	}
 
 	/**
@@ -143,16 +138,9 @@ public class Robot extends IterativeRobot {
 	}
 
 	private static void addDevices(){
-		Devices.getInstance().addTalon(RobotMap.BACK_RIGHT);
-		Devices.getInstance().addTalon(RobotMap.BACK_LEFT);
-		Devices.getInstance().addTalon(RobotMap.FRONT_LEFT);
-		Devices.getInstance().addTalon(RobotMap.FRONT_RIGHT);
-	}
-
-	private static void addTrackers(){
-		Trackers.getInstance().addTracker(new EncoderTracker(RobotMap.FRONT_RIGHT_ENC, RobotMap.FRONT_RIGHT));
-		Trackers.getInstance().addTracker(new EncoderTracker(RobotMap.FRONT_LEFT_ENC, RobotMap.FRONT_LEFT));
-		Trackers.getInstance().addTracker(new NavXTracker(RobotMap.GYRO_YAW, NavXTarget.YAW));
-		Trackers.getInstance().addTracker(new NavXTracker(RobotMap.GYRO_RATE, NavXTarget.RATE));
+		Devices.getInstance().addTalon(RobotMap.BR);
+		Devices.getInstance().addTalon(RobotMap.BL);
+		Devices.getInstance().addTalon(RobotMap.FL);
+		Devices.getInstance().addTalon(RobotMap.FR);
 	}
 }

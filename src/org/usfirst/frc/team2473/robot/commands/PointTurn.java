@@ -1,10 +1,10 @@
 package org.usfirst.frc.team2473.robot.commands;
 
-import org.usfirst.frc.team2473.framework.components.Devices;
+import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.RobotMap;
 
-import com.ctre.CANTalon.TalonControlMode;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -33,39 +33,35 @@ public class PointTurn extends Command {
 	protected void initialize() {
 		Robot.piDriveTrain.stop();
 		resetEncoders();
-		Devices.getInstance().getNavXGyro().zeroYaw();
 		Robot.piDriveTrain.setTargetAngle(targetAngle);
 		System.out.println("PointTurn initiaized.");
 	}
 
 	public static void resetEncoders() {
 		System.out.println("encoder reset.");
-		resetOneEncoder(RobotMap.FRONT_LEFT);
-		resetOneEncoder(RobotMap.FRONT_RIGHT);
+		resetOneEncoder(RobotMap.BL);
+		resetOneEncoder(RobotMap.BR);
 	}
 
 	private static void resetOneEncoder(int talonId) {
-		Devices.getInstance().getTalon(talonId).changeControlMode(TalonControlMode.Position);
-		Devices.getInstance().getTalon(talonId).setPosition(0);
-		Devices.getInstance().getTalon(talonId).changeControlMode(TalonControlMode.PercentVbus);
-		System.out.println(Devices.getInstance().getTalon(talonId).getPosition());
+		Devices.getInstance().getTalon(talonId).set(ControlMode.Position, 0);
 	}
 
 	@Override
 	protected void execute() {
 		System.out.println("power: " + power);
 		Robot.piDriveTrain.drive(power, Robot.piDriveTrain.getAngleRate());
-	}
+	} 
 
 	private void setRightPow(double pow) {
-		Devices.getInstance().getTalon(RobotMap.FRONT_RIGHT).set(-pow);
-		Devices.getInstance().getTalon(RobotMap.BACK_RIGHT).set(-pow);
+		Devices.getInstance().getTalon(RobotMap.FR).set(-pow);
+		Devices.getInstance().getTalon(RobotMap.BR).set(-pow);
 	}
 
 	private void setLeftPow(double pow) {
 		System.out.println("set left power: " + pow);
-		Devices.getInstance().getTalon(RobotMap.FRONT_LEFT).set(pow);
-		Devices.getInstance().getTalon(RobotMap.BACK_LEFT).set(pow);
+		Devices.getInstance().getTalon(RobotMap.FL).set(pow);
+		Devices.getInstance().getTalon(RobotMap.BL).set(pow);
 	}
 	
 	@Override
@@ -82,7 +78,6 @@ public class PointTurn extends Command {
 		setRightPow(0);
 		Robot.piDriveTrain.disable();
 		System.out.println("PointTurn ended.");
-		resetEncoders();
 	}
 
 	@Override

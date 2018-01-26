@@ -3,88 +3,94 @@ package org.usfirst.frc.team2473.framework;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.usfirst.frc.team2473.framework.components.Trackers;
-import org.usfirst.frc.team2473.framework.threading.ThreadSafeBoolean;
-import org.usfirst.frc.team2473.framework.threading.ThreadSafeDouble;
-import org.usfirst.frc.team2473.framework.threading.ThreadSafeString;
-import org.usfirst.frc.team2473.framework.trackers.DeviceTracker;
-
 
 public class Database {
-	private Map<String, ThreadSafeDouble> numerical_values;
-	private Map<String, ThreadSafeBoolean> conditional_values;
-	private Map<String, ThreadSafeString> message_values;
+	private Map<String, Double> numerical_values; //hashmap stores the double values under a String key
+	private Map<String, Boolean> conditional_values; //hashmap stores boolean values under String key
+	private Map<String, String> message_values; //hashmap stores String values under a String key
 
-	private static Database theInstance;
+	private static Database theInstance; //static reference
 
 	static {
-		theInstance = new Database();
+		theInstance = new Database(); //creating the static reference
 	}
 	
-	private Database() {
+	private Database() { //constructor is purposefully private; no creating object
 		numerical_values = new HashMap<>();
 		conditional_values = new HashMap<>();
 		message_values = new HashMap<>();
-		fillMaps();
 	}
 	
-	public static Database getInstance() {
+	public static Database getInstance() { //returns static reference
 		return theInstance;
 	}
-	
-	public void fillMaps() {
-		for(DeviceTracker tracker : Trackers.getInstance().getTrackers()) {
-			switch(tracker.getType()) {
-				case NUMERIC:
-					numerical_values.put(tracker.getKey(), new ThreadSafeDouble());
-					break;
-				case CONDITIONAL:
-					conditional_values.put(tracker.getKey(), new ThreadSafeBoolean());
-					break;
-				case MESSAGE:
-					message_values.put(tracker.getKey(), new ThreadSafeString());
-					break;
-				default:
-					break;
-			}
-		}
-	}
-	
+		
+	/**
+	 * @param key String key under which to store the value
+	 * @param value new double value
+	 * */
 	public void setNumeric(String key, double value) {
-		numerical_values.get(key).setValue(value);
+		numerical_values.put(key, value);
 	}
-	
-	public void putNumeric(String key){
-		numerical_values.put(key, new ThreadSafeDouble());
-	}
-	
-	public String getNums()
-	{
-		StringBuilder sb = new StringBuilder();
-		for(String s : numerical_values.keySet())
-		{
-			sb.append(s +":" + numerical_values.get(s).getValue());
-		}
-		return sb.toString();
-	}
-	
+		
+	/**
+	 * @param key the String value of the key
+	 * @return the double value under the key
+	 * */
 	public double getNumeric(String key) {
-		return numerical_values.get(key).getValue();
+		return numerical_values.get(key).doubleValue();
 	}
 	
+	/**
+	 * @return all the numerical values in a map
+	 * */
+	public Map<String, Double> numericalEntries() {
+		return numerical_values;
+	}
+
+	/**
+	 * @param key String key under which to store the value
+	 * @param value new boolean value
+	 * */
 	public void setConditional(String key, boolean conditional) {
-		conditional_values.get(key).setValue(conditional);
+		conditional_values.put(key, conditional);
 	}
-	
+
+	/**
+	 * @param key the String value of the key
+	 * @return the boolean value under the key
+	 * */
 	public boolean getConditional(String key) {
-		return conditional_values.get(key).getValue();
+		return conditional_values.get(key).booleanValue();
 	}
 	
+	/**
+	 * @return all the boolean values in a map
+	 * */
+	public Map<String, Boolean> conditionalEntries() {
+		return conditional_values;
+	}
+
+	/**
+	 * @param key String key under which to store the value
+	 * @param value new String value
+	 * */
 	public void setMessage(String key, String message) {
-		message_values.get(key).setValue(message);
+		message_values.put(key, message);
 	}
 	
+	/**
+	 * @param key the String value of the key
+	 * @return the String value under the key
+	 * */
 	public String getMessage(String key) {
-		return message_values.get(key).getValue();
+		return message_values.get(key).toString();
+	}
+
+	/**
+	 * @return all the String values in a map
+	 * */
+	public Map<String, String> messageEntries() {
+		return message_values;
 	}
 }

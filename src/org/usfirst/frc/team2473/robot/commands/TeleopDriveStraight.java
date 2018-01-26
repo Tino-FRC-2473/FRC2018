@@ -1,11 +1,7 @@
 package org.usfirst.frc.team2473.robot.commands;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import org.usfirst.frc.team2473.framework.Database;
-import org.usfirst.frc.team2473.framework.components.Devices;
+import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.robot.ControlsMap;
 import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.RobotMap;
@@ -130,8 +126,8 @@ public class TeleopDriveStraight extends Command {
 			temp = maxPow;
 		else if (temp < -maxPow)
 			temp = -maxPow;
-		Devices.getInstance().getTalon(RobotMap.FRONT_RIGHT).set(-temp);
-		Devices.getInstance().getTalon(RobotMap.BACK_RIGHT).set(-temp);
+		Devices.getInstance().getTalon(RobotMap.FR).set(-temp);
+		Devices.getInstance().getTalon(RobotMap.BR).set(-temp);
 
 	}
 
@@ -141,8 +137,8 @@ public class TeleopDriveStraight extends Command {
 			temp = maxPow;
 		else if (temp < -maxPow)
 			temp = -maxPow;
-		Devices.getInstance().getTalon(RobotMap.FRONT_LEFT).set(temp);
-		Devices.getInstance().getTalon(RobotMap.BACK_LEFT).set(temp);
+		Devices.getInstance().getTalon(RobotMap.FL).set(temp);
+		Devices.getInstance().getTalon(RobotMap.BL).set(temp);
 
 	}
 
@@ -155,10 +151,10 @@ public class TeleopDriveStraight extends Command {
 	@Override
 	protected void end() {
 		Robot.piDriveTrain.disable();
-		Devices.getInstance().getTalon(RobotMap.BACK_LEFT).set(0);
-		Devices.getInstance().getTalon(RobotMap.BACK_RIGHT).set(0);
-		Devices.getInstance().getTalon(RobotMap.FRONT_RIGHT).set(0);
-		Devices.getInstance().getTalon(RobotMap.FRONT_LEFT).set(0);
+		Devices.getInstance().getTalon(RobotMap.BL).set(0);
+		Devices.getInstance().getTalon(RobotMap.BR).set(0);
+		Devices.getInstance().getTalon(RobotMap.FR).set(0);
+		Devices.getInstance().getTalon(RobotMap.FL).set(0);
 		System.out.println("DriveStraight ended. 🙂");
 	}
 

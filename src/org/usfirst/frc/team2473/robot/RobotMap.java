@@ -7,10 +7,10 @@ package org.usfirst.frc.team2473.robot;
  * floating around.
  */
 public class RobotMap {
-	public static final int FRONT_RIGHT = 4;
-	public static final int FRONT_LEFT = 2;
-	public static final int BACK_RIGHT = 5;
-	public static final int BACK_LEFT = 3;
+	public static final int FL = 2;
+	public static final int FR = 6;
+	public static final int BL = 3;
+	public static final int BR = 7;
 	public static final int TESTING_ENC = 2;
 
 	public static final String FRONT_RIGHT_ENC = "FR_ENC";
@@ -21,8 +21,10 @@ public class RobotMap {
 //	public static final int MOTOR = 6;
 //	public static final int SERVO = 0;
 //	public static final int GYRO = 0;
+	
 
 	public static final String NO_TRIALS = "NA";
+	public static final double ENC_PER_INCH = 74.19;
 
 	// keys
 //	public static final String MOTOR_ENCODER_KEY = "encoder key";
@@ -61,6 +63,8 @@ public class RobotMap {
 //	public static final double GYRO_CAMERA_DIST = 0;
 //	public static final double TARGET_OVER_TOTAL = 0.2;
 //	public static final double MIN_SEGMENT_TOLERANCE = 4;
+	// The "Master" sensor position, should be used normally
+	public static final int SENSOR_POS = 0;
 
 	public static final double DRIVE_STRAIGHT_POWER = 0.5;
 	public static final double TURN_POWER = 0.3;
@@ -72,9 +76,12 @@ public class RobotMap {
 	public static final double AUTOLINE_TO_SWITCH = 19.92;
 	public static final double EXCHANGE_ZONE_LENGTH = 36;
 	public static final double SIDE_START_TO_SWITCH = 55.56;
-	
+
 	public static final double HALF_ROBOT_WIDTH = 24.5/2;
 	public static final double ROBOT_LENGTH = 28.3;
+
+	public static final double DIAGONAL_MOVEMENT_LENGTH = 351.090432372;
+	public static final double SECURE_BASELINE_LENGTH = 36;
 	
 	public enum Route {
 		LEFT, RIGHT, CENTER, LEFT_CENTER, RIGHT_CENTER
