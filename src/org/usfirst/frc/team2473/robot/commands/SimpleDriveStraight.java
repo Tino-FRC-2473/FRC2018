@@ -4,19 +4,19 @@ import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.RobotMap;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-
 import edu.wpi.first.wpilibj.command.Command;
 
 public class SimpleDriveStraight extends Command {
 
 	// TODO put maxPow in RobotMap
+	private int r_init, l_init;
+	
 	private final double maxPow = 0.7;
 	private final double minPow = 0.3;
 	private double maxEncoder; // The maximum encoder count at which the robot
 								// stops
 	private double power;
-	
+
 	public SimpleDriveStraight(double maxInch, double power) {
 		requires(Robot.piDriveTrain);
 		this.maxEncoder = convertInchToEncoder(maxInch);
@@ -24,7 +24,7 @@ public class SimpleDriveStraight extends Command {
 		System.out.println("POWER: " + power);
 		System.out.println("Simple drive straight constructor passed.");
 	}
-	
+
 	private double convertInchToEncoder(double inches) {
 		return inches * RobotMap.ENC_PER_INCH;
 	}
@@ -35,10 +35,10 @@ public class SimpleDriveStraight extends Command {
 
 	@Override
 	protected void initialize() {
-		Robot.piDriveTrain.enable();
 		System.out.println("initialize running..");
-		Devices.getInstance().getNavXGyro().zeroYaw();
-		resetEncoders();
+		r_init = Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0);
+		l_init = Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0);
+// 		resetEncoders();
 		Robot.piDriveTrain.setTargetAngle(Devices.getInstance().getNavXGyro().getYaw());
 		System.out.println("SimpleDriveStraight initialized.");
 	}
@@ -50,8 +50,9 @@ public class SimpleDriveStraight extends Command {
 	}
 
 	private static void resetOneEncoder(int talonId) {
-		Devices.getInstance().getTalon(talonId).setSelectedSensorPosition(0,0,5);
-		System.out.println("Updated " + talonId + " " + Devices.getInstance().getTalon(talonId).getSelectedSensorPosition(0));
+		Devices.getInstance().getTalon(talonId).setSelectedSensorPosition(0, 0, 5);
+		System.out.println(
+				"Updated " + talonId + " " + Devices.getInstance().getTalon(talonId).getSelectedSensorPosition(0));
 	}
 
 	@Override
@@ -61,17 +62,18 @@ public class SimpleDriveStraight extends Command {
 	}
 
 	private int getAverageEnc(int enc1, int enc2) {
-		return (Math.abs(enc1) + Math.abs(enc2))/2;
+		return (Math.abs(enc1) + Math.abs(enc2)) / 2;
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return getAverageEnc(Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0), Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0)) >= maxEncoder;
+		return getAverageEnc(l_init - Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0),
+				r_init - Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0)) >= maxEncoder;
 	}
 
 	@Override
 	protected void end() {
-		Robot.piDriveTrain.disable();
+		Robot.piDriveTrain.stop();
 	}
 
 	@Override

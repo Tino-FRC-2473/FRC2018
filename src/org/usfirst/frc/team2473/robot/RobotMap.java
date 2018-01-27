@@ -67,7 +67,7 @@ public class RobotMap {
 	public static final int SENSOR_POS = 0;
 
 	public static final double DRIVE_STRAIGHT_POWER = 0.5;
-	public static final double TURN_POWER = 0.3;
+	public static final double TURN_POWER = 0.2;
 	
 	// All specifications are in inches
 	public static final double WALL_TO_AUTOLINE = 120.08;
@@ -84,6 +84,6 @@ public class RobotMap {
 	public static final double SECURE_BASELINE_LENGTH = 36;
 	
 	public enum Route {
-		LEFT, RIGHT, CENTER, LEFT_CENTER, RIGHT_CENTER
+		LEFT, RIGHT, CENTER, LEFT_CENTER, RIGHT_CENTER, TESTING
 	}
 }

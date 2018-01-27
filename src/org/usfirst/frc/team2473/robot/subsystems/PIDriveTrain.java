@@ -85,7 +85,6 @@ public class PIDriveTrain extends PIDSubsystem {
 	 * Drives the robot given the speed and the rotation angle.
 	 */
 	public void drive(double speed, double rotation) {
-		System.out.println("driving..");
 		driver.arcadeDrive(speed, rotation);
 	}
 

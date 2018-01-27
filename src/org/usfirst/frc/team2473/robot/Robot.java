@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2473.robot;
 import org.usfirst.frc.team2473.framework.Devices;
+import org.usfirst.frc.team2473.robot.RobotMap.Route;
+import org.usfirst.frc.team2473.robot.commands.AutonomousRoute;
 import org.usfirst.frc.team2473.robot.commands.PointTurn;
 import org.usfirst.frc.team2473.robot.commands.SimpleDriveStraight;
 import org.usfirst.frc.team2473.robot.subsystems.PIDriveTrain;
@@ -8,7 +10,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -34,7 +35,8 @@ public class Robot extends IterativeRobot {
 	private static final double TURN_POW = 0.3;
 	private SendableChooser<CommandGroup> chooser;
 	private double delay;
-	Command autonomousCommand;
+//	CommandGroup autonomousCommand;
+	AutonomousRoute autonomousCommand;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -53,8 +55,9 @@ public class Robot extends IterativeRobot {
 		
 
 		System.out.println("PIDrivetrain initialized");
-		autonomousCommand = new PointTurn(90, TURN_POW);
-//		autonomousCommand = new SimpleDriveStraight(AUTO_ENCODER_LIMIT, AUTO_POW);
+		autonomousCommand = new AutonomousRoute(Route.LEFT);
+//		autonomousCommand = new PointTurn(90, 0.3);
+//		autonomousCommand = new SimpleDriveStraight(AUTO_ENCODER_LIMIT, AUTO_POW, false);
 		System.out.println("auto command initialized");
 	}
 
@@ -87,7 +90,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		Devices.getInstance().getNavXGyro().reset();
+		while(Math.abs(Devices.getInstance().getNavXGyro().getYaw()) > 5) {
+			Devices.getInstance().getNavXGyro().zeroYaw();
+			System.out.println("resetting...");
+		}
 		Devices.getInstance().getTalon(RobotMap.BL).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
 		Devices.getInstance().getTalon(RobotMap.BR).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
 		Devices.getInstance().getTalon(RobotMap.BL).setSelectedSensorPosition(0, 0, 5);

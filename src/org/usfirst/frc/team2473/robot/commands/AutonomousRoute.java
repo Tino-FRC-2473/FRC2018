@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2473.robot.commands;
 
+import org.usfirst.frc.team2473.framework.Devices;
+import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.RobotMap;
 import org.usfirst.frc.team2473.robot.RobotMap.Route;
 
@@ -12,15 +14,19 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutonomousRoute extends CommandGroup {
 
 	public AutonomousRoute(Route r) {
-		boolean switchSide = (DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'R');
+		boolean switchSide = false;
+		// (DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'R');
 		switch (r) {
 		case LEFT:
+			resetGyro();
 			addDriveStraight(RobotMap.WALL_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH);
 			if (!switchSide) {
+				resetGyro();
 				addTurn(90);
+				resetGyro();
 				addDriveStraight(RobotMap.SIDE_START_TO_SWITCH);
-			}
-			else{
+			} else {
+				resetGyro();
 				addDriveStraight(RobotMap.SECURE_BASELINE_LENGTH);
 			}
 			break;
@@ -29,8 +35,7 @@ public class AutonomousRoute extends CommandGroup {
 			if (switchSide) {
 				addTurn(-90);
 				addDriveStraight(RobotMap.SIDE_START_TO_SWITCH);
-			}
-			else{
+			} else {
 				addDriveStraight(RobotMap.SECURE_BASELINE_LENGTH);
 			}
 			break;
@@ -40,6 +45,7 @@ public class AutonomousRoute extends CommandGroup {
 			addDriveStraight(RobotMap.DIAGONAL_MOVEMENT_LENGTH);
 			addTurn(switchSide ? -70 : 70);
 			addDriveStraight(RobotMap.AUTOLINE_TO_SWITCH);
+			break;
 		case LEFT_CENTER:
 			addDriveStraight(RobotMap.EXCHANGE_ZONE_LENGTH + RobotMap.ROBOT_LENGTH);
 			addTurn(-70);
@@ -49,10 +55,10 @@ public class AutonomousRoute extends CommandGroup {
 				addDriveStraight(RobotMap.AUTOLINE_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH);
 				addTurn(90);
 				addDriveStraight(RobotMap.SIDE_START_TO_SWITCH + 10);
-			}
-			else{
+			} else {
 				addDriveStraight(RobotMap.SECURE_BASELINE_LENGTH);
 			}
+			break;
 		case RIGHT_CENTER:
 			addDriveStraight(RobotMap.EXCHANGE_ZONE_LENGTH + RobotMap.ROBOT_LENGTH);
 			addTurn(70);
@@ -62,17 +68,39 @@ public class AutonomousRoute extends CommandGroup {
 				addDriveStraight(RobotMap.AUTOLINE_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH);
 				addTurn(-90);
 				addDriveStraight(RobotMap.SIDE_START_TO_SWITCH + 10);
-			}
-			else{
+			} else {
 				addDriveStraight(RobotMap.SECURE_BASELINE_LENGTH);
 			}
+			break;
+		case TESTING:
+			resetGyro();
+			addDriveStraight(RobotMap.SECURE_BASELINE_LENGTH);
+			resetGyro();
+			addTurn(90);
+			resetGyro();
+			addDriveStraight(20);
+			break;
 		}
 	}
-	
+
+	@Override
+	protected void end() {
+		Robot.piDriveTrain.disable();
+		System.out.println("end of autonomous...");
+	}
+
+	void resetGyro() {
+		while (Math.abs(Devices.getInstance().getNavXGyro().getYaw()) > 5) {
+			Devices.getInstance().getNavXGyro().zeroYaw();
+			System.out.println("resetting...");
+		}
+		System.out.println("finished resetting...");
+	}
+
 	private void addDriveStraight(double dist) {
 		addSequential(new SimpleDriveStraight(dist, RobotMap.DRIVE_STRAIGHT_POWER));
 	}
-	
+
 	private void addTurn(double angle) {
 		addSequential(new PointTurn(angle, RobotMap.TURN_POWER));
 	}
