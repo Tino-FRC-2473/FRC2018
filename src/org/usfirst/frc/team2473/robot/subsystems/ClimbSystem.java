@@ -39,7 +39,7 @@ public class ClimbSystem extends TrackableSubsystem
     }
     
     public void setJoyPow() {
-    	climb.set(ControlMode.PercentOutput, Controls.getInstance().getJoy().getY()*MAX_POW);
+    	climb.set(ControlMode.PercentOutput, Robot.getControls().getJoy().getY()*MAX_POW);
     }
     
     public void stopArmMotor() {

@@ -3,8 +3,9 @@ package org.usfirst.frc.team2473.robot;
 import org.usfirst.frc.team2473.robot.commands.CloseArms;
 import org.usfirst.frc.team2473.robot.commands.HookDown;
 import org.usfirst.frc.team2473.robot.commands.HookUp;
-import org.usfirst.frc.team2473.robot.commands.MoveArm;
 import org.usfirst.frc.team2473.robot.commands.OpenArms;
+import org.usfirst.frc.team2473.robot.commands.eleDown;
+import org.usfirst.frc.team2473.robot.commands.eleUp;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -45,34 +46,24 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 public class Controls {
 	public Joystick stick = new Joystick(RobotMap.joystickNum);
-	public Button AscendButton = new JoystickButton(stick,RobotMap.ascendNum);
-	public Button DescendButton = new JoystickButton(stick,RobotMap.descendNum);
-	public Button OpenArmsButton = new JoystickButton(stick,RobotMap.openArmsNum);
-	public Button CloseArmsButton = new JoystickButton(stick,RobotMap.closeArmsNum);
-	public Button pos1 = new JoystickButton(stick,RobotMap.bottomElevatorNum);
-	public Button pos2 = new JoystickButton(stick,RobotMap.lowerMidElevatorNum);
-	public Button pos3 = new JoystickButton(stick,RobotMap.upperMidElevatorNum);
-	public Button pos4 = new JoystickButton(stick,RobotMap.topElevatorNum);
+	public Button ascendButton = new JoystickButton(stick,RobotMap.ascendNum);
+	public Button descendButton = new JoystickButton(stick,RobotMap.descendNum);
+	public Button openArmsButton = new JoystickButton(stick,RobotMap.openArmsNum);
+	public Button closeArmsButton = new JoystickButton(stick,RobotMap.closeArmsNum);
+	public Button controlButton = new JoystickButton(stick,RobotMap.controlButtonNum);
+	public Button elevatorUp = new JoystickButton(stick, RobotMap.elevatorUpNum);
+	public Button elevatorDown = new JoystickButton(stick, RobotMap.elevatorDownNum);
 	
-	private static Controls theInstance;
-	
-	static {
-		theInstance = new Controls();
-	}
-	
-	private Controls() {
-		AscendButton.whileHeld(new HookUp());
-		DescendButton.whileHeld(new HookDown());		
-		OpenArmsButton.whenPressed(new OpenArms());
-		CloseArmsButton.whenPressed(new CloseArms());
-		pos1.whenPressed(new MoveArm(1));
-		pos2.whenPressed(new MoveArm(2));
-		pos3.whenPressed(new MoveArm(3));
-		pos4.whenPressed(new MoveArm(4));
-	}
-	
-	public static Controls getInstance() {
-		return theInstance;
+	public Controls() {
+		//climb
+		ascendButton.whileHeld(new HookUp());
+		descendButton.whileHeld(new HookDown());	
+		//claw
+		openArmsButton.whenPressed(new OpenArms());
+		closeArmsButton.whenPressed(new CloseArms());
+		//elevator
+		elevatorUp.whileHeld(new eleUp());
+		elevatorDown.whileHeld(new eleDown());
 	}
 	
 	public Joystick getJoy() {

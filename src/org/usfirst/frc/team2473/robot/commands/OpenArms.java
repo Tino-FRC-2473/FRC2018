@@ -20,7 +20,7 @@ public class OpenArms extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	if(Controls.getInstance().OpenArmsButton.get()) {
+    	if(Robot.getControls().openArmsButton.get()) {
     		sub.setPistonF();
     	}
     }
@@ -37,7 +37,7 @@ public class OpenArms extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return !Controls.getInstance().OpenArmsButton.get();
+    	return !Robot.getControls().openArmsButton.get();
         
     }
 

@@ -4,6 +4,8 @@ package org.usfirst.frc.team2473.framework;
 import java.io.IOException;
 import java.util.stream.IntStream;
 
+import org.usfirst.frc.team2473.robot.Controls;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -17,6 +19,7 @@ public abstract class TrackingRobot extends TimedRobot {
 	private static TrackableSubsystem[] subsystems; //array of TrackableSubsystems used in this robot program
 	private Thread jetsonThread; //thread for communcation with the jetson
 	private Command autoCmd; //command to be run during auto
+	private static Controls controls;
 	
 	/**
 	 * This method must include the Thread used for networking and database-ing, or null if not used.
@@ -99,6 +102,7 @@ public abstract class TrackingRobot extends TimedRobot {
 			subsystems = tSubsystems();
 			autoCmd = getAutonomousCommand();
 			jetsonThread = jetsonThread();
+			controls = new Controls();
 			
 			System.out.println("Running: " + getProgramName());
 			System.out.println("Autonomous: " + ((autoCmd==null) ? "None" : getAutonomousCommand().getClass().getSimpleName()));
@@ -118,6 +122,16 @@ public abstract class TrackingRobot extends TimedRobot {
 		
 		System.out.println("[robot init - end]");
 	}
+	
+	/**
+	 * 
+	 * @return Controls object
+	 */
+	public static Controls getControls() {
+		return controls;
+	}
+	
+	
 	/**
 	 * This function is called once when the robot enters a disabled state
 	 */

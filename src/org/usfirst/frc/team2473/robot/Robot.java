@@ -34,7 +34,8 @@ public class Robot extends TrackingRobot {
 	public static boolean isBeamBroken = false;
 	
 	@Override protected Thread jetsonThread() throws IOException { 
-		return new DatabaseAndPingThread("10.24.73.19", 5805);
+		//return new DatabaseAndPingThread("10.24.73.19", 5805);
+		return null;
 	}
 	
 	@Override
@@ -52,7 +53,7 @@ public class Robot extends TrackingRobot {
 	@Override
 	protected Command getAutonomousCommand() {
 		//return null;
-		return new Type1AutoCommand();
+	//	return new Type1AutoCommand();
 		//return m_autonomousCommand;
 		//return Climb;
 		//return HookUp;
@@ -60,12 +61,13 @@ public class Robot extends TrackingRobot {
 		//return ClimbFaster;
 		//return CloseArms;
 		//return OpenArms;
+		return null;
 	}
 	
 	@Override protected void innerRobotInit() {
-		Devices.getInstance().addDoubleSolenoid(3, 4);
-		Devices.getInstance().addDoubleSolenoid(5, 6);
-		Devices.getInstance().addDigitalInput(7);
+		//Devices.getInstance().addDoubleSolenoid(3, 4);
+		//Devices.getInstance().addDoubleSolenoid(5, 6);
+		//Devices.getInstance().addDigitalInput(7);
 	}
 	@Override protected void innerAutonomousInit(){}
 	

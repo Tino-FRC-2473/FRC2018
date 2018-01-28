@@ -20,7 +20,7 @@ public class CloseArms extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	if(Controls.getInstance().CloseArmsButton.get()) {
+    	if(Robot.getControls().closeArmsButton.get()) {
     		sub.setPistonR();
     	}
     	
@@ -34,7 +34,7 @@ public class CloseArms extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return !Controls.getInstance().CloseArmsButton.get();
+    	return !Robot.getControls().closeArmsButton.get();
     }
 
     // Called once after isFinished returns true

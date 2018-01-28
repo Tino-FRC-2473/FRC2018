@@ -25,12 +25,12 @@ public class RobotMap {
 	public static int solenoidRRChannel = 4;
 	
 	public static int joystickNum = 0;
+	
 	public static int ascendNum = 1;
 	public static int descendNum = 2;
 	public static int openArmsNum = 11;
 	public static int closeArmsNum = 12;
-	public static int bottomElevatorNum = 5;
-	public static int lowerMidElevatorNum = 6;
-	public static int upperMidElevatorNum = 7;
-	public static int topElevatorNum = 8;
+	public static int controlButtonNum = 8;
+	public static int elevatorUpNum = 5;
+	public static int elevatorDownNum = 6;
 }
