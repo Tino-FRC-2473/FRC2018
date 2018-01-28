@@ -12,19 +12,9 @@ public class Controls {
 	private Joystick stick;
 	private Button button;
 	
-	private static Controls theInstance;
-	
-	static {
-		theInstance = new Controls();
-	}
-	
-	private Controls() {
+	public Controls() {
 		stick = new Joystick(0);
 		button = new JoystickButton(stick, 0);
-	}
-	
-	public static Controls getInstance() {
-		return theInstance;
 	}
 	
 	public Joystick getJoy() {
