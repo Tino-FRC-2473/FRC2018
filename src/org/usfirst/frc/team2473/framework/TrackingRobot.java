@@ -4,6 +4,8 @@ package org.usfirst.frc.team2473.framework;
 import java.io.IOException;
 import java.util.stream.IntStream;
 
+import org.usfirst.frc.team2473.robot.Controls;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -15,6 +17,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
  */
 public abstract class TrackingRobot extends TimedRobot {
 	private static TrackableSubsystem[] subsystems; //array of TrackableSubsystems used in this robot program
+	private static Controls controls; //contains all button mapping and joystick controls
 	private Thread jetsonThread; //thread for communcation with the jetson
 	private Command autoCmd; //command to be run during auto
 	
@@ -89,6 +92,14 @@ public abstract class TrackingRobot extends TimedRobot {
 	}
 	
 	/**
+	 * Returns an instance of the controls class, which handles joystick and button information
+	 * @return Such an instance
+	 */
+	public Controls getControls() {
+		return controls;
+	}
+	
+	/**
 	 * Initializes the jetson thread, all the TrackableSubsystems, and the autonomous command. Prints to the
 	 * console what is being run. Starts the jetson thread.
 	 */
@@ -99,6 +110,7 @@ public abstract class TrackingRobot extends TimedRobot {
 			subsystems = tSubsystems();
 			autoCmd = getAutonomousCommand();
 			jetsonThread = jetsonThread();
+			controls = new Controls();
 			
 			System.out.println("Running: " + getProgramName());
 			System.out.println("Autonomous: " + ((autoCmd==null) ? "None" : getAutonomousCommand().getClass().getSimpleName()));
