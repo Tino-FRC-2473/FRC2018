@@ -10,7 +10,7 @@ public class PointTurn extends Command {
 	// TODO put maxPow in RobotMap
 	private final double maxPow = 0.7;
 	// The maximum angle uncertainty IN DEGREES the command will tolerate
-	private final double angleTolerance = 2;
+	private final double angleTolerance = 5;
 	private double targetAngle;
 	private double power;
 

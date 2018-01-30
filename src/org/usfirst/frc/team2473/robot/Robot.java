@@ -49,13 +49,13 @@ public class Robot extends IterativeRobot {
 		initChooser();
 
 		System.out.println("PIDrivetrain initialized");
-		autonomousCommand = new AutonomousRoute(Route.LEFT);
 //		autonomousCommand = new PointTurn(90, 0.3);
 //		autonomousCommand = new SimpleDriveStraight(AUTO_ENCODER_LIMIT, AUTO_POW, false);
 		System.out.println("auto command initialized");
 	}
 	
 	private void initChooser() {
+		System.out.println("INIT CHOOOOOOOOOOOOCHOOOOO");
 		chooser = new SendableChooser<CommandGroup>();
 		chooser.addObject("LEFT_DriveStraight", new AutonomousRoute(Route.LEFT));
 		chooser.addObject("RIGHT_DriveStraight", new AutonomousRoute(Route.RIGHT));
@@ -76,6 +76,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
+		initChooser();
 	}
 
 
@@ -166,5 +167,6 @@ public class Robot extends IterativeRobot {
 		Devices.getInstance().addTalon(RobotMap.BL);
 		Devices.getInstance().addTalon(RobotMap.FL);
 		Devices.getInstance().addTalon(RobotMap.FR);
+		Devices.getInstance().setNavXGyro();
 	}
 }

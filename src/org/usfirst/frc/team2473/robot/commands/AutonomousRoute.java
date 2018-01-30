@@ -15,6 +15,7 @@ public class AutonomousRoute extends CommandGroup {
 
 	public AutonomousRoute(Route r) {
 		boolean switchSide = (DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'R');
+		System.out.println("SWITCH SIDE: "+(switchSide ? "REIGHT" : "LEFETTO"));
 		switch (r) {
 		case LEFT:
 			resetGyro();
@@ -72,11 +73,12 @@ public class AutonomousRoute extends CommandGroup {
 			}
 			break;
 		case TESTING:
-//			resetGyro();
+			resetGyro();
 			addDriveStraight(RobotMap.SECURE_BASELINE_LENGTH);
-//			resetGyro();
-			addTurn(90);
-//			resetGyro();
+			resetGyro();
+			addTurn(switchSide ? 45 : -45);
+			resetGyro();
+			
 			addDriveStraight(20);
 			break;
 		}
@@ -91,7 +93,6 @@ public class AutonomousRoute extends CommandGroup {
 	void resetGyro() {
 		while (Math.abs(Devices.getInstance().getNavXGyro().getYaw()) > 5) {
 			Devices.getInstance().getNavXGyro().zeroYaw();
-			System.out.println("resetting...");
 		}
 		System.out.println("finished resetting...");
 	}
