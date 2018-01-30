@@ -6,6 +6,7 @@ import org.usfirst.frc.team2473.framework.TrackablePIDSubsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 
 /**
@@ -20,11 +21,13 @@ public class LineFollowerSubsystem extends TrackablePIDSubsystem {
 	
 	private WPI_TalonSRX talon1;
 	
+	private AnalogInput lightSensor;
 	
     // Initialize your subsystem here
     public LineFollowerSubsystem() {
     	super(KP, KI, KD, KF);
     	talon1 = Devices.getInstance().getTalon(1);
+    	lightSensor = new AnalogInput(0);
         // Use these to get going:
         // setSetpoint() -  Sets where the PID controller should move the system
         //                  to
@@ -40,7 +43,7 @@ public class LineFollowerSubsystem extends TrackablePIDSubsystem {
         // Return your input value for the PID loop
         // e.g. a sensor, like a potentiometer:
         // yourPot.getAverageVoltage() / kYourMaxVoltage;
-        return 0.0;
+        return lightSensor.getValue();
     }
 
     protected void usePIDOutput(double output) {
