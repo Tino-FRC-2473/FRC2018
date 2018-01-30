@@ -14,6 +14,7 @@ import org.usfirst.frc.team2473.framework.TrackableSubsystem;
 import org.usfirst.frc.team2473.framework.TrackingRobot;
 
 import org.usfirst.frc.team2473.robot.commands.Type1AutoCommand;
+import org.usfirst.frc.team2473.robot.subsystems.LineFollowerSubsystem;
 import org.usfirst.frc.team2473.robot.subsystems.MotorSubsystem;
 
 public class Robot extends TrackingRobot {
@@ -23,13 +24,14 @@ public class Robot extends TrackingRobot {
 	
 	@Override
 	protected String getProgramName() {
-		return "Architecture Testing";
+		return "LineFollowing Testing";
 	}
 	
 	@Override
 	protected TrackableSubsystem[] tSubsystems() {
 		return new TrackableSubsystem[] {
-				new MotorSubsystem()
+				new MotorSubsystem(),
+				new LineFollowerSubsystem()
 		};
 	}
 	
