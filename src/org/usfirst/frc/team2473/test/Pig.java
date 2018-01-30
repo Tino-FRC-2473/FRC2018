@@ -8,23 +8,20 @@ public class Pig implements Interface { //see Interface.java
 		((Pig) Instances.getInstanceOf(Animal.class)).printStatus();
 		//see CollectionModel.java
 	}
-
 	//overridden print status method prints pig
 	@Override
 	public void printStatus() {
 		// TODO Auto-generated method stub
 		System.out.println("pigs");
 	}
-
 }
 
 //another class example for demonstrated use of Interface and CollectionModel
 class Animal implements Interface {
-
 	@Override
 	public void printStatus() {
 		// TODO Auto-generated method stub
 		System.out.println("animals");
 	}
-
+	
 }

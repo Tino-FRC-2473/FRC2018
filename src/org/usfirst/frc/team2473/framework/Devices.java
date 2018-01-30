@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.Servo;
  */
 public class Devices {
 	private ArrayList<WPI_TalonSRX> talons; //collection of talons
-	private AnalogGyro[] analog_gyros; //collection storing the singular gryo, size could be subject to change in the future if needed
+	private AnalogGyro[] analog_gyros; //collection storing the singular gyro, size could be subject to change in the future if needed
 	private AHRS navX; //collection storing the singular navx gyro, size subject to change in the future
 	private ArrayList<AnalogInput> analogs; //collection of analog input sensors
 	private ArrayList<DigitalInput> digitals; //collection of digital input sensors
