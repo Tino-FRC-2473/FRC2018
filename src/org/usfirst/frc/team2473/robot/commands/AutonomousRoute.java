@@ -14,19 +14,18 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutonomousRoute extends CommandGroup {
 
 	public AutonomousRoute(Route r) {
-		boolean switchSide = false;
-		// (DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'R');
+		boolean switchSide = (DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'R');
 		switch (r) {
 		case LEFT:
 			resetGyro();
 			addDriveStraight(RobotMap.WALL_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH);
 			if (!switchSide) {
-				resetGyro();
+//				resetGyro();
 				addTurn(90);
-				resetGyro();
+//				resetGyro();
 				addDriveStraight(RobotMap.SIDE_START_TO_SWITCH);
 			} else {
-				resetGyro();
+//				resetGyro();
 				addDriveStraight(RobotMap.SECURE_BASELINE_LENGTH);
 			}
 			break;
@@ -73,11 +72,11 @@ public class AutonomousRoute extends CommandGroup {
 			}
 			break;
 		case TESTING:
-			resetGyro();
+//			resetGyro();
 			addDriveStraight(RobotMap.SECURE_BASELINE_LENGTH);
-			resetGyro();
+//			resetGyro();
 			addTurn(90);
-			resetGyro();
+//			resetGyro();
 			addDriveStraight(20);
 			break;
 		}

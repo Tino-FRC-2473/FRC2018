@@ -28,9 +28,7 @@ public class PointTurn extends Command {
 
 	@Override
 	protected void initialize() {
-		System.out.println("YAw rn: "+ Devices.getInstance().getNavXGyro().getYaw());
-		System.out.print("Curr angle: " + Devices.getInstance().getNavXGyro().getYaw());
-		System.out.println("Target angle: " + targetAngle);
+		zeroYawIteratively();
 		Robot.piDriveTrain.setTargetAngle(targetAngle);
 		System.out.println("PointTurn initiaized.");
 	}
@@ -46,7 +44,8 @@ public class PointTurn extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return Math.abs(Devices.getInstance().getNavXGyro().getYaw() - targetAngle) <= angleTolerance;
+		return Math.abs(Devices.getInstance().getNavXGyro()
+				.getYaw() - targetAngle) <= angleTolerance;
 	}
 
 	@Override
@@ -59,5 +58,13 @@ public class PointTurn extends Command {
 	protected void interrupted() {
 		Robot.piDriveTrain.disable();
 	}
+	
+	private void zeroYawIteratively() {
+		while (Math.abs(Devices.getInstance().getNavXGyro().getYaw()) > 1) {
+			Devices.getInstance().getNavXGyro().zeroYaw();
+			System.out.println("resetting...");
+		}
+	}
+	
 
 }

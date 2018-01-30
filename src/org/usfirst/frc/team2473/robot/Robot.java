@@ -2,17 +2,17 @@ package org.usfirst.frc.team2473.robot;
 import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.robot.RobotMap.Route;
 import org.usfirst.frc.team2473.robot.commands.AutonomousRoute;
-import org.usfirst.frc.team2473.robot.commands.PointTurn;
-import org.usfirst.frc.team2473.robot.commands.SimpleDriveStraight;
 import org.usfirst.frc.team2473.robot.subsystems.PIDriveTrain;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -35,8 +35,8 @@ public class Robot extends IterativeRobot {
 	private static final double TURN_POW = 0.3;
 	private SendableChooser<CommandGroup> chooser;
 	private double delay;
-//	CommandGroup autonomousCommand;
-	AutonomousRoute autonomousCommand;
+	CommandGroup autonomousCommand;
+	Command teleopCommand;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -46,19 +46,27 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		piDriveTrain = new PIDriveTrain();
 //		piDriveTrain.enable();
-//		chooser = new SendableChooser<CommandGroup>();
-//		chooser.addDefault("LeftDriveStraight", new AutonomousRoute(Route.LEFT));
-//		chooser.addDefault("RightDriveStraight", new AutonomousRoute(Route.RIGHT));
-//		SmartDashboard.putData("AutoChooser", chooser);
-		Robot.addDevices();
-//		pref = Preferences.getInstance();
-		
+		initChooser();
 
 		System.out.println("PIDrivetrain initialized");
 		autonomousCommand = new AutonomousRoute(Route.LEFT);
 //		autonomousCommand = new PointTurn(90, 0.3);
 //		autonomousCommand = new SimpleDriveStraight(AUTO_ENCODER_LIMIT, AUTO_POW, false);
 		System.out.println("auto command initialized");
+	}
+	
+	private void initChooser() {
+		chooser = new SendableChooser<CommandGroup>();
+		chooser.addObject("LEFT_DriveStraight", new AutonomousRoute(Route.LEFT));
+		chooser.addObject("RIGHT_DriveStraight", new AutonomousRoute(Route.RIGHT));
+		chooser.addObject("CENTER", new AutonomousRoute(Route.CENTER));
+		chooser.addObject("LEFT_CENTER_DriveStraight", new AutonomousRoute(Route.LEFT_CENTER));
+		chooser.addObject("RIGHT_CENTER_DriveStraight", new AutonomousRoute(Route.RIGHT_CENTER));
+		chooser.addDefault("TESTING", new AutonomousRoute(Route.TESTING));
+		
+		SmartDashboard.putData("AutoChooser", chooser);
+		Robot.addDevices();
+		pref = Preferences.getInstance();
 	}
 
 	/**
@@ -68,7 +76,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
-		SimpleDriveStraight.resetEncoders();
 	}
 
 
@@ -90,17 +97,15 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		while(Math.abs(Devices.getInstance().getNavXGyro().getYaw()) > 5) {
-			Devices.getInstance().getNavXGyro().zeroYaw();
-			System.out.println("resetting...");
-		}
-		Devices.getInstance().getTalon(RobotMap.BL).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
-		Devices.getInstance().getTalon(RobotMap.BR).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
-		Devices.getInstance().getTalon(RobotMap.BL).setSelectedSensorPosition(0, 0, 5);
-		Devices.getInstance().getTalon(RobotMap.BR).setSelectedSensorPosition(0, 0, 5);
+		initSensors();
 		piDriveTrain.enable();
-		if (autonomousCommand!=null)
-			autonomousCommand.start();
+		double delay = pref.getDouble("delay", 0);
+		double origTime = System.currentTimeMillis()/1000;
+		while (System.currentTimeMillis()/1000<(delay+origTime)){
+		}
+		chooser.getSelected().start();
+//		if (autonomousCommand!=null)
+//			autonomousCommand.start();
 		System.out.println("Autonomous Init started...");
 	}
 
@@ -116,11 +121,11 @@ public class Robot extends IterativeRobot {
 	public void teleopInit() {
 		System.out.println("teleop init");
 		// TODO
-//		if (autonomousCommand != null) {
-//			autonomousCommand.cancel();
-//			piDriveTrain.disable();
-//		}
-//		teleopCommand.start();
+		if (autonomousCommand != null) {
+			autonomousCommand.cancel();
+			piDriveTrain.disable();
+		}
+		teleopCommand.start();
 
 	}
 
@@ -130,6 +135,19 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+	}
+	
+	private void initSensors() {
+		// NOTE that the last parameter of configSelectedFeedback should be nonzero, as
+		// a delay is required.
+		Devices.getInstance().getTalon(RobotMap.BL)
+		.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
+		
+		Devices.getInstance().getTalon(RobotMap.BR)
+		.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
+		
+		Devices.getInstance().getTalon(RobotMap.BL).setSelectedSensorPosition(0, 0, 5);
+		Devices.getInstance().getTalon(RobotMap.BR).setSelectedSensorPosition(0, 0, 5);
 	}
 	
 	public int avg(int a, int b) {

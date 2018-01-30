@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class SimpleDriveStraight extends Command {
 
-	// TODO put maxPow in RobotMap
-	private int r_init, l_init;
+	private int r_startingEncoders, l_startingEncoders;
 	
+	// TODO put maxPow and minPow in RobotMap
 	private final double maxPow = 0.7;
 	private final double minPow = 0.3;
 	private double maxEncoder; // The maximum encoder count at which the robot
@@ -25,7 +25,7 @@ public class SimpleDriveStraight extends Command {
 		System.out.println("Simple drive straight constructor passed.");
 	}
 
-	private double convertInchToEncoder(double inches) {
+	private static double convertInchToEncoder(double inches) {
 		return inches * RobotMap.ENC_PER_INCH;
 	}
 
@@ -36,23 +36,13 @@ public class SimpleDriveStraight extends Command {
 	@Override
 	protected void initialize() {
 		System.out.println("initialize running..");
-		r_init = Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0);
-		l_init = Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0);
+		r_startingEncoders = Devices.getInstance().getTalon(RobotMap.BR)
+				.getSelectedSensorPosition(0);
+		l_startingEncoders = Devices.getInstance().getTalon(RobotMap.BL)
+				.getSelectedSensorPosition(0);
 // 		resetEncoders();
 		Robot.piDriveTrain.setTargetAngle(Devices.getInstance().getNavXGyro().getYaw());
 		System.out.println("SimpleDriveStraight initialized.");
-	}
-
-	public static void resetEncoders() {
-		resetOneEncoder(RobotMap.BL);
-		resetOneEncoder(RobotMap.BR);
-		System.out.println("Encoders reset.");
-	}
-
-	private static void resetOneEncoder(int talonId) {
-		Devices.getInstance().getTalon(talonId).setSelectedSensorPosition(0, 0, 5);
-		System.out.println(
-				"Updated " + talonId + " " + Devices.getInstance().getTalon(talonId).getSelectedSensorPosition(0));
 	}
 
 	@Override
@@ -67,8 +57,10 @@ public class SimpleDriveStraight extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return getAverageEnc(l_init - Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0),
-				r_init - Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0)) >= maxEncoder;
+		return getAverageEnc(l_startingEncoders - Devices.getInstance().getTalon(RobotMap.BL)
+				.getSelectedSensorPosition(0),
+				r_startingEncoders - Devices.getInstance().getTalon(RobotMap.BR)
+				.getSelectedSensorPosition(0)) >= maxEncoder;
 	}
 
 	@Override
