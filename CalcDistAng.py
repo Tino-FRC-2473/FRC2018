@@ -13,7 +13,14 @@ class CalcDistAng():
 		self.DIST_CONSTANT = 15534.5065179
 		self.DIST_CONSTANT = self.DIST_CONSTANT * 720 / 1080.0
 
-	def calcAngAndDist(self, x1, y1, x2, y2):
+	def calcDistAndAdjAng(self, x1, y1, x2, y2, offsetLength):
+		dist, ang = self.calcDistAndAng(x1, y1, x2, y2)
+		distPerpendicular = self.calcDistPerpendicular(math.fabs(y2-y1))
+		angAdj = self.calcAngleAdjustedDeg(ang, distPerpendicular, offsetLength)
+		return dist, angAdj
+
+
+	def calcDistAndAng(self, x1, y1, x2, y2):
 		ang = self.calcAngleDeg((x1 + x2)/2.0)
 		length = math.fabs(y2 - y1)
 		dist = self.calcDistHypotenuseDeg(length, ang)
@@ -36,6 +43,10 @@ class CalcDistAng():
 
 		return self.calcDistPerpendicular(length, distConst) / math.cos(angle*math.pi/180)
 
+	def calcAngleAdjustedDeg(self, angleDeg, distPerpendicular, offsetLength):
+		tanOfAngAdj = distPerpendicular*math.tan(angleDeg * math.pi / 180)/(distPerpendicular+offsetLength)
+		return math.atan(tanOfAngAdj) * 180 / math.pi
+	
 
 	#calculates the angle to turn to face the item in degrees
 	def calcAngleDeg(self, x, angConst=None, screenwidth=None):
@@ -84,7 +95,7 @@ class CalcDistAng():
 			return True
 		return False
 
-print "here"
-foo = CalcDistAng()
-print "here2"
-print foo.calcDistPerpendicular(22)
+#print "here"
+#foo = CalcDistAng()
+#print "here2"
+#print foo.calcDistPerpendicular(22)
