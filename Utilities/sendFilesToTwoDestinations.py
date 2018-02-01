@@ -21,6 +21,7 @@ def addEndSlash(fileName):
 def getSelectedDirectories():
 	print "Select the directory for the images"
 	inputDirectory =  tkFileDialog.askdirectory()
+	print inputDirectory
 	#print type(inputDirectory)
 
 	#print "Select the directory for the labels"
@@ -28,9 +29,11 @@ def getSelectedDirectories():
 
 	print "Select the validation target destination"
 	valDestDir = tkFileDialog.askdirectory()
+	print valDestDir
 
 	print "Select the training target destination"
 	trDestDir = tkFileDialog.askdirectory()
+	print trDestDir
 
 	return inputDirectory, valDestDir, trDestDir
 
