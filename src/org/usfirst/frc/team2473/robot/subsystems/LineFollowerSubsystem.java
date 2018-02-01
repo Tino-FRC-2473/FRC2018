@@ -61,4 +61,8 @@ public class LineFollowerSubsystem extends TrackablePIDSubsystem {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public double getSensorValue() {
+		return lightSensor.getValue();
+	}
 }
