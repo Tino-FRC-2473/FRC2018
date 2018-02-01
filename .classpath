@@ -11,6 +11,8 @@
 	<classpathentry kind="lib" path="build/jars/CTRLib.jar"/>
 	<classpathentry kind="lib" path="build/jars/navx_frc.jar"/>
 	<classpathentry kind="lib" path="build/jars/WPILib.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/navx_frc.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/ThreadingRobot.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRE_Phoenix-sources.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRE_Phoenix.jar"/>
 	<classpathentry kind="output" path="bin"/>
