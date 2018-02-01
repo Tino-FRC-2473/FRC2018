@@ -48,9 +48,11 @@ public class RemoveUnmatchedFiles {
 		
 		
 		String dir1 = dirChooserImages.getSelectedFile().getAbsolutePath(); 
+		System.out.println(dir1);
+
 		//make this less sketch
 		String dir2 = dir1+"/LabelData";
-		
+		System.out.println(dir2);
 		
 		RemoveUnmatchedFiles sys = new RemoveUnmatchedFiles(dir1, dir2);
 		//sys.deleteUnmatchedFile();
