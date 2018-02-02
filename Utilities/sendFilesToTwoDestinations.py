@@ -86,7 +86,7 @@ if(response=='y'):
 
 sendFilesToDestinations(imageFiles, inputDirectory, valDestDir, trDestDir, copy)
 
-textFiles = os.listdir(labelsDirectory)
-sendFilesToDestinations(textFiles, labelsDirectory, valDestDir, trDestDir, copy)
+#textFiles = os.listdir(labelsDirectory)
+#sendFilesToDestinations(textFiles, labelsDirectory, valDestDir, trDestDir, copy)
 
 print str(response=='y')
