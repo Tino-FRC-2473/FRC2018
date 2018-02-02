@@ -12,11 +12,11 @@ import org.usfirst.frc.team2473.robot.Devices;
 /**
  *
  */
-public class eleUp extends Command {
+public class EleDown extends Command {
 	private BoxSystem sub;
 	private boolean b;
 	
-    public eleUp() {
+    public EleDown() {
     	sub = (BoxSystem) Robot.getSubsystem(BoxSystem.class);
     	requires(sub);
     }
@@ -26,15 +26,14 @@ public class eleUp extends Command {
     	if(Robot.getControls().controlButton.get()) {
     		b=true;
     		int currPos = sub.getCurPos();
-    		System.out.println("elevator going up");
-    		if(currPos!=4) {
-    			sub.upPos();
-    			System.out.println("elevator up");
+    		System.out.println("elevator going down");
+    		if(currPos!=1) {
+    			sub.downPos();
+    			System.out.println("elevator down");
     		}
     	}else{
-    		//Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(sub.POWER);
-    		System.out.println("manual going up");
-    		
+    		//Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(-sub.POWER);
+    		System.out.println("manual going down");
     	}
     }
 
@@ -56,7 +55,8 @@ public class eleUp extends Command {
     protected void interrupted() {
     	if(!b) {
     		Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
-    		System.out.println("manual up stopped");
+    		System.out.println("manual down stopped");
+
     	}
     }
 }

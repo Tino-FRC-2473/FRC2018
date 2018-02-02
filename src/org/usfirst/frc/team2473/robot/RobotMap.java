@@ -19,18 +19,25 @@ public class RobotMap {
 	public static int climbArmMotor = 1;
 	public static int climbMotor = 2;
 	
-	public static int solenoidLFChannel = 6;
-	public static int solenoidLRChannel = 7;
-	public static int solenoidRFChannel = 5;
-	public static int solenoidRRChannel = 4;
+	public static int solenoidBCLFChannel = 6;
+	public static int solenoidBCLRChannel = 7;
+	public static int solenoidBCRFChannel = 5;
+	public static int solenoidBCRRChannel = 4;
+	public static int solenoidClimbF = 8;
+	public static int solenoidClimbR = 9;
+	
 	
 	public static int joystickNum = 0;
 	
-	public static int ascendNum = 1;
-	public static int descendNum = 2;
+	public static int armDownNum = 1;
+	public static int armUpNum = 2;
 	public static int openArmsNum = 11;
 	public static int closeArmsNum = 12;
 	public static int controlButtonNum = 8;
 	public static int elevatorUpNum = 5;
 	public static int elevatorDownNum = 6;
+	public static int climbUp = 0;
+	public static int climbDown = 0;
+	public static int cPistonInNum = 7;
+	public static int cPistonOutNum = 8;
 }

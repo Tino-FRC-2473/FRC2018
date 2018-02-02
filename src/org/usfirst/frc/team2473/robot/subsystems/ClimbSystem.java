@@ -9,6 +9,7 @@ import org.usfirst.frc.team2473.robot.RobotMap;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -19,6 +20,7 @@ public class ClimbSystem extends TrackableSubsystem
 	public static double power = 0.1;
 	public static double fastPower = 0.5;
 	private final double MAX_POW = 0.7;
+	private static double climbPow = 0.2;
 	
 	private WPI_TalonSRX climbArm;
 	private WPI_TalonSRX climb;
@@ -38,20 +40,30 @@ public class ClimbSystem extends TrackableSubsystem
     	climbArm.set(ControlMode.PercentOutput, pow);
     }
     
-    public void setJoyPow() {
-    	climb.set(ControlMode.PercentOutput, Robot.getControls().getJoy().getY()*MAX_POW);
-    }
-    
     public void stopArmMotor() {
     	climbArm.stopMotor();
     }
+ 
     
+    public void climbUp() 
+    {
+    	climb.set(ControlMode.PercentOutput, climbPow);
+    }
+    
+    
+    public void climbDown() 
+    {
+    	climb.set(ControlMode.PercentOutput, -climbPow);
+    }
+    
+   
     public void stopClimbMotor() {
     	climb.stopMotor();
     }
 
 	@Override
-	public void stop() {
+	public void stop() 
+	{
 		
 	}
 
@@ -59,5 +71,21 @@ public class ClimbSystem extends TrackableSubsystem
 	public String getState() {
 		return "" + climb.get() + " " + climbArm.get();
 	}
+	public void setPistonR() {
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kReverse);
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kReverse);
+
+    }
+    public void setPistonOff(){
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kOff);
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kOff);
+
+    }
+    
+    public void setPistonF() {
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kForward);
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kForward);
+
+    }
 }
 

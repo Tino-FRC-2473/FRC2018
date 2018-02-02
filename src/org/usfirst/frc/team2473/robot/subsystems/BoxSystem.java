@@ -37,19 +37,16 @@ public class BoxSystem extends TrackableSubsystem
      }
      
     public void setPistonR() {
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidLFChannel,RobotMap.solenoidLRChannel).set(Value.kReverse);
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidRFChannel,RobotMap.solenoidRRChannel).set(Value.kReverse);
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidClimbF,RobotMap.solenoidClimbR).set(Value.kReverse);
 
     }
     public void setPistonOff(){
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidLFChannel,RobotMap.solenoidLRChannel).set(Value.kOff);
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidRFChannel,RobotMap.solenoidRRChannel).set(Value.kOff);
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidClimbF,RobotMap.solenoidClimbR).set(Value.kOff);
 
     }
     
     public void setPistonF() {
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidLFChannel,RobotMap.solenoidLRChannel).set(Value.kForward);
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidRFChannel,RobotMap.solenoidRRChannel).set(Value.kForward);
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidClimbF,RobotMap.solenoidClimbR).set(Value.kForward);
 
     }
     
