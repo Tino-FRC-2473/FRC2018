@@ -40,11 +40,11 @@ public class AutonomousRoute extends CommandGroup {
 			}
 			break;
 		case CENTER:
-			addDriveStraight(RobotMap.EXCHANGE_ZONE_LENGTH + RobotMap.ROBOT_LENGTH);
+			addDriveStraight(20);//RobotMap.EXCHANGE_ZONE_LENGTH + RobotMap.ROBOT_LENGTH);
 			addTurn(switchSide ? 70 : -70);
-			addDriveStraight(RobotMap.DIAGONAL_MOVEMENT_LENGTH);
+			addDriveStraight(10);//RobotMap.DIAGONAL_MOVEMENT_LENGTH);
 			addTurn(switchSide ? -70 : 70);
-			addDriveStraight(RobotMap.AUTOLINE_TO_SWITCH);
+			addDriveStraight(5);//RobotMap.AUTOLINE_TO_SWITCH);
 			break;
 		case LEFT_CENTER:
 			addDriveStraight(RobotMap.EXCHANGE_ZONE_LENGTH + RobotMap.ROBOT_LENGTH);
@@ -77,8 +77,8 @@ public class AutonomousRoute extends CommandGroup {
 			addDriveStraight(RobotMap.SECURE_BASELINE_LENGTH);
 			resetGyro();
 			addTurn(switchSide ? 45 : -45);
-			resetGyro();
-			
+//			addTurn(switchSide ? 90 : -90);
+			resetGyro();			
 			addDriveStraight(20);
 			break;
 		}

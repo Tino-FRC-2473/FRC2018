@@ -37,6 +37,7 @@ public class PointTurn extends Command {
 	protected void execute() {
 //		System.out.println("power: " + power);
 		Robot.piDriveTrain.drive(power, Robot.piDriveTrain.getAngleRate());
+		
 		double currentAngle = Devices.getInstance().getNavXGyro().getYaw();
 		System.out.print("Curr angle: " + currentAngle);
 		System.out.println("Target angle: " + targetAngle);
@@ -60,9 +61,9 @@ public class PointTurn extends Command {
 	}
 	
 	private void zeroYawIteratively() {
-		while (Math.abs(Devices.getInstance().getNavXGyro().getYaw()) > 1) {
+		while (Math.abs(Devices.getInstance().getNavXGyro().getYaw()) > 5) {
 			Devices.getInstance().getNavXGyro().zeroYaw();
-			System.out.println("resetting...");
+//			System.out.println("resetting...");
 		}
 	}
 	

@@ -121,12 +121,13 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		System.out.println("teleop init");
-		// TODO
-		if (autonomousCommand != null) {
-			autonomousCommand.cancel();
-			piDriveTrain.disable();
-		}
-		teleopCommand.start();
+		Devices.getInstance().getNavXGyro().zeroYaw();
+//		// TODO
+//		if (autonomousCommand != null) {
+//			autonomousCommand.cancel();
+//			piDriveTrain.disable();
+//		}
+//		teleopCommand.start();
 
 	}
 
@@ -135,6 +136,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		System.out.println(Devices.getInstance().getNavXGyro().getYaw());
 		Scheduler.getInstance().run();
 	}
 	

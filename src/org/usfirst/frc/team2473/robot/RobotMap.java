@@ -67,7 +67,7 @@ public class RobotMap {
 	public static final int SENSOR_POS = 0;
 
 	public static final double DRIVE_STRAIGHT_POWER = 0.5;
-	public static final double TURN_POWER = 0.2;
+	public static final double TURN_POWER = 0.1;
 	
 	// All specifications are in inches
 	public static final double WALL_TO_AUTOLINE = 120.08;
