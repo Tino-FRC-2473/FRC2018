@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
@@ -16,7 +17,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  */
 public class LineFollowerSubsystem extends TrackablePIDSubsystem {
 
-	private RobotDrive robotDrive;
+	private DifferentialDrive differentialDrive;
 
 	private static final double KP = 0;
 	private static final double KI = 0;
@@ -25,9 +26,12 @@ public class LineFollowerSubsystem extends TrackablePIDSubsystem {
 
 	private WPI_TalonSRX talon1;
 	private WPI_TalonSRX talon2;
+	private SpeedControllerGroup left;
+	
 	private WPI_TalonSRX talon3;
 	private WPI_TalonSRX talon4;
-
+	private SpeedControllerGroup right;
+	
 	private AnalogInput lightSensor;
 	
 	private double pidValue;
@@ -42,9 +46,12 @@ public class LineFollowerSubsystem extends TrackablePIDSubsystem {
 		super(KP, KI, KD, KF);
 		talon1 = Devices.getInstance().getTalon(1);
 		talon2 = Devices.getInstance().getTalon(2);
+		left = new SpeedControllerGroup(talon1, talon2);
+		
 		talon3 = Devices.getInstance().getTalon(3);
 		talon4 = Devices.getInstance().getTalon(4);
-		robotDrive = new RobotDrive(talon1, talon2, talon3, talon4);
+		right = new SpeedControllerGroup(talon3, talon4);
+		differentialDrive = new DifferentialDrive(left, right);
 		lightSensor = new AnalogInput(0);
 		
 		pidValue = 0;
@@ -92,6 +99,6 @@ public class LineFollowerSubsystem extends TrackablePIDSubsystem {
 	}
 
 	public void drive(double speed, double rotation) {
-		robotDrive.arcadeDrive(speed, rotation);
+		differentialDrive.arcadeDrive(speed, rotation);
 	}
 }
