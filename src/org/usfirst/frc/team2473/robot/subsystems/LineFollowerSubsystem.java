@@ -32,7 +32,7 @@ public class LineFollowerSubsystem extends TrackablePIDSubsystem {
 	private WPI_TalonSRX talon4;
 	private SpeedControllerGroup right;
 	
-	private AnalogInput lightSensor;
+	private AnalogInput leftLightSensor, middleLightSensor, rightLightSensor;
 	
 	private double pidValue;
 
@@ -52,7 +52,9 @@ public class LineFollowerSubsystem extends TrackablePIDSubsystem {
 		talon4 = Devices.getInstance().getTalon(4);
 		right = new SpeedControllerGroup(talon3, talon4);
 		differentialDrive = new DifferentialDrive(left, right);
-		lightSensor = new AnalogInput(0);
+		leftLightSensor = Devices.getInstance().getAnalogInput(0);
+		middleLightSensor = Devices.getInstance().getAnalogInput(1);
+		rightLightSensor = Devices.getInstance().getAnalogInput(2);
 		
 		pidValue = 0;
 		
@@ -74,7 +76,7 @@ public class LineFollowerSubsystem extends TrackablePIDSubsystem {
 		// Return your input value for the PID loop
 		// e.g. a sensor, like a potentiometer:
 		// yourPot.getAverageVoltage() / kYourMaxVoltage;
-		return lightSensor.getValue();
+		return middleLightSensor.getValue();
 	}
 
 	protected void usePIDOutput(double output) {
@@ -94,8 +96,8 @@ public class LineFollowerSubsystem extends TrackablePIDSubsystem {
 		return null;
 	}
 
-	public double getSensorValue() {
-		return lightSensor.getValue();
+	public double getSensorValue(int i) {
+		return Devices.getInstance().getAnalogInput(i).getValue();
 	}
 
 	public void drive(double speed, double rotation) {

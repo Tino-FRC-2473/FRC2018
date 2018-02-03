@@ -26,7 +26,7 @@ public class LineFollow extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		SmartDashboard.putNumber("Light Sensor Value", subsystem.getSensorValue());
+		for(int i = 0; i < 3; i++) SmartDashboard.putNumber("Light Sensor Value " + i, subsystem.getSensorValue(i));
 		if (subsystem.getPIDController().isEnabled()) {
 			subsystem.drive(0.3, subsystem.getPidValue());
 		}
