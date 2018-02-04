@@ -2,6 +2,7 @@ package org.usfirst.frc.team2473.robot;
 import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.robot.RobotMap.Route;
 import org.usfirst.frc.team2473.robot.commands.AutonomousRoute;
+import org.usfirst.frc.team2473.robot.commands.DriveCode;
 import org.usfirst.frc.team2473.robot.subsystems.PIDriveTrain;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -65,6 +66,7 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("TESTING", new AutonomousRoute(Route.TESTING));
 		
 		SmartDashboard.putData("AutoChooser", chooser);
+		System.out.println("new chooser");
 		Robot.addDevices();
 		pref = Preferences.getInstance();
 	}
@@ -98,12 +100,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		zeroYawIteratively();
 		initSensors();
 		piDriveTrain.enable();
 		double delay = pref.getDouble("delay", 0);
 		double origTime = System.currentTimeMillis()/1000;
-		while (System.currentTimeMillis()/1000<(delay+origTime)){
-		}
+		while (System.currentTimeMillis()/1000<(delay+origTime));
 		chooser.getSelected().start();
 //		if (autonomousCommand!=null)
 //			autonomousCommand.start();
@@ -123,11 +125,12 @@ public class Robot extends IterativeRobot {
 		System.out.println("teleop init");
 		Devices.getInstance().getNavXGyro().zeroYaw();
 //		// TODO
-//		if (autonomousCommand != null) {
-//			autonomousCommand.cancel();
-//			piDriveTrain.disable();
-//		}
+		if (autonomousCommand != null) {
+			autonomousCommand.cancel();
+			piDriveTrain.disable();
+		}
 //		teleopCommand.start();
+		new DriveCode().start();
 
 	}
 
@@ -170,5 +173,12 @@ public class Robot extends IterativeRobot {
 		Devices.getInstance().addTalon(RobotMap.FL);
 		Devices.getInstance().addTalon(RobotMap.FR);
 		Devices.getInstance().setNavXGyro();
+	}
+	
+
+	public static void zeroYawIteratively() {
+		while (Math.abs(Devices.getInstance().getNavXGyro().getYaw()) > 1) {
+			Devices.getInstance().getNavXGyro().zeroYaw();
+		}
 	}
 }

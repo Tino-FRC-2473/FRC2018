@@ -30,7 +30,7 @@ public class PIDriveTrain extends PIDSubsystem {
 	public PIDriveTrain() {
 		super(KP, KI, KD); // creates a PID controller with the KP, KI, and KD
 							// values
-
+		
 		rotateToAngleRate = 0;
 
 //		Devices.getInstance().getNavXGyro().zeroYaw();
@@ -50,6 +50,7 @@ public class PIDriveTrain extends PIDSubsystem {
 		SpeedControllerGroup left_side = new SpeedControllerGroup(Devices.getInstance().getTalon(RobotMap.FL), Devices.getInstance().getTalon(RobotMap.BL));
 		driver = new DifferentialDrive(left_side, right_side);
 		// Devices.getInstance().getTalon(RobotMap.FRONT_LEFT).changeControlMode(TalonControlMode.);
+	
 	}
 
 	public void initDefaultCommand() {

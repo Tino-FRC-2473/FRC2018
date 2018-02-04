@@ -41,6 +41,7 @@ public class SimpleDriveStraight extends Command {
 		l_startingEncoders = Devices.getInstance().getTalon(RobotMap.BL)
 				.getSelectedSensorPosition(0);
 // 		resetEncoders();
+		Robot.zeroYawIteratively();
 		Robot.piDriveTrain.setTargetAngle(Devices.getInstance().getNavXGyro().getYaw());
 		System.out.println("SimpleDriveStraight initialized.");
 	}
