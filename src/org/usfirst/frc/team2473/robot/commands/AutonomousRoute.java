@@ -82,7 +82,10 @@ public class AutonomousRoute extends CommandGroup {
 			}
 			break;
 		case TESTING:
-			addDriveStraight(48);
+			addDriveStraight(36);
+			addTurn(45);
+			addDriveStraight(12);
+			addTurn(-90);
 //			resetGyro();
 //			addTurn(switchSide ? 45 : -45);
 ////			addTurn(switchSide ? 90 : -90);
@@ -103,7 +106,7 @@ public class AutonomousRoute extends CommandGroup {
 	}
 
 	private void addTurn(double angle) {
-		addSequential(new GyroTurn(angle, RobotMap.TURN_POWER, true));
-		addSequential(new PIDTurn(angle, 0.5, false));
+		addSequential(new GyroTurn(angle, RobotMap.TURN_POWER));
+//		addSequential(new PIDTurn(angle, 0.5, false));
 	}
 }

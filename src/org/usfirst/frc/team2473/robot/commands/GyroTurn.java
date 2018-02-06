@@ -2,71 +2,53 @@ package org.usfirst.frc.team2473.robot.commands;
 
 import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.robot.Robot;
-import org.usfirst.frc.team2473.robot.RobotMap;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class GyroTurn extends Command {
 
-	// TODO put maxPow in RobotMap
-	private final double maxPow = 0.5;
-	// The maximum angle uncertainty IN DEGREES the command will tolerate
-	private final double angleTolerance = 5;
-	private double targetAngle;
-	private double power;
+	private final double MAX_POW = 0.5;
+	private final double ANGLE_TOLERANCE = 5;
+	private final double TARGET_ANGLE;
+	private final double POWER;
 	private boolean zeroYaw;
-	
-	private double leftPow;
-	private double rightPow;
+	private double difference;
+
+	public GyroTurn(double angle, double pow) {
+		requires(Robot.piDriveTrain);
+		TARGET_ANGLE = angle;
+		POWER = Math.signum(pow) * Math.min(MAX_POW, Math.abs(pow));
+		zeroYaw = true;
+	}
 
 	public GyroTurn(double angle, double pow, boolean zeroYaw) {
 		requires(Robot.piDriveTrain);
-		targetAngle = angle;
-		power = Math.min(maxPow, pow);
-		
+		TARGET_ANGLE = angle;
+		POWER = Math.signum(pow) * Math.min(MAX_POW, Math.abs(pow));
 		this.zeroYaw = zeroYaw;
-		
-		// might need to cap
-		leftPow = Math.signum(angle) * power;
-		rightPow = -leftPow;
-		System.out.println("PointTurn constructor passed.");
 	}
 
 	@Override
 	protected void initialize() {
-		if (zeroYaw) {
-			Robot.zeroYawIteratively();
-		}
-		System.out.println("PointTurn initiaized.");
+		if (zeroYaw) Robot.zeroYawIteratively();
+		System.out.println("PointTurn initialized.");
 	}
 
 	@Override
 	protected void execute() {
-//		Robot.piDriveTrain.drive(power, Robot.piDriveTrain.getAngleRate());
-		double currentAngle = Devices.getInstance().getNavXGyro().getYaw();
-	
-		Devices.getInstance().getTalon(RobotMap.FL).set(ControlMode.PercentOutput, leftPow);
-		Devices.getInstance().getTalon(RobotMap.BL).set(ControlMode.PercentOutput, leftPow);
-		Devices.getInstance().getTalon(RobotMap.FR).set(ControlMode.PercentOutput, -rightPow);
-		Devices.getInstance().getTalon(RobotMap.BR).set(ControlMode.PercentOutput, -rightPow);
-		
-		
-		System.out.print("Curr angle: " + currentAngle + " ");
-		System.out.println("Target angle: " + targetAngle);
+		Robot.piDriveTrain.tankTurn(POWER, TARGET_ANGLE > 0);
+		difference = Math.abs(Devices.getInstance().getNavXGyro().getYaw() - TARGET_ANGLE);
+		System.out.println("Degrees remaining: " + difference);
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return Math.abs(Devices.getInstance().getNavXGyro()
-				.getYaw() - targetAngle) <= angleTolerance;
+		return difference <= ANGLE_TOLERANCE;
 	}
 
 	@Override
 	protected void end() {
 		System.out.println("ENDED");
-		
 		Robot.piDriveTrain.stop();
 	}
 
@@ -74,5 +56,4 @@ public class GyroTurn extends Command {
 	protected void interrupted() {
 		Robot.piDriveTrain.disable();
 	}
-
 }

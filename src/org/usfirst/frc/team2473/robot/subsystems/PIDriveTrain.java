@@ -89,6 +89,13 @@ public class PIDriveTrain extends PIDSubsystem {
 		driver.arcadeDrive(speed, rotation);
 	}
 
+	public void tankTurn(double speed, boolean right) {
+		if(right) 
+			driver.tankDrive(speed, -speed); 
+		else 
+			driver.tankDrive(-speed, speed);
+	}
+	
 	public double getAngle() {
 		return Devices.getInstance().getNavXGyro().getYaw();
 	}
@@ -98,6 +105,7 @@ public class PIDriveTrain extends PIDSubsystem {
 	 */
 	public void stop() {
 		driver.arcadeDrive(0, 0);
+		driver.tankDrive(0, 0);
 	}
 
 	/**
