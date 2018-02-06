@@ -9,16 +9,16 @@ package org.usfirst.frc.team2473.robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 import java.io.IOException;
+
 import org.usfirst.frc.team2473.framework.DatabaseAndPingThread;
 import org.usfirst.frc.team2473.framework.TrackableSubsystem;
 import org.usfirst.frc.team2473.framework.TrackingRobot;
-
-import org.usfirst.frc.team2473.robot.commands.Type1AutoCommand;
+import org.usfirst.frc.team2473.robot.commands.LineFollow;
 import org.usfirst.frc.team2473.robot.subsystems.LineFollowerSubsystem;
 import org.usfirst.frc.team2473.robot.subsystems.MotorSubsystem;
 
 public class Robot extends TrackingRobot {
-	@Override protected Thread jetsonThread() throws IOException { 
+	@Override protected Thread jetsonThread() throws IOException {
 		return new DatabaseAndPingThread("10.24.73.19", 5805);
 	}
 	
@@ -37,8 +37,7 @@ public class Robot extends TrackingRobot {
 	
 	@Override
 	protected Command getAutonomousCommand() {
-		//return null;
-		return new Type1AutoCommand();
+		return new LineFollow();
 	}
 	
 	@Override protected void innerRobotInit(){}

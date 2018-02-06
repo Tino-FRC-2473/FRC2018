@@ -21,15 +21,15 @@ public class LineFollow extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		subsystem.enable();
+//		subsystem.enable();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		for(int i = 0; i < 3; i++) SmartDashboard.putNumber("Light Sensor Value " + i, subsystem.getSensorValue(i));
-		if (subsystem.getPIDController().isEnabled()) {
-			subsystem.drive(0.3, subsystem.getPidValue());
-		}
+//		if (subsystem.getPIDController().isEnabled()) {
+//			subsystem.drive(0.3, subsystem.getPidValue());
+//		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
