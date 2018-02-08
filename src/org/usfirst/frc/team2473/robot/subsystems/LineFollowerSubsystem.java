@@ -1,5 +1,8 @@
 package org.usfirst.frc.team2473.robot.subsystems;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.framework.TrackablePIDSubsystem;
 import org.usfirst.frc.team2473.framework.TrackableSubsystem;
@@ -7,6 +10,8 @@ import org.usfirst.frc.team2473.framework.TrackableSubsystem;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -21,7 +26,6 @@ public class LineFollowerSubsystem extends PIDSubsystem {
 	private static final double KP = 0;
 	private static final double KI = 0;
 	private static final double KD = 0;
-	private static final double KF = 0;
 
 	private WPI_TalonSRX talon1;
 	private WPI_TalonSRX talon2;
@@ -31,7 +35,8 @@ public class LineFollowerSubsystem extends PIDSubsystem {
 	private WPI_TalonSRX talon4;
 	private SpeedControllerGroup right;
 	
-	private AnalogInput leftLightSensor, middleLightSensor, rightLightSensor;
+	private DigitalInput leftLightSensor, middleLightSensor, rightLightSensor, leftLightSensor2, middleLightSensor2, rightLightSensor2;
+	ArrayList<DigitalInput> LightSensorList = new ArrayList();
 	
 	private double pidValue;
 
@@ -42,18 +47,22 @@ public class LineFollowerSubsystem extends PIDSubsystem {
 		// to
 		// enable() - Enables the PID controller.
 
-		super(KP, KI, KD, KF);
-		talon1 = Devices.getInstance().getTalon(1);
-		talon2 = Devices.getInstance().getTalon(2);
+		super(KP, KI, KD);
+		talon1 = new WPI_TalonSRX(1);
+		talon2 = new WPI_TalonSRX(2);
 		left = new SpeedControllerGroup(talon1, talon2);
 		
-		talon3 = Devices.getInstance().getTalon(3);
-		talon4 = Devices.getInstance().getTalon(4);
+		talon3 = new WPI_TalonSRX(3);
+		talon4 = new WPI_TalonSRX(4);
 		right = new SpeedControllerGroup(talon3, talon4);
 		differentialDrive = new DifferentialDrive(left, right);
-		leftLightSensor = Devices.getInstance().getAnalogInput(0);
-		middleLightSensor = Devices.getInstance().getAnalogInput(1);
-		rightLightSensor = Devices.getInstance().getAnalogInput(2);
+		leftLightSensor = new DigitalInput(0);
+		middleLightSensor = new DigitalInput(1);
+		rightLightSensor = new DigitalInput(2);
+		leftLightSensor2 = new DigitalInput(3);
+		middleLightSensor2 = new DigitalInput(4);
+		rightLightSensor2 = new DigitalInput(5);
+		LightSensorList.addAll(Arrays.asList(leftLightSensor, middleLightSensor, rightLightSensor, leftLightSensor2, middleLightSensor2, rightLightSensor2));
 		
 		pidValue = 0;
 		
@@ -75,7 +84,8 @@ public class LineFollowerSubsystem extends PIDSubsystem {
 		// Return your input value for the PID loop
 		// e.g. a sensor, like a potentiometer:
 		// yourPot.getAverageVoltage() / kYourMaxVoltage;
-		return middleLightSensor.getValue();
+		if(middleLightSensor.get()) return 1;
+		return 0;
 	}
 
 	protected void usePIDOutput(double output) {
@@ -85,7 +95,8 @@ public class LineFollowerSubsystem extends PIDSubsystem {
 	}
 
 	public double getSensorValue(int i) {
-		return Devices.getInstance().getAnalogInput(i).getValue();
+		if(LightSensorList.get(i).get()) return 1;
+		return 0;
 	}
 
 	public void drive(double speed, double rotation) {

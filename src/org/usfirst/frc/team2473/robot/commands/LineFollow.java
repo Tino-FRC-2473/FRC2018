@@ -25,7 +25,7 @@ public class LineFollow extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 6; i++)
 			SmartDashboard.putNumber("Light Sensor Value " + i, Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(i));
 	}
 
