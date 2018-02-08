@@ -2,17 +2,19 @@ package org.usfirst.frc.team2473.robot.subsystems;
 
 import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.framework.TrackablePIDSubsystem;
+import org.usfirst.frc.team2473.framework.TrackableSubsystem;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 /**
  *
  */
-public class LineFollowerSubsystem extends TrackablePIDSubsystem {
+public class LineFollowerSubsystem extends PIDSubsystem {
 
 	private DifferentialDrive differentialDrive;
 
@@ -80,16 +82,6 @@ public class LineFollowerSubsystem extends TrackablePIDSubsystem {
 		// Use output to drive your system, like a motor
 		// e.g. yourMotor.set(output);
 		pidValue = output;
-	}
-
-	@Override
-	public void stop() {
-		differentialDrive.arcadeDrive(0, 0);
-	}
-
-	@Override
-	public String getState() {
-		return ("Left Light Sensor: " + leftLightSensor.getValue() + ", Middle Light Sensor: " + middleLightSensor.getValue() + ", Right Light Sensor: " + rightLightSensor.getValue());
 	}
 
 	public double getSensorValue(int i) {
