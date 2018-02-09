@@ -25,23 +25,31 @@ public class LineFollow extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		for (int i = 0; i < 6; i++)
-			SmartDashboard.putNumber("Light Sensor Value " + i, Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(i));
+		for (int i = 0; i < 6; i++) {
+			SmartDashboard.putBoolean("Light Sensor Value " + i, Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(i));
+		}
+		Robot.LINE_FOLLOWER_SUBSYSTEM.drive(-0.4, 0);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
+		for (int i = 1; i <= 5; i += 2) {
+			if (Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(i)) {
+				SmartDashboard.putNumber("Deciding Sensor", i);
+				return true;
+			}
+		}
 		return false;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.LINE_FOLLOWER_SUBSYSTEM.disable();
+		Robot.LINE_FOLLOWER_SUBSYSTEM.stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		Robot.LINE_FOLLOWER_SUBSYSTEM.disable();
+		Robot.LINE_FOLLOWER_SUBSYSTEM.stop();
 	}
 }
