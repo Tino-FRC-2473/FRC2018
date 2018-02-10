@@ -15,7 +15,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 /**
  *
  */
-public class LineFollowerSubsystem extends Subsystem {
+public class DriveTrain extends Subsystem {
+	
 
 	private DifferentialDrive differentialDrive;
 
@@ -33,7 +34,7 @@ public class LineFollowerSubsystem extends Subsystem {
 	private ArrayList<DigitalInput> LightSensorList = new ArrayList<>();
 
 	// Initialize your subsystem here
-	public LineFollowerSubsystem() {
+	public DriveTrain() {
 		talonFrontLeft = new WPI_TalonSRX(RobotMap.MOTOR_FRONT_LEFT);
 		talonBackLeft = new WPI_TalonSRX(RobotMap.MOTOR_BACK_LEFT);
 		leftTalons = new SpeedControllerGroup(talonFrontLeft, talonBackLeft);

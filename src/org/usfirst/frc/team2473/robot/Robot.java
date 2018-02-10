@@ -8,7 +8,7 @@
 package org.usfirst.frc.team2473.robot;
 
 import org.usfirst.frc.team2473.robot.commands.LineFollow;
-import org.usfirst.frc.team2473.robot.subsystems.LineFollowerSubsystem;
+import org.usfirst.frc.team2473.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
  * project.
  */
 public class Robot extends TimedRobot {
-	public static final LineFollowerSubsystem LINE_FOLLOWER_SUBSYSTEM = new LineFollowerSubsystem();
+	public static DriveTrain driveTrain = new DriveTrain();
 	public static OI oi;
 
 	Command command;

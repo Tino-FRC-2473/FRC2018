@@ -11,12 +11,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class LineFollow extends Command {
 
-	private final double offset = 0.1;
-	
+	private final double offset = -0.2;
+
+	private int leftLightSensor = RobotMap.LEFT_LIGHT_SENSOR;
+	private int rightLightSensor = RobotMap.RIGHT_LIGHT_SENSOR;
+	private int middleLightSensor = RobotMap.MIDDLE_LIGHT_SENSOR;
+
+	private String state = "";
+
 	public LineFollow() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
-		requires(Robot.LINE_FOLLOWER_SUBSYSTEM);
+		requires(Robot.driveTrain);
 	}
 
 	// Called just before this Command runs the first time
@@ -27,27 +33,37 @@ public class LineFollow extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		for (int i = 0; i < 6; i++) {
-			SmartDashboard.putBoolean("Light Sensor Value " + i, Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(i));
+			SmartDashboard.putBoolean("Light Sensor Value " + i, Robot.driveTrain.getSensorValue(i));
 		}
 
-//		if (Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.MIDDLE_LIGHT_SENSOR)) {
-//			Robot.LINE_FOLLOWER_SUBSYSTEM.drive(-0.4, 0.2);
-//		} else {
-//			Robot.LINE_FOLLOWER_SUBSYSTEM.drive(-0.4, -0.2);
-//		}
+		// if
+		// (Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.MIDDLE_LIGHT_SENSOR))
+		// {
+		// Robot.LINE_FOLLOWER_SUBSYSTEM.drive(-0.4, 0.2);
+		// } else {
+		// Robot.LINE_FOLLOWER_SUBSYSTEM.drive(-0.4, -0.2);
+		// }
+
+		if (!Robot.driveTrain.getSensorValue(middleLightSensor) && !Robot.driveTrain.getSensorValue(leftLightSensor)
+				&& !Robot.driveTrain.getSensorValue(rightLightSensor)) {
+			state = "no sensor";
+		} else if (Robot.driveTrain.getSensorValue(leftLightSensor)
+				&& !Robot.driveTrain.getSensorValue(middleLightSensor)
+				&& !Robot.driveTrain.getSensorValue(rightLightSensor)) {
+			
+		} else if (Robot.driveTrain.getSensorValue(rightLightSensor)
+				&& !Robot.driveTrain.getSensorValue(middleLightSensor)
+				&& !Robot.driveTrain.getSensorValue(leftLightSensor)) {
+
+		} else if (Robot.driveTrain.getSensorValue(middleLightSensor)
+				&& Robot.driveTrain.getSensorValue(leftLightSensor)
+				&& Robot.driveTrain.getSensorValue(rightLightSensor)) {
+		}
 		
-		if (!Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.MIDDLE_LIGHT_SENSOR)				
-				&& !Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.LEFT_LIGHT_SENSOR) 
-				&& !Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.RIGHT_LIGHT_SENSOR)) {	
-			Robot.LINE_FOLLOWER_SUBSYSTEM.drive(-0.4, 0 + offset);											
-		} else if (Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.LEFT_LIGHT_SENSOR)
-				&& !Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.MIDDLE_LIGHT_SENSOR)) { 
-			Robot.LINE_FOLLOWER_SUBSYSTEM.drive(0, -0.4 + offset);
-		} else if (Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.RIGHT_LIGHT_SENSOR) 
-				&& !Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.MIDDLE_LIGHT_SENSOR)) {
-			Robot.LINE_FOLLOWER_SUBSYSTEM.drive(0, 0.4 + offset);
-		} else if (Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.MIDDLE_LIGHT_SENSOR)) {
-			Robot.LINE_FOLLOWER_SUBSYSTEM.drive(-0.4, 0 + offset);
+		switch (state) {
+		case "no sensor":
+			break;
+		case "left sensor:":
 		}
 	}
 
@@ -64,12 +80,12 @@ public class LineFollow extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.LINE_FOLLOWER_SUBSYSTEM.stop();
+		Robot.driveTrain.stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		Robot.LINE_FOLLOWER_SUBSYSTEM.stop();
+		Robot.driveTrain.stop();
 	}
 }
