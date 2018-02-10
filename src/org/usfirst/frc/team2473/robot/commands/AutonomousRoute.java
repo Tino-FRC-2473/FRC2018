@@ -12,85 +12,68 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutonomousRoute extends CommandGroup {
 
 	private final long delay = 250;
+	private double lastAngle;
 	
-	public AutonomousRoute(Route r) {
-//		boolean switchSide = (DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'R');
-		boolean switchSide = false;
+	public AutonomousRoute(boolean switchSide, Route r) {
+		lastAngle = 0;
 		System.out.println("SWITCH SIDE: "+(switchSide ? "REIGHT" : "LEFETTO"));
 		switch (r) {
 		case LEFT:
-//			addDriveStraight(RobotMap.WALL_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH);
-			addDriveStraight(48); //
-			addSequential(new Wait(delay));
-			addTurn(-45);
-			addSequential(new Wait(delay));
-			addDriveStraight(12*Math.sqrt(2));
-			addSequential(new Wait(delay));
-			addTurn(45);
-			addSequential(new Wait(delay));
-			addDriveStraight(9*12-13);
-			addSequential(new Wait(delay));
+			driveStraight(48); // RobotMap.WALL_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH
+			turnAndGo(-45, 21*1.414); // RobotMap.SIDE_START_TO_SWITCH
+			turnAndGo(0, 9*12-13);
 			if (!switchSide) {
-				addTurn(90);
-				addSequential(new Wait(delay));
-				addDriveStraight(12); // Side start to switch
+				turnAndGo(90, 20); // 12
 			} else {
-//				resetGyro();
-				addDriveStraight(RobotMap.SECURE_BASELINE_LENGTH);
+				turnAndGo(0, RobotMap.SECURE_BASELINE_LENGTH);
 			}
 			break;
 		case RIGHT:
-			addDriveStraight(RobotMap.WALL_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH);
-			if (switchSide) {
-				addTurn(-90);
-				addDriveStraight(RobotMap.SIDE_START_TO_SWITCH);
+			driveStraight(48);
+			turnAndGo(45, 21*1.414);
+			turnAndGo(0, 9*12-13);
+			if (!switchSide) {
+				turnAndGo(-90, 20);
 			} else {
-				addDriveStraight(RobotMap.SECURE_BASELINE_LENGTH);
+				turnAndGo(0, RobotMap.SECURE_BASELINE_LENGTH);
 			}
 			break;
 		case CENTER:
-			addDriveStraight(20);//RobotMap.EXCHANGE_ZONE_LENGTH + RobotMap.ROBOT_LENGTH);
-			addTurn(switchSide ? 70 : -70);
-			addDriveStraight(RobotMap.DIAGONAL_MOVEMENT_LENGTH);//RobotMap.DIAGONAL_MOVEMENT_LENGTH);
-			addTurn(switchSide ? -70 : 70);
-			addDriveStraight(5);//RobotMap.AUTOLINE_TO_SWITCH);
+			driveStraight(60);
+			turnAndGo(switchSide ? 60: -45, RobotMap.DIAGONAL_MOVEMENT_LENGTH); 
+			turnAndGo(0, 96); // re-center and pass baseline
+//			turnAndGo(0, RobotMap.AUTOLINE_TO_SWITCH);
 			break;
-		case LEFT_CENTER:
-			addDriveStraight(RobotMap.EXCHANGE_ZONE_LENGTH + RobotMap.ROBOT_LENGTH);
-			addTurn(-70);
-			addDriveStraight(RobotMap.DIAGONAL_MOVEMENT_LENGTH);
-			addTurn(70);
-			if (!switchSide) {
-				addDriveStraight(RobotMap.AUTOLINE_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH);
-				addTurn(90);
-				addDriveStraight(RobotMap.SIDE_START_TO_SWITCH + 10);
-			} else {
-				addDriveStraight(RobotMap.SECURE_BASELINE_LENGTH);
-			}
-			break;
-		case RIGHT_CENTER:
-			addDriveStraight(RobotMap.EXCHANGE_ZONE_LENGTH + RobotMap.ROBOT_LENGTH);
-			addTurn(70);
-			addDriveStraight(RobotMap.DIAGONAL_MOVEMENT_LENGTH);
-			addTurn(-70);
-			if (switchSide) {
-				addDriveStraight(RobotMap.AUTOLINE_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH);
-				addTurn(-90);
-				addDriveStraight(RobotMap.SIDE_START_TO_SWITCH + 10);
-			} else {
-				addDriveStraight(RobotMap.SECURE_BASELINE_LENGTH);
-			}
+//		case LEFT_CENTER:
+//			driveStraight(RobotMap.EXCHANGE_ZONE_LENGTH + RobotMap.ROBOT_LENGTH);
+//			turnAndGo(-70, RobotMap.DIAGONAL_MOVEMENT_LENGTH);
+//			if (!switchSide) {
+//				turnAndGo(0, RobotMap.AUTOLINE_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH);
+//				turnAndGo(90, RobotMap.SIDE_START_TO_SWITCH + 10);
+//			} else {
+//				turnAndGo(0, RobotMap.SECURE_BASELINE_LENGTH);
+//			}
+//			break;
+//		case RIGHT_CENTER:
+//			driveStraight(RobotMap.EXCHANGE_ZONE_LENGTH + RobotMap.ROBOT_LENGTH);
+//			turnAndGo(70, RobotMap.DIAGONAL_MOVEMENT_LENGTH);
+//			if (switchSide) {
+//				turnAndGo(0, RobotMap.AUTOLINE_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH);
+//				turnAndGo(-90, RobotMap.SIDE_START_TO_SWITCH + 10);
+//			} else {
+//				turnAndGo(0, RobotMap.SECURE_BASELINE_LENGTH);
+//			}
+//			break;
+		case DRIVESTRAIGHT:
+			driveStraight(300);
 			break;
 		case TESTING:
-			addDriveStraight(36);
-			addTurn(45);
-			addDriveStraight(12);
-			addTurn(-90);
-//			resetGyro();
-//			addTurn(switchSide ? 45 : -45);
-////			addTurn(switchSide ? 90 : -90);
-//			resetGyro();			
-//			addDriveStraight(20);
+//			turnAndGo(0, 200);
+			turnAndGo(45, 0);
+//			turnAndGo(0, 180);
+//			turnAndGo(45, 150);
+//			turnAndGo(0, 150);
+//			turnAndGo(-90, 150);
 			break;
 		}
 	}
@@ -100,13 +83,20 @@ public class AutonomousRoute extends CommandGroup {
 		Robot.piDriveTrain.disable();
 		System.out.println("end of autonomous...");
 	}
-
-	private void addDriveStraight(double dist) {
-		addSequential(new SimpleDriveStraight(dist, RobotMap.DRIVE_STRAIGHT_POWER));
-	}
-
-	private void addTurn(double angle) {
+	
+	private void turnAndGo(double angle, double dist) {
+		lastAngle = angle;
 		addSequential(new GyroTurn(angle, RobotMap.TURN_POWER));
-//		addSequential(new PIDTurn(angle, 0.5, false));
+		addSequential(new Wait(delay));
+		if (dist != 0) {
+			addSequential(new SimpleDriveStraight(angle, dist, RobotMap.DRIVE_STRAIGHT_POWER));
+			addSequential(new Wait(delay));
+		}
 	}
+	
+	private void driveStraight(double dist) {
+		addSequential(new SimpleDriveStraight(lastAngle, dist, RobotMap.DRIVE_STRAIGHT_POWER));
+	}
+	
+	
 }

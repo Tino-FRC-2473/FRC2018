@@ -24,7 +24,7 @@ public class RobotMap {
 	
 
 	public static final String NO_TRIALS = "NA";
-	public static final double ENC_PER_INCH = 74.19/2;
+	public static final double ENC_PER_INCH = 34.5; // chassis 74.19/2;
 
 	// keys
 //	public static final String MOTOR_ENCODER_KEY = "encoder key";
@@ -66,8 +66,8 @@ public class RobotMap {
 	// The "Master" sensor position, should be used normally
 	public static final int SENSOR_POS = 0;
 
-	public static final double DRIVE_STRAIGHT_POWER = 0.6;
-	public static final double TURN_POWER = 0.25;
+	public static final double DRIVE_STRAIGHT_POWER = 0.5;
+	public static final double TURN_POWER = 0.5;
 	
 	// All specifications are in inches
 	public static final double WALL_TO_AUTOLINE = 120.08;
@@ -80,10 +80,10 @@ public class RobotMap {
 	public static final double HALF_ROBOT_WIDTH = 24.5/2;
 	public static final double ROBOT_LENGTH = 28.3;
 
-	public static final double DIAGONAL_MOVEMENT_LENGTH = 60; //351
+	public static final double DIAGONAL_MOVEMENT_LENGTH = 72; //351
 	public static final double SECURE_BASELINE_LENGTH = 36;
 	
 	public enum Route {
-		LEFT, RIGHT, CENTER, LEFT_CENTER, RIGHT_CENTER, TESTING
+		LEFT, RIGHT, CENTER, LEFT_CENTER, RIGHT_CENTER, DRIVESTRAIGHT, TESTING
 	}
 }

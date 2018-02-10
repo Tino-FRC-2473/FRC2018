@@ -3,10 +3,12 @@ import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.robot.RobotMap.Route;
 import org.usfirst.frc.team2473.robot.commands.AutonomousRoute;
 import org.usfirst.frc.team2473.robot.commands.DriveCode;
+import org.usfirst.frc.team2473.robot.commands.GyroTurn;
 import org.usfirst.frc.team2473.robot.subsystems.PIDriveTrain;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
@@ -34,9 +36,9 @@ public class Robot extends IterativeRobot {
 	private static final double AUTO_ENCODER_LIMIT = 120;
 	private static final double AUTO_POW = 0.45;
 	private static final double TURN_POW = 0.3;
-	private SendableChooser<CommandGroup> chooser;
+	private SendableChooser<Route> chooser;
 	private double delay;
-	CommandGroup autonomousCommand;
+	Command autonomousCommand;
 	Command teleopCommand;
 
 	/**
@@ -53,21 +55,25 @@ public class Robot extends IterativeRobot {
 //		autonomousCommand = new PointTurn(90, 0.3);
 //		autonomousCommand = new SimpleDriveStraight(AUTO_ENCODER_LIMIT, AUTO_POW, false);
 		System.out.println("auto command initialized");
+//		Devices.getInstance().getNavXGyro().zeroYaw();
+		Robot.addDevices();
+		initSensors();
+		piDriveTrain.enable();
 	}
 	
 	private void initChooser() {
 		System.out.println("INIT CHOOOOOOOOOOOOCHOOOOO");
-		chooser = new SendableChooser<CommandGroup>();
-		chooser.addObject("LEFT_DriveStraight", new AutonomousRoute(Route.LEFT));
-		chooser.addObject("RIGHT_DriveStraight", new AutonomousRoute(Route.RIGHT));
-		chooser.addObject("CENTER", new AutonomousRoute(Route.CENTER));
-		chooser.addObject("LEFT_CENTER_DriveStraight", new AutonomousRoute(Route.LEFT_CENTER));
-		chooser.addObject("RIGHT_CENTER_DriveStraight", new AutonomousRoute(Route.RIGHT_CENTER));
-		chooser.addDefault("TESTING", new AutonomousRoute(Route.TESTING));
+		chooser = new SendableChooser<Route>();
+		chooser.addObject("Left", Route.LEFT);
+		chooser.addObject("Right", Route.RIGHT);
+		chooser.addObject("Center", Route.CENTER);
+		chooser.addObject("Left Center", Route.LEFT_CENTER);
+		chooser.addObject("Right Center", Route.RIGHT_CENTER);
+		chooser.addObject("Drive Straight", Route.DRIVESTRAIGHT);
+		chooser.addDefault("Testing", Route.TESTING);
 		
 		SmartDashboard.putData("AutoChooser", chooser);
 		System.out.println("new chooser");
-		Robot.addDevices();
 		pref = Preferences.getInstance();
 	}
 
@@ -101,12 +107,19 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		zeroYawIteratively();
-		initSensors();
-		piDriveTrain.enable();
-		double delay = pref.getDouble("delay", 0);
-		double origTime = System.currentTimeMillis()/1000;
-		while (System.currentTimeMillis()/1000<(delay+origTime));
-		chooser.getSelected().start();
+//		initSensors();
+//		piDriveTrain.enable();
+//		double delay = pref.getDouble("delay", 0);
+//		double origTime = System.currentTimeMillis()/1000;
+//		while (System.currentTimeMillis()/1000<(delay+origTime));
+//		autonomousCommand = new GyroTurn(90, 0.5);
+//		autonomousCommand.start();
+		
+		Scheduler.getInstance().removeAll();
+		autonomousCommand = new AutonomousRoute(
+				DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'R',
+				chooser.getSelected());
+		autonomousCommand.start();
 //		if (autonomousCommand!=null)
 //			autonomousCommand.start();
 		System.out.println("Autonomous Init started...");
@@ -123,7 +136,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		System.out.println("teleop init");
-		Devices.getInstance().getNavXGyro().zeroYaw();
+//		Devices.getInstance().getNavXGyro().zeroYaw();
+		System.out.println("Encoders : " + (Math.abs(Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0)) + Math.abs(Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0)))/2);
 //		// TODO
 		if (autonomousCommand != null) {
 			autonomousCommand.cancel();
@@ -177,7 +191,7 @@ public class Robot extends IterativeRobot {
 	
 
 	public static void zeroYawIteratively() {
-		while (Math.abs(Devices.getInstance().getNavXGyro().getYaw()) > 1) {
+		while (Math.abs(Devices.getInstance().getNavXGyro().getYaw()) > 0.1) {
 			Devices.getInstance().getNavXGyro().zeroYaw();
 		}
 	}

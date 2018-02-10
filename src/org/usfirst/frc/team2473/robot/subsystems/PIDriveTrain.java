@@ -13,27 +13,28 @@ public class PIDriveTrain extends PIDSubsystem {
 
 	// KP, KI, and KD values used for PID
 	// P: 0.018, D: 0.03
-	private static final double KP = 0.0155; //0.0179;
-	private static final double KI = 0; //0;
-	private static final double KD = 0.0032; //0.03;
+	private static final double KP = 0.0155; // 0.0179;
+	private static final double KI = 0; // 0;
+	private static final double KD = 0.0032; // 0.03;
 
 	private DifferentialDrive driver;
 
 	private double rotateToAngleRate; // the value changed by PID
 
-//	private CANTalon frontLeft, frontRight, backLeft, backRight;
+	// private CANTalon frontLeft, frontRight, backLeft, backRight;
 
 	private static final double K_TOLERANCE_DEGREES = 2.0f; // the absolute
 															// error that is
 															// tolerable in the
 															// PID system
+
 	public PIDriveTrain() {
 		super(KP, KI, KD); // creates a PID controller with the KP, KI, and KD
 							// values
-		
+
 		rotateToAngleRate = 0;
 
-//		Devices.getInstance().getNavXGyro().zeroYaw();
+		// Devices.getInstance().getNavXGyro().zeroYaw();
 
 		setInputRange(-180.0f, 180.0f); // sets the maximum and minimum values
 										// expected from the gyro
@@ -46,11 +47,13 @@ public class PIDriveTrain extends PIDSubsystem {
 												// continuous
 
 		// Creates a robot driver
-		SpeedControllerGroup right_side = new SpeedControllerGroup(Devices.getInstance().getTalon(RobotMap.FR), Devices.getInstance().getTalon(RobotMap.BR));
-		SpeedControllerGroup left_side = new SpeedControllerGroup(Devices.getInstance().getTalon(RobotMap.FL), Devices.getInstance().getTalon(RobotMap.BL));
+		SpeedControllerGroup right_side = new SpeedControllerGroup(Devices.getInstance().getTalon(RobotMap.FR),
+				Devices.getInstance().getTalon(RobotMap.BR));
+		SpeedControllerGroup left_side = new SpeedControllerGroup(Devices.getInstance().getTalon(RobotMap.FL),
+				Devices.getInstance().getTalon(RobotMap.BL));
 		driver = new DifferentialDrive(left_side, right_side);
 		// Devices.getInstance().getTalon(RobotMap.FRONT_LEFT).changeControlMode(TalonControlMode.);
-	
+
 	}
 
 	public void initDefaultCommand() {
@@ -89,17 +92,15 @@ public class PIDriveTrain extends PIDSubsystem {
 		driver.arcadeDrive(speed, rotation);
 	}
 
-	public void tankTurn(double speed, boolean right) {
-		if(right) 
-			driver.tankDrive(speed, -speed); 
-		else 
-			driver.tankDrive(-speed, speed);
+	public void tankTurn(double speed) {
+		driver.tankDrive(speed, -speed);
+//		Devices.getInstance().getTalon(RobotMap.FL);
 	}
-	
+
 	public double getAngle() {
 		return Devices.getInstance().getNavXGyro().getYaw();
 	}
-	
+
 	/**
 	 * Stops the robot
 	 */

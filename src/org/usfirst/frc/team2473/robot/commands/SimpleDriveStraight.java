@@ -15,14 +15,16 @@ public class SimpleDriveStraight extends Command {
 	private final double minPow = 0.3;
 	private double maxEncoder; // The maximum encoder count at which the robot
 								// stops
+	private double targetAngle;
 	private double power;
 
-	public SimpleDriveStraight(double maxInch, double power) {
+	public SimpleDriveStraight(double angle, double maxInch, double power) {
 		requires(Robot.piDriveTrain);
 		this.maxEncoder = convertInchToEncoder(maxInch);
 		this.power = cap(power);
-		System.out.println("POWER: " + power);
-		System.out.println("Simple drive straight constructor passed.");
+		targetAngle = angle;
+//		System.out.println("POWER: " + power);
+//		System.out.println("Simple drive straight constructor passed.");
 	}
 
 	private static double convertInchToEncoder(double inches) {
@@ -35,20 +37,21 @@ public class SimpleDriveStraight extends Command {
 
 	@Override
 	protected void initialize() {
-		System.out.println("initialize running..");
+//		System.out.println("initialize running..");
 		r_startingEncoders = Devices.getInstance().getTalon(RobotMap.BR)
 				.getSelectedSensorPosition(0);
 		l_startingEncoders = Devices.getInstance().getTalon(RobotMap.BL)
 				.getSelectedSensorPosition(0);
 // 		resetEncoders();
-		Robot.zeroYawIteratively();
-		Robot.piDriveTrain.setTargetAngle(Devices.getInstance().getNavXGyro().getYaw());
+//		Robot.zeroYawIteratively();
+		Robot.piDriveTrain.setTargetAngle(targetAngle);
 		System.out.println("SimpleDriveStraight initialized.");
 	}
 
 	@Override
 	protected void execute() {
-		System.out.println("Angle: " + Devices.getInstance().getNavXGyro().getYaw());
+//		System.out.println("Driving straight...");
+//		System.out.println("Angle: " + Devices.getInstance().getNavXGyro().getYaw());
 		Robot.piDriveTrain.drive(power, Robot.piDriveTrain.getAngleRate());
 	}
 

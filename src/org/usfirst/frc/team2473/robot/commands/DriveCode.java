@@ -1,6 +1,5 @@
 package org.usfirst.frc.team2473.robot.commands;
 
-import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.robot.OP;
 import org.usfirst.frc.team2473.robot.Robot;
 
@@ -14,7 +13,8 @@ public class DriveCode extends Command {
 	
 	@Override
 	protected void initialize() {
-		Devices.getInstance().getNavXGyro().zeroYaw();
+		// TODO
+//		Devices.getInstance().getNavXGyro().zeroYaw();
 	}
 	
 	@Override
