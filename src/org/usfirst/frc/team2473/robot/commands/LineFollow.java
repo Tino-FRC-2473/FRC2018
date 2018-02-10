@@ -18,9 +18,7 @@ public class LineFollow extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		if (Robot.LINE_FOLLOWER_SUBSYSTEM.getPIDController().isEnabled()) {
-			Robot.LINE_FOLLOWER_SUBSYSTEM.disable();
-		}
+
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -28,17 +26,22 @@ public class LineFollow extends Command {
 		for (int i = 0; i < 6; i++) {
 			SmartDashboard.putBoolean("Light Sensor Value " + i, Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(i));
 		}
-		Robot.LINE_FOLLOWER_SUBSYSTEM.drive(-0.4, 0);
+
+		if (Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(3)) {
+			Robot.LINE_FOLLOWER_SUBSYSTEM.drive(-0.4, 0.2);
+		} else {
+			Robot.LINE_FOLLOWER_SUBSYSTEM.drive(-0.4, -0.2);
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		for (int i = 1; i <= 5; i += 2) {
-			if (Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(i)) {
-				SmartDashboard.putNumber("Deciding Sensor", i);
-				return true;
-			}
-		}
+		// for (int i = 1; i <= 5; i += 2) {
+		// if (Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(i)) {
+		// SmartDashboard.putNumber("Deciding Sensor", i);
+		// return true;
+		// }
+		// }
 		return false;
 	}
 
