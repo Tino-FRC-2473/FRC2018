@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2473.robot.commands;
 
 import org.usfirst.frc.team2473.robot.Robot;
+import org.usfirst.frc.team2473.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -10,6 +11,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class LineFollow extends Command {
 
+	private final double offset = 0.1;
+	
 	public LineFollow() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
@@ -27,10 +30,24 @@ public class LineFollow extends Command {
 			SmartDashboard.putBoolean("Light Sensor Value " + i, Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(i));
 		}
 
-		if (Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(3)) {
-			Robot.LINE_FOLLOWER_SUBSYSTEM.drive(-0.4, 0.2);
-		} else {
-			Robot.LINE_FOLLOWER_SUBSYSTEM.drive(-0.4, -0.2);
+//		if (Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.MIDDLE_LIGHT_SENSOR)) {
+//			Robot.LINE_FOLLOWER_SUBSYSTEM.drive(-0.4, 0.2);
+//		} else {
+//			Robot.LINE_FOLLOWER_SUBSYSTEM.drive(-0.4, -0.2);
+//		}
+		
+		if (!Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.MIDDLE_LIGHT_SENSOR)				
+				&& !Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.LEFT_LIGHT_SENSOR) 
+				&& !Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.RIGHT_LIGHT_SENSOR)) {	
+			Robot.LINE_FOLLOWER_SUBSYSTEM.drive(-0.4, 0 + offset);											
+		} else if (Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.LEFT_LIGHT_SENSOR)
+				&& !Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.MIDDLE_LIGHT_SENSOR)) { 
+			Robot.LINE_FOLLOWER_SUBSYSTEM.drive(0, -0.4 + offset);
+		} else if (Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.RIGHT_LIGHT_SENSOR) 
+				&& !Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.MIDDLE_LIGHT_SENSOR)) {
+			Robot.LINE_FOLLOWER_SUBSYSTEM.drive(0, 0.4 + offset);
+		} else if (Robot.LINE_FOLLOWER_SUBSYSTEM.getSensorValue(RobotMap.MIDDLE_LIGHT_SENSOR)) {
+			Robot.LINE_FOLLOWER_SUBSYSTEM.drive(-0.4, 0 + offset);
 		}
 	}
 
