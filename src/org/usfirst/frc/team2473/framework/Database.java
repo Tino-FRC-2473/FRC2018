@@ -3,7 +3,10 @@ package org.usfirst.frc.team2473.framework;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * 
+ *
+ */
 public class Database {
 	private Map<String, Double> numerical_values; //hashmap stores the double values under a String key
 	private Map<String, Boolean> conditional_values; //hashmap stores boolean values under String key

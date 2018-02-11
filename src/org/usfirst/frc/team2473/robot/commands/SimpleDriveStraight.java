@@ -1,6 +1,7 @@
 package org.usfirst.frc.team2473.robot.commands;
 
 import org.usfirst.frc.team2473.framework.Devices;
+import org.usfirst.frc.team2473.framework.TrackingRobot;
 import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.RobotMap;
 
@@ -19,7 +20,7 @@ public class SimpleDriveStraight extends Command {
 	private double power;
 
 	public SimpleDriveStraight(double angle, double maxInch, double power) {
-		requires(Robot.piDriveTrain);
+		requires(TrackingRobot.getDriveTrain());
 		this.maxEncoder = convertInchToEncoder(maxInch);
 		this.power = cap(power);
 		targetAngle = angle;
@@ -44,7 +45,7 @@ public class SimpleDriveStraight extends Command {
 				.getSelectedSensorPosition(0);
 // 		resetEncoders();
 //		Robot.zeroYawIteratively();
-		Robot.piDriveTrain.setTargetAngle(targetAngle);
+		TrackingRobot.getDriveTrain().setTargetAngle(targetAngle);
 		System.out.println("SimpleDriveStraight initialized.");
 	}
 
@@ -52,7 +53,7 @@ public class SimpleDriveStraight extends Command {
 	protected void execute() {
 //		System.out.println("Driving straight...");
 //		System.out.println("Angle: " + Devices.getInstance().getNavXGyro().getYaw());
-		Robot.piDriveTrain.drive(power, Robot.piDriveTrain.getAngleRate());
+		TrackingRobot.getDriveTrain().drive(power, TrackingRobot.getDriveTrain().getAngleRate());
 	}
 
 	private int getAverageEnc(int enc1, int enc2) {
@@ -69,11 +70,11 @@ public class SimpleDriveStraight extends Command {
 
 	@Override
 	protected void end() {
-		Robot.piDriveTrain.stop();
+		TrackingRobot.getDriveTrain().stop();
 	}
 
 	@Override
 	protected void interrupted() {
-		Robot.piDriveTrain.disable();
+		TrackingRobot.getDriveTrain().disable();
 	}
 }

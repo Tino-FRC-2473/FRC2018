@@ -1,11 +1,11 @@
 package org.usfirst.frc.team2473.robot.commands;
 
 import org.usfirst.frc.team2473.framework.Devices;
-import org.usfirst.frc.team2473.robot.Robot;
+import org.usfirst.frc.team2473.framework.TrackingRobot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class GyroTurn extends Command {
+public class PointTurn extends Command {
 
 	private final double MAX_POW = 0.8;
 	private final double TARGET_ANGLE;
@@ -14,8 +14,8 @@ public class GyroTurn extends Command {
 	private double difference;
 	private double left;
 
-	public GyroTurn(double angle, double pow) {
-		requires(Robot.piDriveTrain);
+	public PointTurn(double angle, double pow) {
+		requires(TrackingRobot.getDriveTrain());
 		TARGET_ANGLE = angle; // - Math.signum(angle)*10
 //		System.out.println("Init yaw: " + Devices.getInstance().getNavXGyro().getYaw());
 //		System.out.println("target angle: " + angle);
@@ -26,6 +26,8 @@ public class GyroTurn extends Command {
 	protected void initialize() {
 //		if (zeroYaw) Robot.zeroYawIteratively();
 		System.out.println("PointTurn initialized.");
+		System.out.println("current angle: " + Devices.getInstance().getNavXGyro().getYaw());
+		System.out.println("target angle: " + TARGET_ANGLE);
 		initAngleDiff = TARGET_ANGLE - Devices.getInstance().getNavXGyro().getYaw();
 		left = Math.signum(initAngleDiff) * POWER;
 	}
@@ -44,9 +46,9 @@ public class GyroTurn extends Command {
 		}
 
 		if (Math.abs(difference/initAngleDiff) <= 0.5) {
-			Robot.piDriveTrain.tankTurn(Math.signum(left)*0.375);
+			TrackingRobot.getDriveTrain().tankTurn(Math.signum(left)*0.41);
 		} else {
-			Robot.piDriveTrain.tankTurn(left);
+			TrackingRobot.getDriveTrain().tankTurn(left);
 		}
 	}
 
@@ -71,13 +73,13 @@ public class GyroTurn extends Command {
 	@Override
 	protected void end() {
 		System.out.println("ENDED");
-		Robot.piDriveTrain.stop();
+		TrackingRobot.getDriveTrain().stop();
 //		Devices.getInstance().getNavXGyro().zeroYaw();
 		System.out.println("current value: " + Devices.getInstance().getNavXGyro().getYaw());
 	}
 
 	@Override
 	protected void interrupted() {
-		Robot.piDriveTrain.disable();
+		TrackingRobot.getDriveTrain().disable();
 	}
 }

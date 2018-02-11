@@ -1,10 +1,13 @@
 package org.usfirst.frc.team2473.robot.commands;
 
+import org.usfirst.frc.team2473.framework.Devices;
+import org.usfirst.frc.team2473.framework.TrackingRobot;
 import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.RobotMap;
 import org.usfirst.frc.team2473.robot.RobotMap.Route;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 /**
  *
@@ -13,10 +16,38 @@ public class AutonomousRoute extends CommandGroup {
 
 	private final long delay = 250;
 	private double lastAngle;
+
+//	public AutonomousRoute(boolean switchSide, Route r) {
+//	}
+
+	@Override
+	protected void end() {
+		TrackingRobot.getDriveTrain().disable();
+		System.out.println("end of autonomous...");
+	}
+
+	private void turnAndGo(double angle, double dist) {
+		lastAngle = angle;
+		addSequential(new PointTurn(angle, RobotMap.TURN_POWER));
+		addSequential(new Wait(delay));
+		if (dist != 0) {
+			addSequential(new SimpleDriveStraight(angle, dist, RobotMap.DRIVE_STRAIGHT_POWER));
+			addSequential(new Wait(delay));
+		}
+	}
 	
-	public AutonomousRoute(boolean switchSide, Route r) {
+	@Override
+	protected void interrupted() {
+		Scheduler.getInstance().removeAll();
+	}
+
+	private void driveStraight(double dist) {
+		addSequential(new SimpleDriveStraight(lastAngle, dist, RobotMap.DRIVE_STRAIGHT_POWER));
+	}
+
+	public void configure(boolean switchSide, Route r) {
 		lastAngle = 0;
-		System.out.println("SWITCH SIDE: "+(switchSide ? "REIGHT" : "LEFETTO"));
+		System.out.println("SWITCH SIDE: " + (switchSide ? "right" : "left"));
 		switch (r) {
 		case LEFT:
 			driveStraight(48); // RobotMap.WALL_TO_SWITCH + RobotMap.HALF_SWITCH_LENGTH
@@ -68,35 +99,13 @@ public class AutonomousRoute extends CommandGroup {
 			driveStraight(300);
 			break;
 		case TESTING:
-//			turnAndGo(0, 200);
-			turnAndGo(45, 0);
+			driveStraight(200);
+//			turnAndGo(45, 0);
 //			turnAndGo(0, 180);
 //			turnAndGo(45, 150);
 //			turnAndGo(0, 150);
-//			turnAndGo(-90, 150);
+			turnAndGo(-90, 150);
 			break;
 		}
 	}
-
-	@Override
-	protected void end() {
-		Robot.piDriveTrain.disable();
-		System.out.println("end of autonomous...");
-	}
-	
-	private void turnAndGo(double angle, double dist) {
-		lastAngle = angle;
-		addSequential(new GyroTurn(angle, RobotMap.TURN_POWER));
-		addSequential(new Wait(delay));
-		if (dist != 0) {
-			addSequential(new SimpleDriveStraight(angle, dist, RobotMap.DRIVE_STRAIGHT_POWER));
-			addSequential(new Wait(delay));
-		}
-	}
-	
-	private void driveStraight(double dist) {
-		addSequential(new SimpleDriveStraight(lastAngle, dist, RobotMap.DRIVE_STRAIGHT_POWER));
-	}
-	
-	
 }
