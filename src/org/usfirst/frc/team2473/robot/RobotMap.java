@@ -19,10 +19,10 @@ public class RobotMap {
 	public static final int MOTOR_FRONT_RIGHT = 4;
 	public static final int MOTOR_BACK_RIGHT = 5;
 
-	public static final int LEFT_DARK_SENSOR = 0;
+	public static final int LEFT_DARK_SENSOR = 1;
 	public static final int LEFT_LIGHT_SENSOR = 0;
-	public static final int MIDDLE_DARK_SENSOR = 1;
-	public static final int MIDDLE_LIGHT_SENSOR = 1;
+	public static final int MIDDLE_DARK_SENSOR = 0;
+	public static final int MIDDLE_LIGHT_SENSOR = 2;
 	public static final int RIGHT_DARK_SENSOR = 2;
-	public static final int RIGHT_LIGHT_SENSOR = 2;
+	public static final int RIGHT_LIGHT_SENSOR = 1;
 }

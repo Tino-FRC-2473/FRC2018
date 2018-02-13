@@ -69,7 +69,7 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public double getAnalogSensorValue(int i) {
-		return lightSensorList.get(i).pidGet();
+		return lightSensorList.get(i).getValue();
 	}
 
 	public void drive(double speed, double rotation) {
