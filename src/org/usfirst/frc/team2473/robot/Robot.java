@@ -13,13 +13,12 @@ import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
 import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem;
 import org.usfirst.frc.team2473.robot.subsystems.DriveTrain;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import java.io.IOException;
 import org.usfirst.frc.team2473.framework.DatabaseAndPingThread;
 import org.usfirst.frc.team2473.framework.TrackableSubsystem;
 import org.usfirst.frc.team2473.framework.TrackingRobot;
-
-import org.usfirst.frc.team2473.robot.commands.Type1AutoCommand;
-
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -69,10 +68,14 @@ public class Robot extends TrackingRobot {
 		//Devices.getInstance().addDoubleSolenoid(5, 6);
 		//Devices.getInstance().addDigitalInput(7);
 	}
-	@Override protected void innerAutonomousInit(){}
+	@Override protected void innerAutonomousInit(){
+		Devices.getInstance().getTalon(2).set(ControlMode.PercentOutput, 0.5);
+		Devices.getInstance().getTalon(2).set(ControlMode.Current, 10);
+	}
 	
 	@Override protected void innerAutonomousPeriodic() {
 		Robot.logCurrentState();
+		System.out.println(Devices.getInstance().getTalon(2).getOutputCurrent());
 		/*isBeamBroken = Devices.getInstance().getDigitalInput(4).get();
 		if(isBeamBroken) {
 			System.out.println("Box BreakBeam is Broken");

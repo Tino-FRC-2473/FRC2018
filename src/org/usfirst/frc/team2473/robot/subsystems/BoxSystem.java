@@ -1,9 +1,10 @@
-package org.usfirst.frc.team2473.robot.subsystems;
+						package org.usfirst.frc.team2473.robot.subsystems;
 
 import org.usfirst.frc.team2473.framework.TrackableSubsystem;
 import org.usfirst.frc.team2473.robot.Devices;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -16,8 +17,12 @@ import org.usfirst.frc.team2473.robot.RobotMap;
  */
 public class BoxSystem extends TrackableSubsystem 
 {
-	public final double POWER = 0.6;
-	int[] posArray = {1,2,3,4};
+	public final double POWER = 0.3;
+	private final int POS1 = 10000;
+	private final int POS2 = 20000;
+	private final int POS3 = 30000;
+	private final int POS4 = 40000;
+	int[] posArray = {POS1, POS2, POS3, POS4};
 	private int currPos = 1;
 	
     // Put methods for controlling this subsystem
@@ -26,6 +31,8 @@ public class BoxSystem extends TrackableSubsystem
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+    	Devices.getInstance().getTalon(RobotMap.elevatorMotor).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5); //do once at start to define encoder
+    	Devices.getInstance().getTalon(RobotMap.elevatorMotor).setSelectedSensorPosition(0, 0, 10);
     }
     
     public void setPow(double pow)
@@ -37,17 +44,17 @@ public class BoxSystem extends TrackableSubsystem
      }
      
     public void setPistonR() {
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidClimbF,RobotMap.solenoidClimbR).set(Value.kReverse);
-
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kReverse);
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kReverse);
     }
     public void setPistonOff(){
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidClimbF,RobotMap.solenoidClimbR).set(Value.kOff);
-
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kOff);
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kOff);
     }
     
     public void setPistonF() {
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidClimbF,RobotMap.solenoidClimbR).set(Value.kForward);
-
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kForward);
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kForward);
     }
     
     public int getCurPos() {
@@ -57,7 +64,6 @@ public class BoxSystem extends TrackableSubsystem
 	@Override
 	public void stop() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -67,25 +73,43 @@ public class BoxSystem extends TrackableSubsystem
 
 	public void upPos() {
 		currPos++;
-	/*	Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, POWER);
-		while(!Devices.getInstance().getDigitalInput(currPos).get()) {
-			
-		}*/
+		Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, -POWER);
+		while(getEncCount()<posArray[currPos-1]) {
+			if(Devices.getInstance().getDigitalInput(RobotMap.eleTopLS).get()) {
+				Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
+				System.out.println("TOP ELEVATOR LIMIT SWITCH HIT");
+			}
+		}
+		Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
 		System.out.println("Elevator at POSITION: " + currPos);
-		//Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
-		System.out.println("auto up stopped");
+		System.out.println("Encoder value: " + getEncCount());
+		
+		/*while(!Devices.getInstance().getDigitalInput(currPos).get()) {
+		
+		}*/
 
 	}
 	
+	private int getEncCount() {
+		return Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0);
+	}
+
 	public void downPos() {
 		currPos--;
-		/*Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, -POWER);
-		while(!Devices.getInstance().getDigitalInput(currPos).get()) {
-			
-		}*/
+		Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, +POWER);
+		while(getEncCount()>posArray[currPos-1]) {
+			if(Devices.getInstance().getDigitalInput(RobotMap.eleBottomLS).get()) {
+				Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
+				System.out.println("BOTTOM ELEVATOR LIMIT SWITCH HIT");
+			}
+		}
+		Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
 		System.out.println("Elevator at POSITION: " + currPos);
-	//	Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
-		System.out.println("auto down stopped");
+		System.out.println("Encoder value: " + getEncCount());
+		
+		/*while(!Devices.getInstance().getDigitalInput(currPos).get()) {
+		
+		}*/
 	}
 }
 

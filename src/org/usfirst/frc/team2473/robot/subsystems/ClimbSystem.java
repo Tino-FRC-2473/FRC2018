@@ -17,17 +17,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class ClimbSystem extends TrackableSubsystem 
 {
-	public static double power = 0.1;
-	public static double fastPower = 0.5;
-	private final double MAX_POW = 0.7;
-	private static double climbPow = 0.2;
-	
-	private WPI_TalonSRX climbArm;
-	private WPI_TalonSRX climb;
+	public static final double ARMPOW = 0.3;
+	private static final double CLIMBPOW = 0.2;
+	public static double encCount = 400000;
     
 	public ClimbSystem() {
-		climbArm = Devices.getInstance().getTalon(RobotMap.climbArmMotor);
-		climb = Devices.getInstance().getTalon(RobotMap.climbMotor);
+
 	}
 	
     public void initDefaultCommand() {
@@ -35,30 +30,36 @@ public class ClimbSystem extends TrackableSubsystem
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public void setArmPow(double pow) 
+    public void setArmPow() 
     {
-    	climbArm.set(ControlMode.PercentOutput, pow);
+    	Devices.getInstance().getTalon(RobotMap.climbArmMotor).set(ControlMode.PercentOutput, ARMPOW);
     }
     
     public void stopArmMotor() {
-    	climbArm.stopMotor();
+    	Devices.getInstance().getTalon(RobotMap.climbArmMotor).stopMotor();
     }
  
     
     public void climbUp() 
     {
-    	climb.set(ControlMode.PercentOutput, climbPow);
+    	Devices.getInstance().getTalon(RobotMap.climbMotorR).set(ControlMode.PercentOutput, CLIMBPOW);
+    	System.out.println("climbing up");
+    	//Devices.getInstance().getTalon(RobotMap.climbMotorL).set(ControlMode.PercentOutput, CLIMBPOW);
     }
     
     
     public void climbDown() 
     {
-    	climb.set(ControlMode.PercentOutput, -climbPow);
+    	Devices.getInstance().getTalon(RobotMap.climbMotorR).set(ControlMode.PercentOutput, -CLIMBPOW);
+    	System.out.println("climb down");
+    	//Devices.getInstance().getTalon(RobotMap.climbMotorL).set(ControlMode.PercentOutput, -CLIMBPOW);
     }
     
    
     public void stopClimbMotor() {
-    	climb.stopMotor();
+    	Devices.getInstance().getTalon(RobotMap.climbMotorR).stopMotor();
+    	System.out.println("stopped");
+    	//Devices.getInstance().getTalon(RobotMap.climbMotorL).stopMotor();
     }
 
 	@Override
@@ -69,22 +70,21 @@ public class ClimbSystem extends TrackableSubsystem
 
 	@Override
 	public String getState() {
-		return "" + climb.get() + " " + climbArm.get();
+		return "" + Devices.getInstance().getTalon(RobotMap.climbMotorL).get() + " " +
+					Devices.getInstance().getTalon(RobotMap.climbMotorR).get() + " " +
+					Devices.getInstance().getTalon(RobotMap.climbArmMotor).get();
 	}
 	public void setPistonR() {
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kReverse);
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kReverse);
+		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidClimbF,RobotMap.solenoidClimbR).set(Value.kReverse);
 
     }
     public void setPistonOff(){
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kOff);
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kOff);
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidClimbF,RobotMap.solenoidClimbR).set(Value.kOff);
 
     }
     
     public void setPistonF() {
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kForward);
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kForward);
+    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidClimbF,RobotMap.solenoidClimbR).set(Value.kForward);
 
     }
 }
