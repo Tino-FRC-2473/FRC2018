@@ -11,13 +11,18 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 /**
  *
  */
-public class DriveTrain extends Subsystem {
+public class DriveTrain extends PIDSubsystem {
+	private static final double KP = 0;
+	private static final double KI = 0;
+	private static final double KD = 0;
+
+	private double pidValue;
+
 	private DifferentialDrive differentialDrive;
 
 	private WPI_TalonSRX talonFrontLeft;
@@ -36,6 +41,14 @@ public class DriveTrain extends Subsystem {
 
 	// Initialize your subsystem here
 	public DriveTrain() {
+		super(KP, KI, KD);
+
+		pidValue = 0;
+
+		setInputRange(0, 1.0);
+		setOutputRange(-1.0, 1.0);
+		this.getPIDController().setContinuous(true);
+
 		talonFrontLeft = new WPI_TalonSRX(RobotMap.MOTOR_FRONT_LEFT);
 		talonBackLeft = new WPI_TalonSRX(RobotMap.MOTOR_BACK_LEFT);
 		leftTalons = new SpeedControllerGroup(talonFrontLeft, talonBackLeft);
@@ -79,5 +92,25 @@ public class DriveTrain extends Subsystem {
 	public void stop() {
 		differentialDrive.arcadeDrive(0.1, 0);
 		differentialDrive.arcadeDrive(0, 0);
+	}
+
+	@Override
+	protected double returnPIDInput() {
+		return analogSensorList.get(RobotMap.MIDDLE_ANALOG_SENSOR).pidGet();
+	}
+
+	@Override
+	protected void usePIDOutput(double output) {
+		pidValue = output;
+	}
+
+	public double getPIDValue() {
+		return pidValue;
+	}
+
+	public void setTargetValue(double value) {
+		setSetpoint(value);
+		this.disable();
+		this.enable();
 	}
 }

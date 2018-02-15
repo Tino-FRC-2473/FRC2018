@@ -19,6 +19,10 @@ public class LineFollow extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		Robot.driveTrain.setSetpoint(Robot.driveTrain.getAnalogSensorValue(RobotMap.MIDDLE_ANALOG_SENSOR));
+		if (!Robot.driveTrain.getPIDController().isEnabled()) {
+			Robot.driveTrain.enable();
+		}
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -27,6 +31,7 @@ public class LineFollow extends Command {
 			SmartDashboard.putBoolean("Dark Sensor Value " + i, Robot.driveTrain.getDigitalSensorValue(i));
 			SmartDashboard.putNumber("Light Sensor Value" + i, Robot.driveTrain.getAnalogSensorValue(i));
 		}
+		Robot.driveTrain.drive(-0.3, Robot.driveTrain.getPIDValue());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -36,12 +41,14 @@ public class LineFollow extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
+		Robot.driveTrain.disable();
 		Robot.driveTrain.stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
+		Robot.driveTrain.disable();
 		Robot.driveTrain.stop();
 	}
 }
