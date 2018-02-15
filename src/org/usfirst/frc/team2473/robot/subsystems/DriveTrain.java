@@ -17,14 +17,14 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  *
  */
 public class DriveTrain extends PIDSubsystem {
-	private static final double KP = 0;
+	private static final double KP = -0.0011;
 	private static final double KI = 0;
 	private static final double KD = 0;
 
 	private double pidValue;
 
 	private DifferentialDrive differentialDrive;
-
+	
 	private WPI_TalonSRX talonFrontLeft;
 	private WPI_TalonSRX talonBackLeft;
 	private SpeedControllerGroup leftTalons;
@@ -45,7 +45,7 @@ public class DriveTrain extends PIDSubsystem {
 
 		pidValue = 0;
 
-		setInputRange(0, 1.0);
+		setInputRange(0, 1000);
 		setOutputRange(-1.0, 1.0);
 		this.getPIDController().setContinuous(true);
 
@@ -96,7 +96,7 @@ public class DriveTrain extends PIDSubsystem {
 
 	@Override
 	protected double returnPIDInput() {
-		return analogSensorList.get(RobotMap.MIDDLE_ANALOG_SENSOR).pidGet();
+		return middleLightSensor.getValue();
 	}
 
 	@Override
@@ -112,5 +112,9 @@ public class DriveTrain extends PIDSubsystem {
 		setSetpoint(value);
 		this.disable();
 		this.enable();
+	}
+	
+	public AnalogInput getMiddleAnalogSensor() {
+		return middleLightSensor;
 	}
 }

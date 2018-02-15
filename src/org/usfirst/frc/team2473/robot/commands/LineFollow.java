@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class LineFollow extends Command {
-
+	private final double OFFSET = 0;
 	public LineFollow() {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
@@ -19,10 +19,8 @@ public class LineFollow extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.driveTrain.setSetpoint(Robot.driveTrain.getAnalogSensorValue(RobotMap.MIDDLE_ANALOG_SENSOR));
-		if (!Robot.driveTrain.getPIDController().isEnabled()) {
-			Robot.driveTrain.enable();
-		}
+		Robot.driveTrain.setSetpoint(Robot.driveTrain.getMiddleAnalogSensor().getValue());
+		Robot.driveTrain.enable();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -31,7 +29,7 @@ public class LineFollow extends Command {
 			SmartDashboard.putBoolean("Dark Sensor Value " + i, Robot.driveTrain.getDigitalSensorValue(i));
 			SmartDashboard.putNumber("Light Sensor Value" + i, Robot.driveTrain.getAnalogSensorValue(i));
 		}
-		Robot.driveTrain.drive(-0.3, Robot.driveTrain.getPIDValue());
+		Robot.driveTrain.drive(-0.4, Robot.driveTrain.getPIDValue()  + OFFSET);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
