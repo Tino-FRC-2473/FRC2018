@@ -22,7 +22,8 @@ public class BoxSystem extends TrackableSubsystem
 	public static final int POS2 = 1000;
 	public static final int POS3 = 5600;
 	public static final int POS4 = 40000;
-	int[] posArray = {POS1, POS2, POS3, POS4};
+	public int[] posArray = {POS1, POS2, POS3, POS4};
+	public int[] posReverse = {POS4,POS3,POS2,POS1};
 	private int currPos = 1;
 	
     // Put methods for controlling this subsystem
@@ -71,30 +72,26 @@ public class BoxSystem extends TrackableSubsystem
 		return null;
 	}
 
-	public void upPos() {
+	
+	public int getEncCount() {
+		return Math.abs(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0));
+	}
+	
+	public void upPos() 
+	{
 		currPos++;
 		Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, -POWER);
-		while(Math.abs(getEncCount())<posArray[currPos-1]) {
+		while(getEncCount()<posArray[currPos-1]) {
 			}
 		Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
 		System.out.println("Elevator at POSITION: " + currPos);
 		System.out.println("Encoder value: " + getEncCount());
-		
-		/*while(!Devices.getInstance().getDigitalInput(currPos).get()) {
-		
-		}*/
-
-	}
-	
-	
-	private int getEncCount() {
-		return Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0);
 	}
 
 	public void downPos() {
 		currPos--;
 		Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, +POWER);
-		while(Math.abs(getEncCount())>posArray[currPos-1]) {
+		while(getEncCount()>posArray[currPos-1]) {
 			if(Devices.getInstance().getDigitalInput(RobotMap.eleBottomLS).get()) {
 				Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
 				System.out.println("BOTTOM ELEVATOR LIMIT SWITCH HIT");
@@ -103,10 +100,11 @@ public class BoxSystem extends TrackableSubsystem
 		Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
 		System.out.println("Elevator at POSITION: " + currPos);
 		System.out.println("Encoder value: " + getEncCount());
-		
-		/*while(!Devices.getInstance().getDigitalInput(currPos).get()) {
-		
-		}*/
+	}
+	
+	public void setCurrPos(int pos)
+	{
+		currPos = pos;
 	}
 }
 

@@ -30,10 +30,11 @@ public class EleDown extends Command {
 			int currPos = sub.getCurPos();
 			System.out.println(currPos);
 			System.out.println("elevator going down");
-			//if(currPos!=1) {
+			if(currPos!=1) 
+			{
 				sub.downPos();
 				System.out.println("elevator down");
-			//}
+			}
 		}else{
 			isControl=false;
 			Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, sub.POWER);
@@ -42,17 +43,26 @@ public class EleDown extends Command {
 	}
 
 	// Called repeatedly when this Command is scheduled to run
-	protected void execute() {
+	protected void execute() 
+	{
+		for(int i = 0;i<=sub.posArray.length-1;i++)
+		{
+			if(sub.getEncCount()<=sub.posArray[i])
+				sub.setCurrPos(i+1);
+		}
+
 		if(Devices.getInstance().getTalon(RobotMap.elevatorMotor).get()!=0)
 		{
-			if(Math.abs(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0))<sub.POS2)
+			if(Math.abs(sub.getEncCount())<sub.POS2)
 			{
 				sub.setPow(0.3);
 			}
-			if(Math.abs(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0))>=sub.POS2)
+			if(Math.abs(sub.getEncCount())>=sub.POS2)
 			{
-				sub.setPow(0.5);		}
-			System.out.println(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0));
+				sub.setPow(0.5);		
+
+			}
+			System.out.println(sub.getEncCount());
 		}
 	}
 
@@ -63,12 +73,13 @@ public class EleDown extends Command {
 	}
 
 	// Called once after isFinished returns true
-	protected void end() {
-		//if(!isControl) {
-		Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
-		System.out.println("ELEVATOR LIMIT SWITCH HIT");
-		Devices.getInstance().getTalon(RobotMap.elevatorMotor).setSelectedSensorPosition(0, 0, 10);
-		//	}
+	protected void end() 
+	{
+		if(!isControl) {
+			Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
+			System.out.println("ELEVATOR LIMIT SWITCH HIT");
+			Devices.getInstance().getTalon(RobotMap.elevatorMotor).setSelectedSensorPosition(0, 0, 10);
+		}
 	}
 
 	// Called when another command which requires one or more of the same
