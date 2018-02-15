@@ -16,16 +16,18 @@ package org.usfirst.frc.team2473.robot;
 public class RobotMap {
 
 	//motors
-	public static int elevatorMotor = 2;
-	public static int climbArmMotor = 7;
-	public static int climbMotorL = 2;
-	public static int climbMotorR = 2;
+	public static int elevatorMotor = 11;
+	public static int climbArmMotor = 10;
+	public static int climbMotorL = 4;
+	public static int climbMotorL2 = 5;
+	public static int climbMotorR2 = 8;
+	public static int climbMotorR = 9;
 	
 	//solenoids
-	public static int solenoidBCLFChannel = 6;
-	public static int solenoidBCLRChannel = 7;
-	public static int solenoidBCRFChannel = 5;
-	public static int solenoidBCRRChannel = 4;
+	public static int solenoidBCLFChannel = 2;
+	public static int solenoidBCLRChannel = 0;
+	public static int solenoidBCRFChannel = 1;
+	public static int solenoidBCRRChannel = 3;
 	public static int solenoidClimbF = 8;
 	public static int solenoidClimbR = 9;
 	
@@ -40,15 +42,15 @@ public class RobotMap {
 	public static int controlButtonNum = 8;
 	public static int elevatorUpNum = 5;
 	public static int elevatorDownNum = 6;
-	public static int climbUp = 9;
-	public static int climbDown = 9;
-	public static int cPistonInNum = 7;
-	public static int cPistonOutNum = 8;
+	public static int climbUp = 10;
+	public static int climbDown = 10;
+	public static int cPistonInNum = 10;
+	public static int cPistonOutNum = 10;
 
 	
 	//digitalInputs
 	public static int eleTopLS = 1;
-	public static int eleBottomLS = 2;
+	public static int eleBottomLS = 0;
 	public static int hookLS = 3;
 	public static int armBB = 4;
 }

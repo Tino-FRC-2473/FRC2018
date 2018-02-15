@@ -18,10 +18,10 @@ import org.usfirst.frc.team2473.robot.RobotMap;
 public class BoxSystem extends TrackableSubsystem 
 {
 	public final double POWER = 0.3;
-	private final int POS1 = 10000;
-	private final int POS2 = 20000;
-	private final int POS3 = 30000;
-	private final int POS4 = 40000;
+	public static final int POS1 = 0;
+	public static final int POS2 = 1000;
+	public static final int POS3 = 5600;
+	public static final int POS4 = 40000;
 	int[] posArray = {POS1, POS2, POS3, POS4};
 	private int currPos = 1;
 	
@@ -74,12 +74,8 @@ public class BoxSystem extends TrackableSubsystem
 	public void upPos() {
 		currPos++;
 		Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, -POWER);
-		while(getEncCount()<posArray[currPos-1]) {
-			if(Devices.getInstance().getDigitalInput(RobotMap.eleTopLS).get()) {
-				Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
-				System.out.println("TOP ELEVATOR LIMIT SWITCH HIT");
+		while(Math.abs(getEncCount())<posArray[currPos-1]) {
 			}
-		}
 		Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
 		System.out.println("Elevator at POSITION: " + currPos);
 		System.out.println("Encoder value: " + getEncCount());
@@ -97,7 +93,7 @@ public class BoxSystem extends TrackableSubsystem
 	public void downPos() {
 		currPos--;
 		Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, +POWER);
-		while(getEncCount()>posArray[currPos-1]) {
+		while(Math.abs(getEncCount())>posArray[currPos-1]) {
 			if(Devices.getInstance().getDigitalInput(RobotMap.eleBottomLS).get()) {
 				Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
 				System.out.println("BOTTOM ELEVATOR LIMIT SWITCH HIT");

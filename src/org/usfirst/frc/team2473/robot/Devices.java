@@ -40,6 +40,7 @@ public class Devices {
 		talons = new ArrayList<WPI_TalonSRX>();
 		gyros = new AnalogGyro[1];
 		analogs = new ArrayList<AnalogInput>();
+		digitals = new ArrayList<DigitalInput>();
 		servos = new ArrayList<Servo>();
 		encoders = new ArrayList<Encoder>();
 		solenoids = new HashMap<>();
@@ -196,6 +197,7 @@ public class Devices {
 	 * @param channel an <code>int</code> value representing the channel port of the servo
 	 */
 	public void addDigitalInput(int channel) {
+		System.out.println("added: " + channel);
 		digitals.add(new DigitalInput(channel));
 	}
 	

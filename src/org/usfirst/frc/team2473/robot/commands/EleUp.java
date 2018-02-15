@@ -5,6 +5,8 @@ import org.usfirst.frc.team2473.robot.RobotMap;
 import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team2473.robot.Controls;
@@ -43,13 +45,22 @@ public class EleUp extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	if(Math.abs(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0))<sub.POS2)
+		{
+			sub.setPow(0.3);
+		}
+    	if(Math.abs(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0))>=sub.POS2)
+		{
+    		sub.setPow(0.5);		}
+    	System.out.println(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0));
+
 
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (Devices.getInstance().getDigitalInput(RobotMap.eleBottomLS).get() || 
-        		Devices.getInstance().getDigitalInput(RobotMap.eleTopLS).get());
+    	return false;
+      //  return Devices.getInstance().getDigitalInput(RobotMap.eleTopLS).get();
     }
 
     // Called once after isFinished returns true

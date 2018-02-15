@@ -23,7 +23,8 @@ public class HookDown extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Devices.getInstance().getTalon(RobotMap.climbArmMotor).set(ControlMode.PercentOutput, sub.ARMPOW);
+    	//Devices.getInstance().getTalon(RobotMap.climbArmMotor).set(ControlMode.PercentOutput, sub.getArmDownPow());
+    	System.out.println("down");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -34,7 +35,8 @@ public class HookDown extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() 
     {
-    	return Devices.getInstance().getDigitalInput(0).get();
+    	return false;
+    	//return Devices.getInstance().getDigitalInput(1).get();
     }
 
     // Called once after isFinished returns true

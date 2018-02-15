@@ -65,22 +65,22 @@ public class Controls {
 	
 	public Controls() {
 		//climb
-		armDownButton.whileHeld(new HookDown());
-		armUpButton.whenPressed(new HookUp());	
-		//claw
-		//openArmsButton.whenPressed(new OpenArms());
-		//closeArmsButton.whenPressed(new CloseArms());
-		//climber
+		//armDownButton.whileHeld(new HookDown());
+		//armUpButton.whenPressed(new HookUp());
 		//climbUp.whileHeld(new ClimbUp());
 		//climbDown.whileHeld(new ClimbDown());
+		
+		//claw
+		openArmsButton.whenPressed(new OpenArms());
+		closeArmsButton.whenPressed(new CloseArms());
 
 		
 		//cPistonInButton.whileHeld(new CPistonIn());
 		//cPistonOutButton.whileHeld(new CPistonOut());
 
 		//elevator
-		//elevatorUp.whileHeld(new EleUp());
-		//elevatorDown.whileHeld(new EleDown());
+		elevatorUp.whileHeld(new EleUp());
+		elevatorDown.whileHeld(new EleDown());
 		
 	}
 	

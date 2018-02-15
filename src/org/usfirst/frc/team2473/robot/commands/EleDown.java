@@ -42,21 +42,29 @@ public class EleDown extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	if(Math.abs(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0))<sub.POS2)
+		{
+			sub.setPow(0.3);
+		}
+    	if(Math.abs(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0))>=sub.POS2)
+		{
+    		sub.setPow(0.5);		}
+    	System.out.println(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0));
     }
+  
 
-    // Make this return true when this Command no longer needs to run execute()
+    // Make thios return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	  return (Devices.getInstance().getDigitalInput(RobotMap.eleBottomLS).get() || 
-          		Devices.getInstance().getDigitalInput(RobotMap.eleTopLS).get());
-       
+    	 return (Devices.getInstance().getDigitalInput(RobotMap.eleBottomLS).get());
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	if(!isControl) {
+    	//if(!isControl) {
     		Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
     		System.out.println("ELEVATOR LIMIT SWITCH HIT");
-    	}
+    		Devices.getInstance().getTalon(RobotMap.elevatorMotor).setSelectedSensorPosition(0, 0, 10);
+    //	}
     }
 
     // Called when another command which requires one or more of the same

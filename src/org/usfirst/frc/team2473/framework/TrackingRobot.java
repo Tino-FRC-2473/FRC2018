@@ -182,7 +182,7 @@ public abstract class TrackingRobot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		innerTeleopInit();
+		innerTeleopPeriodic();
 	}
 	/**
 	 * This function is called once when test mode starts

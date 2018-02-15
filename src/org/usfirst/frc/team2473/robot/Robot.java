@@ -14,9 +14,11 @@ import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem;
 import org.usfirst.frc.team2473.robot.subsystems.DriveTrain;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import java.io.IOException;
 import org.usfirst.frc.team2473.framework.DatabaseAndPingThread;
+import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.framework.TrackableSubsystem;
 import org.usfirst.frc.team2473.framework.TrackingRobot;
 
@@ -69,13 +71,13 @@ public class Robot extends TrackingRobot {
 		//Devices.getInstance().addDigitalInput(7);
 	}
 	@Override protected void innerAutonomousInit(){
-		Devices.getInstance().getTalon(2).set(ControlMode.PercentOutput, 0.5);
-		Devices.getInstance().getTalon(2).set(ControlMode.Current, 10);
+		//Devices.getInstance().getTalon(2).set(ControlMode.PercentOutput, 0.5);
+		//Devices.getInstance().getTalon(2).set(ControlMode.Current, 10);
 	}
 	
 	@Override protected void innerAutonomousPeriodic() {
 		Robot.logCurrentState();
-		System.out.println(Devices.getInstance().getTalon(2).getOutputCurrent());
+		//System.out.println(Devices.getInstance().getTalon(2).getOutputCurrent());
 		/*isBeamBroken = Devices.getInstance().getDigitalInput(4).get();
 		if(isBeamBroken) {
 			System.out.println("Box BreakBeam is Broken");
@@ -83,12 +85,19 @@ public class Robot extends TrackingRobot {
 	}
 	
 	@Override protected void innerTeleopInit(){
-		/*	if(Climb!=null) Climb.start();
-		if(HookDown!=null) HookDown.start();
-		if(HookUp!=null) HookUp.start();
-		if(ClimbFaster!=null) ClimbFaster.start();*/
+		//declares and sets the encoders
+		//Devices.getInstance().getTalon(RobotMap.elevatorMotor).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5); //do once at start to define encoder
+    	//Devices.getInstance().getTalon(RobotMap.elevatorMotor).setSelectedSensorPosition(0, 0, 10); //whenever resetting
+    	//Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, -0.2);
+    	
 	}
 	@Override protected void innerTeleopPeriodic(){
+		
+		//keep printing enconder counts
+		//System.out.println(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0));
+		
+		
+		
 		/*isBeamBroken = Devices.getInstance().getDigitalInput(4).get();
 		if(isBeamBroken) {
 			System.out.println("Box BreakBeam is Broken");*/
