@@ -1,4 +1,4 @@
-						package org.usfirst.frc.team2473.robot.subsystems;
+package org.usfirst.frc.team2473.robot.subsystems;
 
 import org.usfirst.frc.team2473.framework.TrackableSubsystem;
 import org.usfirst.frc.team2473.robot.Devices;
@@ -25,42 +25,43 @@ public class BoxSystem extends TrackableSubsystem
 	public int[] posArray = {POS1, POS2, POS3, POS4};
 	public int[] posReverse = {POS4,POS3,POS2,POS1};
 	private int currPos = 1;
-	
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+	private int startPos = 0;
 
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
-    	Devices.getInstance().getTalon(RobotMap.elevatorMotor).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5); //do once at start to define encoder
-    	Devices.getInstance().getTalon(RobotMap.elevatorMotor).setSelectedSensorPosition(0, 0, 10);
-    }
-    
-    public void setPow(double pow)
-    {
-    	Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, pow);
-    }
-     public void stopMotor() {
-    	 Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
-     }
-     
-    public void setPistonR() {
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kReverse);
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kReverse);
-    }
-    public void setPistonOff(){
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kOff);
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kOff);
-    }
-    
-    public void setPistonF() {
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kForward);
-    	Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kForward);
-    }
-    
-    public int getCurPos() {
-    	return currPos;
-    }
+	// Put methods for controlling this subsystem
+	// here. Call these from Commands.
+
+	public void initDefaultCommand() {
+		// Set the default command for a subsystem here.
+		//setDefaultCommand(new MySpecialCommand());
+		Devices.getInstance().getTalon(RobotMap.elevatorMotor).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5); //do once at start to define encoder
+		Devices.getInstance().getTalon(RobotMap.elevatorMotor).setSelectedSensorPosition(0, 0, 10);
+	}
+
+	public void setPow(double pow)
+	{
+		Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, pow);
+	}
+	public void stopMotor() {
+		Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
+	}
+
+	public void setPistonR() {
+		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kReverse);
+		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kReverse);
+	}
+	public void setPistonOff(){
+		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kOff);
+		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kOff);
+	}
+
+	public void setPistonF() {
+		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kForward);
+		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kForward);
+	}
+
+	public int getCurPos() {
+		return currPos;
+	}
 
 	@Override
 	public void stop() {
@@ -72,39 +73,62 @@ public class BoxSystem extends TrackableSubsystem
 		return null;
 	}
 
-	
+
 	public int getEncCount() {
 		return Math.abs(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0));
 	}
-	
+
 	public void upPos() 
 	{
-		currPos++;
+		startPos = currPos;
+		startPos++;
 		Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, -POWER);
-		while(getEncCount()<posArray[currPos-1]) {
-			}
+		while(getEncCount()<posArray[startPos-1])
+		{
+		}
 		Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
-		System.out.println("Elevator at POSITION: " + currPos);
+		System.out.println("Elevator at POSITION: " + startPos);
 		System.out.println("Encoder value: " + getEncCount());
 	}
 
 	public void downPos() {
-		currPos--;
+		startPos = currPos;
+		startPos--;
 		Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, +POWER);
-		while(getEncCount()>posArray[currPos-1]) {
-			if(Devices.getInstance().getDigitalInput(RobotMap.eleBottomLS).get()) {
+		while(getEncCount()>posArray[startPos-1]) {
+			if(Devices.getInstance().getDigitalInput(RobotMap.eleBottomLS).get()) 
+			{
 				Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
 				System.out.println("BOTTOM ELEVATOR LIMIT SWITCH HIT");
+				Devices.getInstance().getTalon(RobotMap.elevatorMotor).setSelectedSensorPosition(0, 0, 10);
 			}
 		}
 		Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
 		System.out.println("Elevator at POSITION: " + currPos);
 		System.out.println("Encoder value: " + getEncCount());
 	}
-	
+
 	public void setCurrPos(int pos)
 	{
 		currPos = pos;
+	}
+	
+	public void updateCurrUpPos()
+	{
+		for(int i = posReverse.length-1;i>=0;i--)
+		{
+			if(getEncCount()>=posReverse[i])
+				setCurrPos(i+1);
+		}
+	}
+	
+	public void updateCurrDownPos()
+	{
+		for(int i = 0;i<=posArray.length-1;i++)
+		{
+			if(getEncCount()<=posArray[i])
+				setCurrPos(i+1);
+		}
 	}
 }
 

@@ -26,32 +26,34 @@ public class EleUp extends Command {
 	}
 
 	// Called just before this Command runs the first time
-	protected void initialize() {
-		if(Robot.getControls().controlButton.get()) {
+	protected void initialize()
+	{
+		sub.updateCurrUpPos();
+		if(Robot.getControls().controlButton.get())
+		{
 			isControl=true;
 			int currPos = sub.getCurPos();
 			System.out.println("elevator going up");
-			if(currPos!=4) {
+			if(currPos!=4) 
+			{
 				sub.upPos();
 				System.out.println("elevator up");
+				sub.updateCurrUpPos();
 			}
-		}else{
+		}
+		else
+		{
 			isControl=false;
 			Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, -sub.POWER);
 			System.out.println("manual going up");
-
 		}
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() 
 	{
-		for(int i = sub.posReverse.length-1;i>=0;i--)
-		{
-			if(sub.getEncCount()>=sub.posReverse[i])
-				sub.setCurrPos(i+1);
-		}
-
+		sub.updateCurrUpPos();
+		System.out.println("At position:" + sub.getCurPos());
 		if(Devices.getInstance().getTalon(RobotMap.elevatorMotor).get()!=0)
 		{
 			if(Math.abs(sub.getEncCount())<sub.POS2)
@@ -60,19 +62,20 @@ public class EleUp extends Command {
 			}
 			if(Math.abs(sub.getEncCount())>=sub.POS2)
 			{
-				sub.setPow(-0.5);		}
-			System.out.println(sub.getEncCount());
+				sub.setPow(-0.5);		
+			}
 		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
-	protected boolean isFinished() {
+	protected boolean isFinished()
+	{
 		return false;
-		//  return Devices.getInstance().getDigitalInput(RobotMap.eleTopLS).get();
 	}
 
 	// Called once after isFinished returns true
-	protected void end() {
+	protected void end() 
+	{
 		if(!isControl)
 		{
 			Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
@@ -83,9 +86,11 @@ public class EleUp extends Command {
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		if(!isControl) {
+		if(!isControl)
+		{
 			Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
 			System.out.println("manual up stopped");
+			sub.updateCurrUpPos();
 		}
 	}
 }

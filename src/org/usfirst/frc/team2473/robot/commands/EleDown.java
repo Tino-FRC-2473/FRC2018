@@ -24,7 +24,9 @@ public class EleDown extends Command {
 	}
 
 	// Called just before this Command runs the first time
-	protected void initialize() {
+	protected void initialize() 
+	{
+		sub.updateCurrDownPos();
 		if(Robot.getControls().controlButton.get()) {
 			isControl=true;
 			int currPos = sub.getCurPos();
@@ -34,6 +36,7 @@ public class EleDown extends Command {
 			{
 				sub.downPos();
 				System.out.println("elevator down");
+				sub.updateCurrDownPos();
 			}
 		}else{
 			isControl=false;
@@ -45,12 +48,8 @@ public class EleDown extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() 
 	{
-		for(int i = 0;i<=sub.posArray.length-1;i++)
-		{
-			if(sub.getEncCount()<=sub.posArray[i])
-				sub.setCurrPos(i+1);
-		}
-
+		sub.updateCurrDownPos();
+		System.out.println("At position:" + sub.getCurPos());
 		if(Devices.getInstance().getTalon(RobotMap.elevatorMotor).get()!=0)
 		{
 			if(Math.abs(sub.getEncCount())<sub.POS2)
@@ -62,7 +61,6 @@ public class EleDown extends Command {
 				sub.setPow(0.5);		
 
 			}
-			System.out.println(sub.getEncCount());
 		}
 	}
 
@@ -88,7 +86,7 @@ public class EleDown extends Command {
 		if(!isControl) {
 			Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
 			System.out.println("manual down stopped");
-
+			sub.updateCurrDownPos();
 		}
 	}
 }
