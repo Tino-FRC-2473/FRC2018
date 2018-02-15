@@ -31,8 +31,8 @@ public class DriveTrain extends Subsystem {
 	private DigitalInput leftDarkSensor, middleDarkSensor, rightDarkSensor;
 	private AnalogInput leftLightSensor, middleLightSensor, rightLightSensor;
 
-	private ArrayList<DigitalInput> darkSensorList = new ArrayList<>();
-	private ArrayList<AnalogInput> lightSensorList = new ArrayList<>();
+	private ArrayList<DigitalInput> digitalSensorList = new ArrayList<>();
+	private ArrayList<AnalogInput> analogSensorList = new ArrayList<>();
 
 	// Initialize your subsystem here
 	public DriveTrain() {
@@ -46,16 +46,16 @@ public class DriveTrain extends Subsystem {
 
 		differentialDrive = new DifferentialDrive(leftTalons, rightTalons);
 
-		leftDarkSensor = new DigitalInput(RobotMap.LEFT_DARK_SENSOR); // dark
-		middleDarkSensor = new DigitalInput(RobotMap.MIDDLE_DARK_SENSOR); // dark
-		rightDarkSensor = new DigitalInput(RobotMap.RIGHT_DARK_SENSOR); // dark
+		leftDarkSensor = new DigitalInput(RobotMap.LEFT_DIGITAL_SENSOR); // dark
+		middleDarkSensor = new DigitalInput(RobotMap.MIDDLE_DIGITAL_SENSOR); // dark
+		rightDarkSensor = new DigitalInput(RobotMap.RIGHT_DIGITAL_SENSOR); // dark
 
-		leftLightSensor = new AnalogInput(RobotMap.LEFT_LIGHT_SENSOR); // light
-		middleLightSensor = new AnalogInput(RobotMap.MIDDLE_LIGHT_SENSOR); // light
-		rightLightSensor = new AnalogInput(RobotMap.RIGHT_LIGHT_SENSOR); /// light
+		leftLightSensor = new AnalogInput(RobotMap.LEFT_ANALOG_SENSOR); // light
+		middleLightSensor = new AnalogInput(RobotMap.MIDDLE_ANALOG_SENSOR); // light
+		rightLightSensor = new AnalogInput(RobotMap.RIGHT_ANALOG_SENSOR); /// light
 
-		darkSensorList.addAll(Arrays.asList(leftDarkSensor, middleDarkSensor, rightDarkSensor));
-		lightSensorList.addAll(Arrays.asList(leftLightSensor, middleLightSensor, rightLightSensor));
+		digitalSensorList.addAll(Arrays.asList(leftDarkSensor, middleDarkSensor, rightDarkSensor));
+		analogSensorList.addAll(Arrays.asList(leftLightSensor, middleLightSensor, rightLightSensor));
 	}
 
 	@Override
@@ -65,11 +65,11 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public boolean getDigitalSensorValue(int i) {
-		return darkSensorList.get(i).get();
+		return digitalSensorList.get(i).get();
 	}
 
 	public double getAnalogSensorValue(int i) {
-		return lightSensorList.get(i).getValue();
+		return analogSensorList.get(i).getValue();
 	}
 
 	public void drive(double speed, double rotation) {
