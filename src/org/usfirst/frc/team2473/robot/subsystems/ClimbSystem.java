@@ -19,9 +19,11 @@ public class ClimbSystem extends TrackableSubsystem
 {
 	public final double ARMPOWUP1 = -0.25;
 	public final double ARMPOWUP2 = -0.175;
+	public final double ARMPOWDOWN = 0.15;
 	public final double CLIMBPOW = 0.2;
 	public final double ENCCOUNT1 = 1368;
 	public final double ENCCOUNT2 = 2052;
+	public final double ENCCOUNT3 = 1000;
 	//2052
     
 	public ClimbSystem() {

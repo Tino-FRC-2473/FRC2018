@@ -65,7 +65,7 @@ public class Controls {
 	
 	public Controls() {
 		//climb
-		//armDownButton.whileHeld(new HookDown());
+		//armDownButton.whenPressed(new HookDown());
 		//armUpButton.whenPressed(new HookUp());
 		//climbUp.whileHeld(new ClimbUp());
 		//climbDown.whileHeld(new ClimbDown());

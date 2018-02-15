@@ -45,16 +45,18 @@ public class EleUp extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	if(Devices.getInstance().getTalon(RobotMap.elevatorMotor).get()!=0)
+		{
     	if(Math.abs(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0))<sub.POS2)
 		{
-			sub.setPow(0.3);
+			sub.setPow(-0.3);
 		}
     	if(Math.abs(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0))>=sub.POS2)
 		{
-    		sub.setPow(0.5);		}
+    		sub.setPow(-0.5);		}
     	System.out.println(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0));
 
-
+		}
     }
 
     // Make this return true when this Command no longer needs to run execute()
