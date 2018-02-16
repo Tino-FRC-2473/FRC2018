@@ -29,15 +29,17 @@ public class LineFollow extends Command {
 			SmartDashboard.putBoolean("Dark Sensor Value " + i, Robot.driveTrain.getDigitalSensorValue(i));
 			SmartDashboard.putNumber("Light Sensor Value" + i, Robot.driveTrain.getAnalogSensorValue(i));
 		}
-		Robot.driveTrain.drive(-0.4, Robot.driveTrain.getPIDValue()  + OFFSET);
-		
+		//Robot.driveTrain.drive(-0.4, Robot.driveTrain.getPIDValue()  + OFFSET);
+	
+		if(Robot.driveTrain.getDigitalSensorValue(RobotMap.LEFT_DIGITAL_SENSOR) && !Robot.driveTrain.getDigitalSensorValue(RobotMap.RIGHT_DIGITAL_SENSOR)){
+			Robot.driveTrain.drive(-0.4, -Robot.driveTrain.getPIDValue()  + OFFSET);
+		} else {
+			Robot.driveTrain.drive(-0.4, Robot.driveTrain.getPIDValue()  + OFFSET);
+		}
 		/*
-		 *	When either left or right sensor is triggered,
-		 *	1) PID is disabled while middle sensor is triggered.
-		 *	2) Turn in the appropriate direction.
-		 *	3) Re-enable PID to let nature take its course.
-		 *		A) Keep PID as is if turning right.
-		 *		B) Make PID negative if turning left.
+		 *   if left sensor is triggered make PID negative
+		 *   after middle sensor triggered make PID positive
+		 * 
 		 */
 	}
 
