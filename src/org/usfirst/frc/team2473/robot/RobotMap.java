@@ -24,8 +24,8 @@ public class RobotMap {
 	public static int climbMotorR = 9;
 	
 	//solenoids
-	public static int solenoidBCLFChannel = 2;
-	public static int solenoidBCLRChannel = 0;
+	public static int solenoidBCLFChannel = 0;
+	public static int solenoidBCLRChannel = 2;
 	public static int solenoidBCRFChannel = 1;
 	public static int solenoidBCRRChannel = 3;
 	public static int solenoidClimbF = 8;
@@ -37,6 +37,7 @@ public class RobotMap {
 	//button ports
 	public static int armDownNum = 2;
 	public static int armUpNum = 4;
+	public static int jumpNum = 3;
 	public static int openArmsNum = 11;
 	public static int closeArmsNum = 12;
 	public static int controlButtonNum = 8;

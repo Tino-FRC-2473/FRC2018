@@ -28,17 +28,16 @@ public class EleUp extends Command {
 	// Called just before this Command runs the first time
 	protected void initialize()
 	{
-		sub.updateCurrUpPos();
+		//sub.updateCurrUpPos();
 		if(Robot.getControls().controlButton.get())
 		{
 			isControl=true;
-			int currPos = sub.getCurPos();
+			int currPos = sub.getCurrUpPos();
 			System.out.println("elevator going up");
-			if(currPos!=4) 
+			if(currPos!=3) 
 			{
-				sub.upPos();
+				sub.upPos(currPos);
 				System.out.println("elevator up");
-				sub.updateCurrUpPos();
 			}
 		}
 		else
@@ -52,17 +51,15 @@ public class EleUp extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() 
 	{
-		sub.updateCurrUpPos();
-		System.out.println("At position:" + sub.getCurPos());
-		if(Devices.getInstance().getTalon(RobotMap.elevatorMotor).get()!=0)
+		//System.out.println("At position:" + sub.getCurPos()+" enc = "+ sub.getEncCount());
+		if(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getMotorOutputPercent()!=0)
 		{
-			if(Math.abs(sub.getEncCount())<sub.POS2)
+			if(Math.abs(sub.getEncCount())<sub.POS1)
 			{
 				sub.setPow(-0.3);
-			}
-			if(Math.abs(sub.getEncCount())>=sub.POS2)
+			} else if(Math.abs(sub.getEncCount())>=sub.POS1)
 			{
-				sub.setPow(-0.5);		
+				sub.setPow(-0.3);		
 			}
 		}
 	}
@@ -90,7 +87,7 @@ public class EleUp extends Command {
 		{
 			Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
 			System.out.println("manual up stopped");
-			sub.updateCurrUpPos();
+			//sub.updateCurrUpPos();
 		}
 	}
 }

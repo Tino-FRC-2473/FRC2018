@@ -17,13 +17,17 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class ClimbSystem extends TrackableSubsystem 
 {
-	public final double ARMPOWUP1 = -0.25;
-	public final double ARMPOWUP2 = -0.175;
-	public final double ARMPOWDOWN = 0.15;
+	public final double ARMPOWUP1 = -0.3;
+	public final double ARMPOWUP2 = -0.25;
+	public final double ARMPOWDOWN1 = 0.25;
+	public final double ARMPOWDOWN2 = 0.1;
 	public final double CLIMBPOW = 0.2;
-	public final double ENCCOUNT1 = 1368;
-	public final double ENCCOUNT2 = 2052;
-	public final double ENCCOUNT3 = 1000;
+	public final double ENCCOUNT1 = 638;
+	public final double ENCCOUNT2 = 2000;
+	public final double ENCCOUNT3 = 1950;
+	public final double ENCCOUNT4 = 2313;
+	public final double JUMPPOW1 = 0.2;
+	public final double JUMPPOW2 = -0.1;
 	//2052
     
 	public ClimbSystem() {

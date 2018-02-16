@@ -73,6 +73,7 @@ public class Robot extends TrackingRobot {
 	@Override protected void innerAutonomousInit(){
 		//Devices.getInstance().getTalon(2).set(ControlMode.PercentOutput, 0.5);
 		//Devices.getInstance().getTalon(2).set(ControlMode.Current, 10);
+		
 	}
 	
 	@Override protected void innerAutonomousPeriodic() {
@@ -89,11 +90,11 @@ public class Robot extends TrackingRobot {
 		//Devices.getInstance().getTalon(RobotMap.elevatorMotor).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5); //do once at start to define encoder
     	//Devices.getInstance().getTalon(RobotMap.elevatorMotor).setSelectedSensorPosition(0, 0, 10); //whenever resetting
     	//Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, -0.2);
+		
     	
 	}
 	@Override protected void innerTeleopPeriodic(){
-		
-		//keep printing enconder counts
+				//keep printing enconder counts
 		//System.out.println(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0));
 		
 		

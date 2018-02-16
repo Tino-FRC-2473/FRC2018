@@ -26,17 +26,16 @@ public class EleDown extends Command {
 	// Called just before this Command runs the first time
 	protected void initialize() 
 	{
-		sub.updateCurrDownPos();
+		//sub.updateCurrDownPos();
 		if(Robot.getControls().controlButton.get()) {
+			
 			isControl=true;
-			int currPos = sub.getCurPos();
-			System.out.println(currPos);
+			int currPos = sub.getCurrDownPos();
 			System.out.println("elevator going down");
-			if(currPos!=1) 
+			if(currPos!=0) 
 			{
-				sub.downPos();
+				sub.downPos(currPos);
 				System.out.println("elevator down");
-				sub.updateCurrDownPos();
 			}
 		}else{
 			isControl=false;
@@ -48,17 +47,16 @@ public class EleDown extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() 
 	{
-		sub.updateCurrDownPos();
-		System.out.println("At position:" + sub.getCurPos());
-		if(Devices.getInstance().getTalon(RobotMap.elevatorMotor).get()!=0)
+	//	sub.updateCurrDownPos();
+		//System.out.println("At position:" + sub.getCurPos()+" enc = "+sub.getEncCount());
+		if(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getMotorOutputPercent()!=0)
 		{
-			if(Math.abs(sub.getEncCount())<sub.POS2)
+			if(Math.abs(sub.getEncCount())<sub.POS1)
 			{
 				sub.setPow(0.3);
-			}
-			if(Math.abs(sub.getEncCount())>=sub.POS2)
+			}else if(Math.abs(sub.getEncCount())>=sub.POS1)
 			{
-				sub.setPow(0.5);		
+				sub.setPow(0.3);		
 
 			}
 		}
@@ -86,7 +84,7 @@ public class EleDown extends Command {
 		if(!isControl) {
 			Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
 			System.out.println("manual down stopped");
-			sub.updateCurrDownPos();
+		//	sub.updateCurrDownPos();
 		}
 	}
 }

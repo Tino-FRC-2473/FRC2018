@@ -7,6 +7,7 @@ import org.usfirst.frc.team2473.robot.commands.ClimbDown;
 import org.usfirst.frc.team2473.robot.commands.ClimbUp;
 import org.usfirst.frc.team2473.robot.commands.CloseArms;
 import org.usfirst.frc.team2473.robot.commands.HookDown;
+import org.usfirst.frc.team2473.robot.commands.HookJump;
 import org.usfirst.frc.team2473.robot.commands.HookUp;
 import org.usfirst.frc.team2473.robot.commands.OpenArms;
 import org.usfirst.frc.team2473.robot.commands.EleDown;
@@ -62,11 +63,13 @@ public class Controls {
 	public Button elevatorDown = new JoystickButton(stick, RobotMap.elevatorDownNum);
 	public Button cPistonInButton = new JoystickButton(stick, RobotMap.cPistonInNum);
 	public Button cPistonOutButton = new JoystickButton(stick, RobotMap.cPistonOutNum);
+	public Button jumpButton = new JoystickButton(stick,RobotMap.jumpNum);
 	
 	public Controls() {
 		//climb
-		//armDownButton.whenPressed(new HookDown());
-		//armUpButton.whenPressed(new HookUp());
+		armDownButton.whenPressed(new HookDown());
+		armUpButton.whenPressed(new HookUp());
+		//jumpButton.whenPressed(new HookJump());
 		//climbUp.whileHeld(new ClimbUp());
 		//climbDown.whileHeld(new ClimbDown());
 		
