@@ -24,7 +24,7 @@ public class DriveTrain extends PIDSubsystem {
 	private double pidValue;
 
 	private DifferentialDrive differentialDrive;
-	
+
 	private WPI_TalonSRX talonFrontLeft;
 	private WPI_TalonSRX talonBackLeft;
 	private SpeedControllerGroup leftTalons;
@@ -33,8 +33,8 @@ public class DriveTrain extends PIDSubsystem {
 	private WPI_TalonSRX talonBackRight;
 	private SpeedControllerGroup rightTalons;
 
-	private DigitalInput leftDarkSensor, middleDarkSensor, rightDarkSensor;
-	private AnalogInput leftLightSensor, middleLightSensor, rightLightSensor;
+	private DigitalInput leftDigitalSensor, middleDigitalSensor, rightDigitalSensor;
+	private AnalogInput leftAnalogSensor, middleAnalogSensor, rightAnalogSensor;
 
 	private ArrayList<DigitalInput> digitalSensorList = new ArrayList<>();
 	private ArrayList<AnalogInput> analogSensorList = new ArrayList<>();
@@ -59,16 +59,16 @@ public class DriveTrain extends PIDSubsystem {
 
 		differentialDrive = new DifferentialDrive(leftTalons, rightTalons);
 
-		leftDarkSensor = new DigitalInput(RobotMap.LEFT_DIGITAL_SENSOR); // dark
-		middleDarkSensor = new DigitalInput(RobotMap.MIDDLE_DIGITAL_SENSOR); // dark
-		rightDarkSensor = new DigitalInput(RobotMap.RIGHT_DIGITAL_SENSOR); // dark
+		leftDigitalSensor = new DigitalInput(RobotMap.LEFT_DIGITAL_SENSOR); // dark
+		middleDigitalSensor = new DigitalInput(RobotMap.MIDDLE_DIGITAL_SENSOR); // dark
+		rightDigitalSensor = new DigitalInput(RobotMap.RIGHT_DIGITAL_SENSOR); // dark
 
-		leftLightSensor = new AnalogInput(RobotMap.LEFT_ANALOG_SENSOR); // light
-		middleLightSensor = new AnalogInput(RobotMap.MIDDLE_ANALOG_SENSOR); // light
-		rightLightSensor = new AnalogInput(RobotMap.RIGHT_ANALOG_SENSOR); /// light
+		leftAnalogSensor = new AnalogInput(RobotMap.LEFT_ANALOG_SENSOR); // light
+		middleAnalogSensor = new AnalogInput(RobotMap.MIDDLE_ANALOG_SENSOR); // light
+		rightAnalogSensor = new AnalogInput(RobotMap.RIGHT_ANALOG_SENSOR); /// light
 
-		digitalSensorList.addAll(Arrays.asList(leftDarkSensor, middleDarkSensor, rightDarkSensor));
-		analogSensorList.addAll(Arrays.asList(leftLightSensor, middleLightSensor, rightLightSensor));
+		digitalSensorList.addAll(Arrays.asList(middleDigitalSensor, leftDigitalSensor, rightDigitalSensor));
+		analogSensorList.addAll(Arrays.asList(leftAnalogSensor, rightAnalogSensor, middleAnalogSensor));
 	}
 
 	@Override
@@ -77,6 +77,26 @@ public class DriveTrain extends PIDSubsystem {
 		// setDefaultCommand(new MySpecialCommand());
 	}
 
+	public AnalogInput getAnalogSensor(int port) {
+		if (port == RobotMap.LEFT_ANALOG_SENSOR) {
+			return leftAnalogSensor;
+		} else if (port == RobotMap.RIGHT_ANALOG_SENSOR) {
+			return rightAnalogSensor;
+		} else {
+			return middleAnalogSensor;
+		}
+	}
+	
+	public DigitalInput getDigitalSensor(int port) {
+		if (port == RobotMap.LEFT_DIGITAL_SENSOR) {
+			return leftDigitalSensor;
+		} else if (port == RobotMap.RIGHT_DIGITAL_SENSOR) {
+			return rightDigitalSensor;
+		} else {
+			return middleDigitalSensor;
+		}
+	}
+	
 	public boolean getDigitalSensorValue(int i) {
 		return digitalSensorList.get(i).get();
 	}
@@ -96,7 +116,7 @@ public class DriveTrain extends PIDSubsystem {
 
 	@Override
 	protected double returnPIDInput() {
-		return middleLightSensor.getValue();
+		return middleAnalogSensor.getValue();
 	}
 
 	@Override
@@ -112,9 +132,5 @@ public class DriveTrain extends PIDSubsystem {
 		setSetpoint(value);
 		this.disable();
 		this.enable();
-	}
-	
-	public AnalogInput getMiddleAnalogSensor() {
-		return middleLightSensor;
 	}
 }

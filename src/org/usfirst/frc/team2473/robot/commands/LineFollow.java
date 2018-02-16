@@ -19,7 +19,7 @@ public class LineFollow extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.driveTrain.setSetpoint(Robot.driveTrain.getMiddleAnalogSensor().getValue());
+		Robot.driveTrain.setSetpoint(Robot.driveTrain.getAnalogSensorValue(RobotMap.MIDDLE_ANALOG_SENSOR));
 		Robot.driveTrain.enable();
 	}
 
@@ -32,8 +32,8 @@ public class LineFollow extends Command {
 		Robot.driveTrain.drive(-0.4, Robot.driveTrain.getPIDValue()  + OFFSET);
 		
 		/*
-		 *	When either left or right sensor is triggered,
-		 *	1) PID is disabled while middle sensor is triggered.
+		 *	When either left or right sensor is triggered, but not both
+		 *	1) PID is disabled
 		 *	2) Turn in the appropriate direction.
 		 *	3) Re-enable PID to let nature take its course.
 		 *		A) Keep PID as is if turning right.
