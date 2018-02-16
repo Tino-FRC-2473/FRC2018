@@ -30,6 +30,15 @@ public class LineFollow extends Command {
 			SmartDashboard.putNumber("Light Sensor Value" + i, Robot.driveTrain.getAnalogSensorValue(i));
 		}
 		Robot.driveTrain.drive(-0.4, Robot.driveTrain.getPIDValue()  + OFFSET);
+		
+		/*
+		 *	When either left or right sensor is triggered,
+		 *	1) PID is disabled while middle sensor is triggered.
+		 *	2) Turn in the appropriate direction.
+		 *	3) Re-enable PID to let nature take its course.
+		 *		A) Keep PID as is if turning right.
+		 *		B) Make PID negative if turning left.
+		 */
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
