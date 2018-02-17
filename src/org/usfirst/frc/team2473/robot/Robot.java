@@ -7,7 +7,9 @@
 
 package org.usfirst.frc.team2473.robot;
 
+import org.usfirst.frc.team2473.robot.commands.LeftFollow;
 import org.usfirst.frc.team2473.robot.commands.LineFollow;
+import org.usfirst.frc.team2473.robot.commands.RightFollow;
 import org.usfirst.frc.team2473.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -25,15 +27,13 @@ public class Robot extends TimedRobot {
 	public static DriveTrain driveTrain = new DriveTrain();
 	public static OI oi;
 
-	Command command;
-
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
-		// oi = new OI();
+
 	}
 
 	/**
@@ -65,13 +65,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-
-		command = new LineFollow();
-
-		// schedule the autonomous command (example)
-		if (command != null) {
-			command.start();
-		}
+		new LineFollow().start();
 	}
 
 	/**
@@ -79,6 +73,14 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		if (Robot.driveTrain.getDigitalSensorValue(RobotMap.RIGHT_DIGITAL_SENSOR)) {
+			Scheduler.getInstance().add(new RightFollow());
+		} else if (Robot.driveTrain.getDigitalSensorValue(RobotMap.LEFT_DIGITAL_SENSOR)) {
+			Scheduler.getInstance().add(new LeftFollow());
+		} else {
+			Scheduler.getInstance().add(new LineFollow());
+		}
+
 		Scheduler.getInstance().run();
 	}
 
@@ -88,9 +90,7 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (command != null) {
-			command.cancel();
-		}
+		Scheduler.getInstance().removeAll();
 	}
 
 	/**

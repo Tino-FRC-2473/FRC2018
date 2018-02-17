@@ -30,18 +30,16 @@ public class LineFollow extends Command {
 			SmartDashboard.putBoolean("Dark Sensor Value " + i, Robot.driveTrain.getDigitalSensorValue(i));
 			SmartDashboard.putNumber("Light Sensor Value" + i, Robot.driveTrain.getAnalogSensorValue(i));
 		}
-		// Robot.driveTrain.drive(-0.4, Robot.driveTrain.getPIDValue() + OFFSET);
 
-		if (Robot.driveTrain.getDigitalSensorValue(RobotMap.LEFT_DIGITAL_SENSOR)
-				&& !Robot.driveTrain.getDigitalSensorValue(RobotMap.RIGHT_DIGITAL_SENSOR)) {
-			Robot.driveTrain.drive(-0.4, -Robot.driveTrain.getPIDValue() + OFFSET);
-		} else {
-			Robot.driveTrain.drive(-0.4, Robot.driveTrain.getPIDValue() + OFFSET);
-		}
+		Robot.driveTrain.drive(-0.4, Robot.driveTrain.getPIDValue() + OFFSET);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
+		if (Robot.driveTrain.getDigitalSensorValue(RobotMap.LEFT_DIGITAL_SENSOR)
+				|| Robot.driveTrain.getDigitalSensorValue(RobotMap.RIGHT_DIGITAL_SENSOR)) {
+			return true;
+		}
 		return false;
 	}
 
