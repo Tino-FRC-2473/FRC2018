@@ -27,6 +27,8 @@ public class Robot extends TimedRobot {
 	public static DriveTrain driveTrain = new DriveTrain();
 	public static OI oi;
 
+	public Command command;
+
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
@@ -65,7 +67,11 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		new LineFollow().start();
+		command = new LineFollow();
+
+		if (command != null) {
+			command.start();
+		}
 	}
 
 	/**
@@ -73,14 +79,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		if (Robot.driveTrain.getDigitalSensorValue(RobotMap.RIGHT_DIGITAL_SENSOR)) {
-			Scheduler.getInstance().add(new RightFollow());
-		} else if (Robot.driveTrain.getDigitalSensorValue(RobotMap.LEFT_DIGITAL_SENSOR)) {
-			Scheduler.getInstance().add(new LeftFollow());
-		} else {
-			Scheduler.getInstance().add(new LineFollow());
-		}
-
 		Scheduler.getInstance().run();
 	}
 
