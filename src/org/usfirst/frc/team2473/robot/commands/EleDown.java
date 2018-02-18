@@ -31,6 +31,7 @@ public class EleDown extends Command {
 			
 			isControl=true;
 			int currPos = sub.getCurrDownPos();
+			System.out.println("Position: " + currPos + " Enc: " + Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0));
 			System.out.println("elevator going down");
 			if(currPos!=0) 
 			{
@@ -49,7 +50,7 @@ public class EleDown extends Command {
 	{
 	//	sub.updateCurrDownPos();
 		//System.out.println("At position:" + sub.getCurPos()+" enc = "+sub.getEncCount());
-		if(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getMotorOutputPercent()!=0)
+		if(!isControl && Devices.getInstance().getTalon(RobotMap.elevatorMotor).getMotorOutputPercent()!=0)
 		{
 			if(Math.abs(sub.getEncCount())<sub.POS1)
 			{
@@ -73,7 +74,7 @@ public class EleDown extends Command {
 	{
 		if(!isControl) {
 			Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
-			System.out.println("ELEVATOR LIMIT SWITCH HIT");
+			//System.out.println("ELEVATOR LIMIT SWITCH HIT");
 			Devices.getInstance().getTalon(RobotMap.elevatorMotor).setSelectedSensorPosition(0, 0, 10);
 		}
 	}

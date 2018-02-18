@@ -51,13 +51,17 @@ public class ClimbSystem extends TrackableSubsystem
     }
  
     
-    public void climbUp() 
+    public void climbUp1() 
     {
     	Devices.getInstance().getTalon(RobotMap.climbMotorR).set(ControlMode.PercentOutput, CLIMBPOW);
-    	Devices.getInstance().getTalon(RobotMap.climbMotorL2).set(ControlMode.PercentOutput, -CLIMBPOW);
     	Devices.getInstance().getTalon(RobotMap.climbMotorR2).set(ControlMode.PercentOutput, CLIMBPOW);
     	System.out.println("climbing up");
+    }
+    
+    public void climbUp2() {
     	Devices.getInstance().getTalon(RobotMap.climbMotorL).set(ControlMode.PercentOutput, -CLIMBPOW);
+    	Devices.getInstance().getTalon(RobotMap.climbMotorL2).set(ControlMode.PercentOutput, -CLIMBPOW);
+
     }
     
     
@@ -66,8 +70,8 @@ public class ClimbSystem extends TrackableSubsystem
     	Devices.getInstance().getTalon(RobotMap.climbMotorR).set(ControlMode.PercentOutput, -CLIMBPOW);
     	Devices.getInstance().getTalon(RobotMap.climbMotorL2).set(ControlMode.PercentOutput, CLIMBPOW);
     	Devices.getInstance().getTalon(RobotMap.climbMotorR2).set(ControlMode.PercentOutput, -CLIMBPOW);
-    	System.out.println("climb down");
     	Devices.getInstance().getTalon(RobotMap.climbMotorL).set(ControlMode.PercentOutput, CLIMBPOW);
+    	System.out.println("climb down");
     }
     
    
@@ -75,8 +79,8 @@ public class ClimbSystem extends TrackableSubsystem
     	Devices.getInstance().getTalon(RobotMap.climbMotorR).stopMotor();
     	Devices.getInstance().getTalon(RobotMap.climbMotorL2).stopMotor();
     	Devices.getInstance().getTalon(RobotMap.climbMotorR2).stopMotor();
-    	System.out.println("stopped");
     	Devices.getInstance().getTalon(RobotMap.climbMotorL).stopMotor();
+    	System.out.println("stopped");
     }
 
 	@Override

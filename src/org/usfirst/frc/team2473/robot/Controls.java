@@ -4,7 +4,8 @@ import org.usfirst.frc.team2473.robot.commands.CPistonIn;
 import org.usfirst.frc.team2473.robot.commands.CPistonOut;
 import org.usfirst.frc.team2473.robot.commands.ClimbDown;
 
-import org.usfirst.frc.team2473.robot.commands.ClimbUp;
+import org.usfirst.frc.team2473.robot.commands.ClimbUp1;
+import org.usfirst.frc.team2473.robot.commands.ClimbUp2;
 import org.usfirst.frc.team2473.robot.commands.CloseArms;
 import org.usfirst.frc.team2473.robot.commands.HookDown;
 import org.usfirst.frc.team2473.robot.commands.HookJump;
@@ -54,7 +55,8 @@ public class Controls {
 	public Joystick stick = new Joystick(RobotMap.joystickNum);
 	public Button armDownButton = new JoystickButton(stick,RobotMap.armDownNum);
 	public Button armUpButton = new JoystickButton(stick,RobotMap.armUpNum);
-	public Button climbUp = new JoystickButton(stick,RobotMap.climbUp);
+	public Button climbUp1 = new JoystickButton(stick,RobotMap.climbUp1);
+	public Button climbUp2 = new JoystickButton(stick,RobotMap.climbUp2);
 	public Button climbDown = new JoystickButton(stick,RobotMap.climbDown);
 	public Button openArmsButton = new JoystickButton(stick,RobotMap.openArmsNum);
 	public Button closeArmsButton = new JoystickButton(stick,RobotMap.closeArmsNum);
@@ -63,19 +65,21 @@ public class Controls {
 	public Button elevatorDown = new JoystickButton(stick, RobotMap.elevatorDownNum);
 	public Button cPistonInButton = new JoystickButton(stick, RobotMap.cPistonInNum);
 	public Button cPistonOutButton = new JoystickButton(stick, RobotMap.cPistonOutNum);
-	public Button jumpButton = new JoystickButton(stick,RobotMap.jumpNum);
+	//public Button jumpButton = new JoystickButton(stick,RobotMap.jumpNum);
 	
 	public Controls() {
 		//climb
-		armDownButton.whenPressed(new HookDown());
-		armUpButton.whenPressed(new HookUp());
+		//armDownButton.whenPressed(new HookDown());
+		//armUpButton.whenPressed(new HookUp());
 		//jumpButton.whenPressed(new HookJump());
-		//climbUp.whileHeld(new ClimbUp());
+	//	climbUp1.whileHeld(new ClimbUp1());
+	//	climbUp2.whileHeld(new ClimbUp2());
+
 		//climbDown.whileHeld(new ClimbDown());
 		
 		//claw
-		openArmsButton.whenPressed(new OpenArms());
-		closeArmsButton.whenPressed(new CloseArms());
+		//openArmsButton.whenPressed(new OpenArms());
+		//closeArmsButton.whenPressed(new CloseArms());
 
 		
 		//cPistonInButton.whileHeld(new CPistonIn());

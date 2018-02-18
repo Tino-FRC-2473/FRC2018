@@ -16,7 +16,7 @@ package org.usfirst.frc.team2473.robot;
 public class RobotMap {
 
 	//motors
-	public static int elevatorMotor = 11;
+	public static int elevatorMotor = 2;
 	public static int climbArmMotor = 10;
 	public static int climbMotorL = 4;
 	public static int climbMotorL2 = 5;
@@ -37,13 +37,14 @@ public class RobotMap {
 	//button ports
 	public static int armDownNum = 2;
 	public static int armUpNum = 4;
-	public static int jumpNum = 3;
+	//public static int jumpNum = 3;
 	public static int openArmsNum = 11;
 	public static int closeArmsNum = 12;
 	public static int controlButtonNum = 8;
 	public static int elevatorUpNum = 5;
 	public static int elevatorDownNum = 6;
-	public static int climbUp = 10;
+	public static int climbUp1 = 1;
+	public static int climbUp2 = 3;
 	public static int climbDown = 10;
 	public static int cPistonInNum = 10;
 	public static int cPistonOutNum = 10;

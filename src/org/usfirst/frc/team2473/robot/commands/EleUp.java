@@ -33,6 +33,7 @@ public class EleUp extends Command {
 		{
 			isControl=true;
 			int currPos = sub.getCurrUpPos();
+			System.out.println("Position: " + currPos + " Enc: " + Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0));
 			System.out.println("elevator going up");
 			if(currPos!=3) 
 			{
@@ -52,7 +53,7 @@ public class EleUp extends Command {
 	protected void execute() 
 	{
 		//System.out.println("At position:" + sub.getCurPos()+" enc = "+ sub.getEncCount());
-		if(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getMotorOutputPercent()!=0)
+		if(!isControl && Devices.getInstance().getTalon(RobotMap.elevatorMotor).getMotorOutputPercent()!=0)
 		{
 			if(Math.abs(sub.getEncCount())<sub.POS1)
 			{

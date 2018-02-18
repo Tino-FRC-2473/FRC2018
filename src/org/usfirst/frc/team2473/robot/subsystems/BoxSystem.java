@@ -19,9 +19,9 @@ public class BoxSystem extends TrackableSubsystem
 {
 	public final double POWER = 0.3;
 	public static final int POS0 = 0;
-	public static final int POS1 = 1000;
-	public static final int POS2 = 5600;
-	public static final int POS3 = 11000;
+	public static final int POS1 = 10000;
+	public static final int POS2 = 56000;
+	public static final int POS3 = 110000;
 	public int[] posArray = {POS0, POS1, POS2, POS3};
 	private int currPos = 1;
 	private int startPos = 0;
@@ -81,10 +81,10 @@ public class BoxSystem extends TrackableSubsystem
 		Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, -POWER);
 		while(getEncCount()<posArray[x+1])
 		{
-			System.out.println(getEncCount());
+			//System.out.println(getEncCount());
 		}
-		Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
-		System.out.println("Elevator at POSITION: " + x+1);
+		Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, 0);
+		System.out.println("Elevator at POSITION: " + (x+1));
 		System.out.println("Encoder value: " + getEncCount());
 	}
 
@@ -92,17 +92,17 @@ public class BoxSystem extends TrackableSubsystem
 		Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, +POWER);
 		while(getEncCount()>posArray[x-1])
 		{
-			System.out.println(getEncCount());
+			//System.out.println(getEncCount());
 			if(Devices.getInstance().getDigitalInput(RobotMap.eleBottomLS).get()) 
 			{
-				Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
-				System.out.println("BOTTOM ELEVATOR LIMIT SWITCH HIT");
-				Devices.getInstance().getTalon(RobotMap.elevatorMotor).setSelectedSensorPosition(0, 0, 10);
-				break;
+				//Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, 0);
+				//System.out.println("BOTTOM ELEVATOR LIMIT SWITCH HIT");
+				//Devices.getInstance().getTalon(RobotMap.elevatorMotor).setSelectedSensorPosition(0, 0, 10);
+				//break;
 			}
 		}
 		Devices.getInstance().getTalon(RobotMap.elevatorMotor).stopMotor();
-		System.out.println("Elevator at POSITION: " + currPos);
+		System.out.println("Elevator at POSITION: " + (x-1));
 		System.out.println("Encoder value: " + getEncCount());
 	}
 
@@ -118,7 +118,7 @@ public class BoxSystem extends TrackableSubsystem
 		for(int i = 0;i<=posArray.length-1;i++)
 		{
 			if(enc<posArray[i]) {
-				System.out.println("At position: " + (i-1));
+				System.out.println("returned position: " + (i-1));
 				return i-1;
 			}
 		}
@@ -132,7 +132,7 @@ public class BoxSystem extends TrackableSubsystem
 		for(int i = 0;i<=posArray.length-1;i++)
 		{
 			if(enc<posArray[i]) {
-				System.out.println("At position: " + (i));
+				System.out.println("returned position: " + (i));
 				return i;
 			}
 		}
