@@ -72,16 +72,17 @@ class CalcDistAng():
 
 		#diagCubeRatio = 11 / (13 * math.sqrt(2)) #+ 0.1  #just as a buffer
 		straightCubeRatio = 13/11.0
+		diagCubeRatio = 13*math.sqrt(2) / 11
 
 		#print diagCubeRatio
 		print realRatio
 
 		#print "diag thres: " + str(realRatio/ diagCubeRatio)
 		print "straight thres: " + str(realRatio/straightCubeRatio)
+		print "dig thres: " + str(realRatio/diagCubeRatio)
 
 
-
-		numNextTo = math.ceil(realRatio/straightCubeRatio)
+		numNextTo = math.ceil(realRatio/diagCubeRatio)
 		#while (origLength / width >= ((numNextTo + 1) * diagCubeRatio + 0.1) ):
 			#print numNextTo
 			#print str((numNextTo + 1) * diagCubeRatio)
@@ -185,9 +186,9 @@ class CalcDistAng():
 		return False
 
 # print "here"
-# foo = CalcDistAng()
-# while True:
-# 	width = input("enter width: ")
-# 	height = input("enter height: ")
-# 	print foo.calcDistAndAdjAngUsingAdjs(0, 0, width, height, 0)
+foo = CalcDistAng()
+while True:
+	width = input("enter width: ")
+	height = input("enter height: ")
+ 	print foo.calcAdjXcoords(0, 0, width, height)
 
