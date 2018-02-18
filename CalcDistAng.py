@@ -13,6 +13,19 @@ class CalcDistAng():
 		self.DIST_CONSTANT = 15534.5065179
 		self.DIST_CONSTANT = self.DIST_CONSTANT * 720 / 1080.0
 
+	def calcDistAndAdjAngUsingAdjs(self, x1, y1, x2, y2, offsetLength):
+		adjLength = self.calcAdjLength(x1, y1, x2, y2)
+
+		print "adjLength: " + str(adjLength)
+		
+		adjX1, adjX2 = self.calcAdjXcoords(x1, y1, x2, y2)
+		print "adjXCoords: " + str(self.calcAdjXcoords(x1, y1, x2, y2))
+
+		dist, adjAng = self.calcDistAndAdjAng(adjX1, y1, adjX2, y1+adjLength, offsetLength)
+		
+		return dist, adjAng
+
+
 	def calcDistAndAdjAng(self, x1, y1, x2, y2, offsetLength):
 		dist, ang = self.calcDistAndAng(x1, y1, x2, y2)
 		distPerpendicular = self.calcDistPerpendicular(math.fabs(y2-y1))
@@ -26,6 +39,82 @@ class CalcDistAng():
 		dist = self.calcDistHypotenuseDeg(length, ang)
 
 		return dist, ang
+
+	def calcAdjLength(self, x1, y1, x2, y2):
+		origLength = math.fabs(y2 - y1)
+		width = math.fabs(x2 - x1)
+		realRatio = (origLength / width)
+
+		diagCubeRatio = 11 / (13 * math.sqrt(2)) #+ 0.1  #just as a buffer
+		straightCubeRatio = 11/13.0
+
+		print diagCubeRatio
+		print realRatio
+
+		print "diag thres: " + str(realRatio/ diagCubeRatio)
+		print "straight thres: " + str(realRatio/straightCubeRatio)
+
+
+
+		numStacked = math.ceil(realRatio/straightCubeRatio)
+		#while (origLength / width >= ((numStacked + 1) * diagCubeRatio + 0.1) ):
+			#print numStacked
+			#print str((numStacked + 1) * diagCubeRatio)
+			#numStacked+=1
+		
+		print numStacked
+		return float(origLength) / numStacked
+
+	def calcAdjXcoords(self, x1, y1, x2, y2):
+		length = math.fabs(y2 - y1)
+		origWidth = math.fabs(x2 - x1)
+		realRatio = (origWidth / length)
+
+		#diagCubeRatio = 11 / (13 * math.sqrt(2)) #+ 0.1  #just as a buffer
+		straightCubeRatio = 13/11.0
+
+		#print diagCubeRatio
+		print realRatio
+
+		#print "diag thres: " + str(realRatio/ diagCubeRatio)
+		print "straight thres: " + str(realRatio/straightCubeRatio)
+
+
+
+		numNextTo = math.ceil(realRatio/straightCubeRatio)
+		#while (origLength / width >= ((numNextTo + 1) * diagCubeRatio + 0.1) ):
+			#print numNextTo
+			#print str((numNextTo + 1) * diagCubeRatio)
+			#numNextTo+=1
+		
+		print "numNextTo: "+str(numNextTo)
+		
+
+		adjWidth = float(origWidth) / numNextTo
+		print "adjWidth: "+str(adjWidth)
+
+		retx1 = self.calcCenterX1(x1, numNextTo, adjWidth)
+		retx2 = retx1+adjWidth
+
+		return retx1, retx2
+
+
+	def calcCenterX1(self, x1, numNextTo, adjWidth, screenwidth=None):
+		if screenwidth is None:
+			screenwidth = self.SCREEN_WIDTH
+
+		centerX = screenwidth/2.0
+		print centerX
+
+		numBoxesToRight = math.floor((centerX - x1) / adjWidth)
+		print numBoxesToRight
+
+		if numBoxesToRight <=0:
+			return x1
+		elif numBoxesToRight < numNextTo:
+			return x1 + numBoxesToRight*adjWidth
+		else:
+			return x1 + (numNextTo-1)*adjWidth
 
 	def calcDistPerpendicular(self, length, distConst=None): #the length of the object
 		if distConst is None:
@@ -95,7 +184,10 @@ class CalcDistAng():
 			return True
 		return False
 
-#print "here"
-#foo = CalcDistAng()
-#print "here2"
-#print foo.calcDistPerpendicular(22)
+# print "here"
+# foo = CalcDistAng()
+# while True:
+# 	width = input("enter width: ")
+# 	height = input("enter height: ")
+# 	print foo.calcDistAndAdjAngUsingAdjs(0, 0, width, height, 0)
+
