@@ -10,7 +10,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class LeftFollow extends Command {
-
+	
+	private boolean offTheLine = false;
+	
 	public LeftFollow() {
 		requires(Robot.driveTrain);
 	}
@@ -26,12 +28,15 @@ public class LeftFollow extends Command {
 			SmartDashboard.putBoolean("Dark Sensor Value " + i, Robot.driveTrain.getDigitalSensorValue(i));
 			SmartDashboard.putNumber("Light Sensor Value" + i, Robot.driveTrain.getAnalogSensorValue(i));
 		}
+		if (!Robot.driveTrain.getDigitalSensorValue(RobotMap.MIDDLE_DIGITAL_SENSOR)) {
+			offTheLine = true;
+		}
 		Robot.driveTrain.drive(-0.4, -0.321);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		if (Robot.driveTrain.getDigitalSensorValue(RobotMap.MIDDLE_DIGITAL_SENSOR)) {
+		if (offTheLine && Robot.driveTrain.getDigitalSensorValue(RobotMap.MIDDLE_DIGITAL_SENSOR)) {
 			new LineFollow().start();
 			return true;
 		}
