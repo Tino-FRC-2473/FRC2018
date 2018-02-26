@@ -29,7 +29,7 @@
 
 		For Windows Users:
 			
-			1. Click this link to download the installer: http://www.ctr-electronics.com/downloads/installers/CTRE%20Phoenix%20Framework%20v5.1.3.1.zip
+			1. Click this link and download the Installer version of the CTRE Phoenix Framework: http://www.ctr-electronics.com/hro.html#product_tabs_technical_resources
 			
 			2. Follow the steps to install the libraries.
 			
@@ -37,7 +37,7 @@
 			
 		For Mac Users:
 		
-			1. Click this link to download the zip file: http://www.ctr-electronics.com//downloads/lib/CTRE_FRCLibs_NON-WINDOWS_v4.4.1.14.zip
+			1. Click this link and download the Non-Installer version of the CTRE Phoenix Franework: http://www.ctr-electronics.com/hro.html#product_tabs_technical_resources
 			
 			2. Unzip the folder, and open it.
 			
