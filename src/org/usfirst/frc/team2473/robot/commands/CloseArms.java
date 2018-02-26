@@ -1,6 +1,5 @@
 package org.usfirst.frc.team2473.robot.commands;
 
-import org.usfirst.frc.team2473.robot.Controls;
 import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
 

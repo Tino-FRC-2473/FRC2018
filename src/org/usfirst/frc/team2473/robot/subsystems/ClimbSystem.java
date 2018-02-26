@@ -2,16 +2,12 @@ package org.usfirst.frc.team2473.robot.subsystems;
 
 import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.framework.TrackableSubsystem;
-import org.usfirst.frc.team2473.robot.Controls;
-import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  *

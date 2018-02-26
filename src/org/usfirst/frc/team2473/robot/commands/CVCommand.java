@@ -6,7 +6,6 @@ import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CVCommand extends Command {

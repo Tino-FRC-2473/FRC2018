@@ -27,7 +27,7 @@ public class PreSwitchBox extends Command {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return Math.abs(init_enc - boxSystem.getEncCount()) >= boxSystem.POS2;
+		return Math.abs(init_enc - boxSystem.getEncCount()) >= BoxSystem.POS2;
 	}
 
 	@Override

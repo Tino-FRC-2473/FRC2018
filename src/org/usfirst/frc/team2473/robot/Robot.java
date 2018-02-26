@@ -29,16 +29,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TrackingRobot {
 	
-	/* CV TELEOP STUFF */
+	//CV TELEOP STUFF
 	public CVCommand cvDrive;
 	public static DriveCommand drive;
 
-	/* Autonomous command-based stuff */
-	CommandGroup autonomousCommand;
+	//autonomous command-based stuff
+	private CommandGroup autonomousCommand;
 	private SendableChooser<Route> chooser;
 	private Preferences pref;
 
-	/* Robot modes */
+	//robot modes
 	public static boolean isNetwork = true;
 
 	@Override
@@ -48,9 +48,9 @@ public class Robot extends TrackingRobot {
 
 	@Override
 	protected void innerRobotInit() {		
-		/* autonomous calibration */
-		initChooser();
-		initSensors();
+		//autonomous calibration
+		this.initChooser();
+		this.initSensors();
 
 		/* tele-op command creation */
 		cvDrive = new CVCommand();
@@ -59,7 +59,7 @@ public class Robot extends TrackingRobot {
 		TrackingRobot.getDriveTrain().enable();
 		// TODO this is here only for testing purposes. Prob should be in auto init
 
-		 UsbCamera camera0 = CameraServer.getInstance().startAutomaticCapture("Camera 0 ", 0);
+		 UsbCamera camera0 = CameraServer.getInstance().startAutomaticCapture("Camera 0", 0);
 		 camera0.setBrightness(0);
 		 camera0.setResolution(160, 120);
 		
@@ -70,19 +70,20 @@ public class Robot extends TrackingRobot {
 
 	@Override
 	protected void innerAutonomousInit() {
-		zeroYawIteratively();
+		this.zeroYawIteratively();
 
 		// Handle delay
 		double delay = pref.getDouble("delay", 0);
 		double origTime = System.currentTimeMillis() / 1000;
-		while (System.currentTimeMillis() / 1000 < (delay + origTime))
+		while(System.currentTimeMillis() / 1000 < (delay + origTime))
 			;
 		SmartDashboard.putString("Delay Status", "Delay passed");
 
 		System.out.println("Scheduler cleared...");
 		((AutonomousRoute) autonomousCommand).configure(
-				(DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'R'), chooser.getSelected());
-		autonomousCommand.start();
+				(DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'R'), chooser.getSelected()
+		);
+//		autonomousCommand.start(); //already done in trackingrobot
 	}
 
 	protected void innerTeleopInit() {
@@ -145,13 +146,12 @@ public class Robot extends TrackingRobot {
 
 	@Override
 	protected TrackableSubsystem[] tSubsystems() {
-		// TODO Auto-generated method stub
 		return new TrackableSubsystem[] { new ClimbSystem(), new BoxSystem() };
 	}
 
 	@Override
 	protected Command getAutonomousCommand() {
-		if (autonomousCommand == null) {
+		if(autonomousCommand == null) {
 			autonomousCommand = new AutonomousRoute();
 		}
 		return autonomousCommand;
@@ -170,7 +170,7 @@ public class Robot extends TrackingRobot {
 	private void zeroYawIteratively() {
 		Devices.getInstance().getNavXGyro().zeroYaw();
 		System.out.println("Zeroing yaw...");
-		while (Math.abs(Devices.getInstance().getNavXGyro().getYaw()) > 1)
+		while(Math.abs(Devices.getInstance().getNavXGyro().getYaw()) > 1)
 			;
 		System.out.println("Yaw zeroed.");
 	}

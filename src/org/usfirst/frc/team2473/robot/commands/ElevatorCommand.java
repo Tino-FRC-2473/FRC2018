@@ -1,8 +1,6 @@
 package org.usfirst.frc.team2473.robot.commands;
 
-import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.robot.Robot;
-import org.usfirst.frc.team2473.robot.RobotMap;
 import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -12,8 +10,8 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ElevatorCommand extends Command {
 	private BoxSystem sub;
-	private boolean isControl;
-	private double startingEnc;
+//	private boolean isControl;
+//	private double startingEnc;
 
 	public ElevatorCommand() {
 		sub = (BoxSystem) Robot.getSubsystem(BoxSystem.class);

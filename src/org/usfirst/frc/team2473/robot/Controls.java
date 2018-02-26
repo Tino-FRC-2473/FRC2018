@@ -20,7 +20,8 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class Controls {
 
-	Joystick throttle, wheel;
+	private Joystick throttle, wheel;
+	
 	private Button buttonCV;
 	public Button armDownButton;
 	public Button armUpButton;

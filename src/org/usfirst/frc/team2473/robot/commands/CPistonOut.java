@@ -4,7 +4,6 @@ import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  *

@@ -103,10 +103,11 @@ public abstract class TrackingRobot extends IterativeRobot {
 	 * @param cls Class type of the TrackableSubsystem to be returned.
 	 * @return The TrackableSubsystem indicated by the parameter class.
 	 */
-	public static <T extends TrackableSubsystem> T getSubsystem(Class<T > cls) {
+	@SuppressWarnings("unchecked")
+	public static <T extends TrackableSubsystem> T getSubsystem(Class<T> cls) {
 		for(int i = 0; i < subsystems.length; i++) {
 			if(subsystems[i].getClass().equals(cls)) {
-				return (T) subsystems[i];
+				return (T)subsystems[i];
 			}
 		}
 		System.out.println("ERROR: SUBSYSTEM CLASS " + cls.getSimpleName() + " NOT FOUND");
@@ -151,7 +152,6 @@ public abstract class TrackingRobot extends IterativeRobot {
 			try {
 				jetsonThread = jetsonThread();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			

@@ -13,8 +13,8 @@ import java.net.Socket;
  * @author wang.patrick57@gmail.com
  */
 public class UtilitySocket extends Socket {
-	BufferedReader reader;
-	PrintStream stream;
+	private BufferedReader reader;
+	private PrintStream stream;
 	
 	/**
 	 * Creates the socket and initializes the BufferedReader and PrintStream.
@@ -42,9 +42,8 @@ public class UtilitySocket extends Socket {
 	 */
 	public String getLine() {
 		try {
-			if(reader.ready()) {
+			if(reader.ready())
 				return reader.readLine();
-			}
 		} catch (IOException e) {
 			System.out.println(e.getStackTrace());
 		}

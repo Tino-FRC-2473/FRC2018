@@ -16,8 +16,7 @@ public class DatabaseAndPingThread extends Thread {
 	private UtilitySocket uSocket;
 	private boolean alive;
 	
-	private final boolean DEBUG;	
-	
+	private final boolean DEBUG;
 	
 	/**
 	 * Creates a SocketPingThread.
@@ -40,11 +39,11 @@ public class DatabaseAndPingThread extends Thread {
 			try {
 				long startTime = System.currentTimeMillis();
 				String received = uSocket.getLine();
-				ifDebugPrint("received: " + received);
+				ifDebugPrintln("received: " + received);
 				
 				while(received != null) {
 					if(received.equals("s")) {
-						ifDebugPrint("server ping received");
+						ifDebugPrintln("server ping received");
 						uSocket.sendLine("c");
 						everyTick();
 					} else {
@@ -77,7 +76,7 @@ public class DatabaseAndPingThread extends Thread {
 //						System.out.println(Database.getInstance().getNumeric("dist") + " " + Database.getInstance().getNumeric("ang"));
 					}
 					received = uSocket.getLine();
-					ifDebugPrint("received: " + received);
+					ifDebugPrintln("received: " + received);
 				}
 				
 				
@@ -102,7 +101,7 @@ public class DatabaseAndPingThread extends Thread {
 	 */
 	public void requestValues() {
 		uSocket.sendLine("r");
-		ifDebugPrint("requesting values");
+		ifDebugPrintln("requesting values");
 	}
 	
 	/**
@@ -119,7 +118,7 @@ public class DatabaseAndPingThread extends Thread {
 		}
 	}
 	
-	private void ifDebugPrint(String s) {
+	private void ifDebugPrintln(String s) {
 		if(DEBUG) System.out.println(s);
 	}
 }
