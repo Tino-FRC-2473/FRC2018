@@ -6,7 +6,7 @@ import org.usfirst.frc.team2473.framework.DatabaseAndPingThread;
 import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.framework.TrackableSubsystem;
 import org.usfirst.frc.team2473.framework.TrackingRobot;
-import org.usfirst.frc.team2473.robot.RobotMap.Route;
+import org.usfirst.frc.team2473.robot.Auto.Route;
 import org.usfirst.frc.team2473.robot.commands.AutonomousRoute;
 import org.usfirst.frc.team2473.robot.commands.CVCommand;
 import org.usfirst.frc.team2473.robot.commands.ClawCommand;
@@ -52,7 +52,7 @@ public class Robot extends TrackingRobot {
 		this.initChooser();
 		this.initSensors();
 
-		/* tele-op command creation */
+		/* teleop command creation */
 		cvDrive = new CVCommand();
 		drive = new DriveCommand();
 
@@ -141,7 +141,7 @@ public class Robot extends TrackingRobot {
 
 	@Override
 	protected String getProgramName() {
-		return "Autonomous";
+		return "Drive Code, Working on Autonomous";
 	}
 
 	@Override
@@ -151,9 +151,8 @@ public class Robot extends TrackingRobot {
 
 	@Override
 	protected Command getAutonomousCommand() {
-		if(autonomousCommand == null) {
+		if(autonomousCommand == null)
 			autonomousCommand = new AutonomousRoute();
-		}
 		return autonomousCommand;
 	}
 
@@ -162,10 +161,10 @@ public class Robot extends TrackingRobot {
 		return new PIDriveTrain();
 	}
 
-	// For shorthand
-	public static double getYaw() {
-		return Devices.getInstance().getNavXGyro().getYaw();
-	}
+	//UNUSED, REMOVE?
+//	public static double getYaw() {
+//		return Devices.getInstance().getNavXGyro().getYaw();
+//	}
 
 	private void zeroYawIteratively() {
 		Devices.getInstance().getNavXGyro().zeroYaw();

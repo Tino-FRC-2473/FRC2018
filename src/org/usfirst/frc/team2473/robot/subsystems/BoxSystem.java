@@ -13,6 +13,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
  *
  */
 public class BoxSystem extends TrackableSubsystem {
+	private static final double ELE_SAFE_POWER = 0.3;
+	private static final double ELE_NORMAL_POWER = 1.0;
+	private static final double ELE_AUTOMATED_POWER = 0.9;
+	
 	private int currLevel = 0;
 	public final double POWER = 0.3;
 	public static final int POS0 = 0;
@@ -36,10 +40,8 @@ public class BoxSystem extends TrackableSubsystem {
 	}
 
 	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
-		// setDefaultCommand(new MySpecialCommand());
-		Devices.getInstance().getTalon(RobotMap.ELEVATOR_MOTOR).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,
-				0, 5); // do once at start to define encoder
+		// do once at start to define encoder
+		Devices.getInstance().getTalon(RobotMap.ELEVATOR_MOTOR).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
 		Devices.getInstance().getTalon(RobotMap.ELEVATOR_MOTOR).setSelectedSensorPosition(0, 0, 10);
 	}
 
@@ -64,7 +66,7 @@ public class BoxSystem extends TrackableSubsystem {
 	public int getNextLevel(boolean up) {
 		int currLevel = getCurrPos();
 		int returner = -1;
-		if (up) {
+		if(up) {
 			if (currLevel > 3) {
 				returner = 4;
 			} else {
@@ -84,14 +86,14 @@ public class BoxSystem extends TrackableSubsystem {
 	public int getNextLevel(boolean up, int currEnc) {
 		int currLevel = getCurrPos(currEnc);
 		int returner = -1;
-		if (up) {
-			if (currLevel > 3) {
+		if(up) {
+			if(currLevel > 3) {
 				returner = 4;
 			} else {
 				returner = currLevel + 1;
 			}
 		} else {
-			if (currLevel < 2) {
+			if(currLevel < 2) {
 				returner = 0;
 			} else {
 				returner = currLevel - 1;
@@ -113,72 +115,72 @@ public class BoxSystem extends TrackableSubsystem {
 	}
 
 	public double getUpPower() {
-		return (getCurrPos() >= 4 || getCurrPos() < 2) ? -RobotMap.ELE_SAFE_POWER : -RobotMap.ELE_NORMAL_POWER;
+		return (getCurrPos() >= 4 || getCurrPos() < 2) ? -ELE_SAFE_POWER : -ELE_NORMAL_POWER;
 	}
 
 	public double getDownPower() {
-		return (getCurrPos() < 2) ? RobotMap.ELE_SAFE_POWER : RobotMap.ELE_NORMAL_POWER;
+		return (getCurrPos() < 2) ? ELE_SAFE_POWER : ELE_NORMAL_POWER;
 	}
 
 	public double getDownAutomatedPower() {
-		return (getCurrPos() < 2) ? RobotMap.ELE_SAFE_POWER : RobotMap.ELE_AUTOMATED_POWER;
+		return (getCurrPos() < 2) ? ELE_SAFE_POWER : ELE_AUTOMATED_POWER;
 	}
 
 	public double getUpAutomatedPower() {
-		return (getCurrPos() >= 4 || getCurrPos() < 2) ? -RobotMap.ELE_SAFE_POWER : -RobotMap.ELE_AUTOMATED_POWER;
+		return (getCurrPos() >= 4 || getCurrPos() < 2) ? -ELE_SAFE_POWER : -ELE_AUTOMATED_POWER;
 	}
 
 	public void setPistonR() {
-		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel, RobotMap.solenoidBCLRChannel)
+		Devices.getInstance().getDoubleSolenoid(RobotMap.BCLF_SOLENOID, RobotMap.BCLR_SOLENOID)
 				.set(Value.kReverse);
-		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel, RobotMap.solenoidBCRRChannel)
+		Devices.getInstance().getDoubleSolenoid(RobotMap.BCRF_SOLENOID, RobotMap.BCRR_SOLENOID)
 				.set(Value.kReverse);
 	}
 
 	public boolean pistonInR() {
-		return Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel, RobotMap.solenoidBCLRChannel)
+		return Devices.getInstance().getDoubleSolenoid(RobotMap.BCLF_SOLENOID, RobotMap.BCLR_SOLENOID)
 				.get() == (Value.kReverse)
-				&& Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel, RobotMap.solenoidBCRRChannel)
+				&& Devices.getInstance().getDoubleSolenoid(RobotMap.BCRF_SOLENOID, RobotMap.BCRR_SOLENOID)
 						.get() == Value.kReverse;
 	}
 
 	public boolean pistonInF() {
-		return Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel, RobotMap.solenoidBCLRChannel)
+		return Devices.getInstance().getDoubleSolenoid(RobotMap.BCLF_SOLENOID, RobotMap.BCLR_SOLENOID)
 				.get() == Value.kForward
-				&& Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel, RobotMap.solenoidBCRRChannel)
+				&& Devices.getInstance().getDoubleSolenoid(RobotMap.BCRF_SOLENOID, RobotMap.BCRR_SOLENOID)
 						.get() == Value.kForward;
 	}
 
 	public void setPistonOff() {
-		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel, RobotMap.solenoidBCLRChannel)
+		Devices.getInstance().getDoubleSolenoid(RobotMap.BCLF_SOLENOID, RobotMap.BCLR_SOLENOID)
 				.set(Value.kOff);
-		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel, RobotMap.solenoidBCRRChannel)
+		Devices.getInstance().getDoubleSolenoid(RobotMap.BCRF_SOLENOID, RobotMap.BCRR_SOLENOID)
 				.set(Value.kOff);
 	}
 
 	public void setPistonF() {
-		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel, RobotMap.solenoidBCLRChannel)
+		Devices.getInstance().getDoubleSolenoid(RobotMap.BCLF_SOLENOID, RobotMap.BCLR_SOLENOID)
 				.set(Value.kForward);
-		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel, RobotMap.solenoidBCRRChannel)
+		Devices.getInstance().getDoubleSolenoid(RobotMap.BCRF_SOLENOID, RobotMap.BCRR_SOLENOID)
 				.set(Value.kForward);
 	}
 
 	public void setRightClosed() {
-		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel, RobotMap.solenoidBCLRChannel)
+		Devices.getInstance().getDoubleSolenoid(RobotMap.BCLF_SOLENOID, RobotMap.BCLR_SOLENOID)
 		.set(Value.kReverse);		
 	}
 	
 	public void setLeftClosed() {
-		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel, RobotMap.solenoidBCRRChannel)
+		Devices.getInstance().getDoubleSolenoid(RobotMap.BCRF_SOLENOID, RobotMap.BCRR_SOLENOID)
 		.set(Value.kReverse);
 	}
 
 	public boolean limitDown() {
-		return Devices.getInstance().getDigitalInput(RobotMap.eleBottomLS).get();
+		return Devices.getInstance().getDigitalInput(RobotMap.ELE_BOT_LS).get();
 	}
 
 	public boolean limitUp() {
-		return Devices.getInstance().getDigitalInput(RobotMap.eleTopLS).get();
+		return Devices.getInstance().getDigitalInput(RobotMap.ELE_TOP_LS).get();
 	}
 
 	@Override

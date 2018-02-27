@@ -19,17 +19,16 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class Controls {
-
 	private Joystick throttle, wheel;
 	
 	private Button buttonCV;
-	public Button armDownButton;
-	public Button armUpButton;
-	public Button climbUp;
-	public Button climbUpSlow;
-	public Button climbDown;
-	public Button climbAssistUp;
-	public Button climbAssistDown;
+	private Button armDownButton;
+	private Button armUpButton;
+	private Button climbUp;
+	private Button climbUpSlow;
+	private Button climbDown;
+	private Button climbAssistUp;
+	private Button climbAssistDown;
 	
 	public Button openArmsButton;
 	public Button closeArmsButton;
@@ -46,59 +45,91 @@ public class Controls {
 	public Button pickUpButton;
 
 	public Controls() {
+		/*-----------------
+		   | JOYSTICKS |
+		-----------------*/
 		wheel = new Joystick(0);
 		throttle = new Joystick(1);
-		buttonCV = new JoystickButton(throttle, 7);
 
-		armDownButton = new JoystickButton(throttle, RobotMap.armDownNum);
-		armUpButton = new JoystickButton(throttle, RobotMap.armUpNum);
-		climbUp = new JoystickButton(throttle, RobotMap.climbUp);
-		climbUpSlow = new JoystickButton(wheel, RobotMap.climbUpSlow);
-		climbDown = new JoystickButton(throttle, RobotMap.climbDown);
 		
-		climbAssistUp = new JoystickButton(wheel, 2);
-		climbAssistDown = new JoystickButton(throttle, 12);
+//		ask drivers for preferred button then group it with other climb buttons
+		climbUpSlow = new JoystickButton(wheel, 4);
+		climbUpSlow.whileHeld(new ClimbUpSlow());
 		
-		openArmsButton = new JoystickButton(throttle, RobotMap.openArmsNum);
-		closeArmsButton = new JoystickButton(throttle, RobotMap.closeArmsNum);
-		controlButton = new JoystickButton(throttle, RobotMap.controlButtonNum);
-		elevatorUp = new JoystickButton(throttle, RobotMap.elevatorUpNum);
-		resetElevator = new JoystickButton(throttle, RobotMap.elevatorDownNum);
-		// cPistonInButton = new JoystickButton(throttle, RobotMap.cPistonInNum);
-		// cPistonOutButton = new JoystickButton(throttle, RobotMap.cPistonOutNum);
-		slow = new JoystickButton(wheel, RobotMap.SLOW_BUTTON);
-		compressorOn = new JoystickButton(wheel, RobotMap.COMPRESSOR_ON);
-		compressorOff = new JoystickButton(wheel, RobotMap.COMPRESSOR_OFF);
-
-		compressorOn.whenPressed(new CompressorCommand());
-		compressorOff.whenPressed(new CompressorCommand());
-
-		levelUpButton = new JoystickButton(throttle, RobotMap.levelUp);
-		levelDownButton = new JoystickButton(throttle, RobotMap.levelDown);
-//		pickUpButton = new JoystickButton(throttle, RobotMap.pickUpLevel);
-
+//		???
+		//controlButton = new JoystickButton(throttle, 8);
+		
+		
+		/*------------------------
+		   | ELEVATOR BUTTONS |
+		------------------------*/
+		resetElevator = new JoystickButton(throttle, 4); //6
+		levelUpButton = new JoystickButton(throttle, 5);
+		levelDownButton = new JoystickButton(throttle, 6);
+		//pickUpButton = new JoystickButton(throttle, 11);
+		
+		//i assume you just .get in the command
+		//elevatorUp.whileHeld(new ElevatorCommand());
+		resetElevator.whenPressed(new ChangeElevatorLevel(0));
 		levelUpButton.whenPressed(new ChangeElevatorLevel(true));
 		levelDownButton.whenPressed(new ChangeElevatorLevel(false));
-
-		// climb
-		armDownButton.whenPressed(new HookDown());
-		armUpButton.whenPressed(new HookUp());
+		//pick up button? just .get in the command?
+		
+		/*-------------------
+  		   | ARM BUTTONS |
+		-------------------*/
+		//closeArmsButton = new JoystickButton(throttle, 1);
+		//openArmsButton = new JoystickButton(throttle, 2);
+		
+		//openArmsButton.whenPressed(new OpenArms());
+		//closeArmsButton.whenPressed(new CloseArms());
+		
+		
+		/*---------------------
+		   | DRIVE BUTTONS |
+		---------------------*/
+		slow = new JoystickButton(wheel, 6);
+		buttonCV = new JoystickButton(throttle, 7);
+		//no .whenPressed? i assume you just .get from the drive train
+		
+		
+		/*---------------------
+		   | CLIMB BUTTONS |
+		---------------------*/
+		climbUp = new JoystickButton(throttle, 8);
+		armUpButton = new JoystickButton(throttle, 9);
+		armDownButton = new JoystickButton(throttle, 10);
+		climbDown = new JoystickButton(throttle, 11);
+		climbAssistUp = new JoystickButton(wheel, 2); //idk why one is wheel and other is throttle
+		climbAssistDown = new JoystickButton(throttle, 12);
+		
 		climbUp.whileHeld(new ClimbUp());
-		climbUpSlow.whileHeld(new ClimbUpSlow());
+		armUpButton.whenPressed(new HookUp());
+		armDownButton.whenPressed(new HookDown());
 		climbDown.whileHeld(new ClimbDown());
 		climbAssistUp.whileHeld(new ClimbAssistUp());
 		climbAssistDown.whileHeld(new ClimbAssistDown());
+		
 
-		// claw
-		// openArmsButton.whenPressed(new OpenArms());
-		// closeArmsButton.whenPressed(new CloseArms());
+		/*----------------
+		   | NOT SURE |
+		----------------*/
+		//cPistonInButton = new JoystickButton(throttle, -1);
+		//cPistonOutButton = new JoystickButton(throttle, -1);
 
-		// cPistonInButton.whileHeld(new CPistonIn());
-		// cPistonOutButton.whileHeld(new CPistonOut());
+		//cPistonInButton.whileHeld(new CPistonIn());
+		//cPistonOutButton.whileHeld(new CPistonOut());
 
-		// elevator
-		// elevatorUp.whileHeld(new ElevatorCommand());
-		resetElevator.whenPressed(new ChangeElevatorLevel(0));
+		
+		/*-------------------------
+		   | COMPRESSOR BUTTONS |
+		-------------------------*/
+		compressorOn = new JoystickButton(wheel, 1);
+		compressorOff = new JoystickButton(wheel, 5);
+		
+		compressorOn.whenPressed(new CompressorCommand());
+		compressorOff.whenPressed(new CompressorCommand());
+		
 	}
 
 	public Joystick getThrottle() {

@@ -12,13 +12,9 @@ import org.usfirst.frc.team2473.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- * An example command.  You can replace me with your own command.
- */
 public class DriveCommand extends Command {
 	private double throttle, twist, adjust;
 	public DriveCommand() {
-		// Use requires() here to declare subsystem dependencies
 		requires(TrackingRobot.getDriveTrain());
 	}
 

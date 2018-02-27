@@ -6,8 +6,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class CompressorCommand extends Command {
-	
-	Compressor c;
+	private Compressor c;
 
 	public CompressorCommand() {
 		c = new Compressor();
@@ -27,7 +26,6 @@ public class CompressorCommand extends Command {
 	
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

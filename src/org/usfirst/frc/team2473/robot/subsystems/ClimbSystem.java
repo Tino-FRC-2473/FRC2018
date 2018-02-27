@@ -64,8 +64,8 @@ public class ClimbSystem extends TrackableSubsystem {
 
 	public void climbPrimary() {
 		if (hungUp) {
-			Devices.getInstance().getTalon(RobotMap.climbMotorR).set(ControlMode.PercentOutput, CLIMBPOW);
-			Devices.getInstance().getTalon(RobotMap.climbMotorR2).set(ControlMode.PercentOutput, CLIMBPOW);
+			Devices.getInstance().getTalon(RobotMap.CLIMB_R1_MOTOR).set(ControlMode.PercentOutput, CLIMBPOW);
+			Devices.getInstance().getTalon(RobotMap.CLIMB_R2_MOTOR).set(ControlMode.PercentOutput, CLIMBPOW);
 		} else {
 			System.out.println("NOT YET U LITTLE SHITE - VICE PRESIDENT");
 		}
@@ -73,27 +73,27 @@ public class ClimbSystem extends TrackableSubsystem {
 
 	public void climbAssist() {
 		if (hungUp) {
-			Devices.getInstance().getTalon(RobotMap.climbMotorL).set(ControlMode.PercentOutput, -CLIMBASSISTPOW);
-			Devices.getInstance().getTalon(RobotMap.climbMotorL2).set(ControlMode.PercentOutput, -CLIMBASSISTPOW);
+			Devices.getInstance().getTalon(RobotMap.CLIMB_L1_MOTOR).set(ControlMode.PercentOutput, -CLIMBASSISTPOW);
+			Devices.getInstance().getTalon(RobotMap.CLIMB_L2_MOTOR).set(ControlMode.PercentOutput, -CLIMBASSISTPOW);
 		} else {
 			System.out.println("NOT YET U LITTLE SHITE - VICE PRESIDENT");
 		}		
 	}
 
 	public void climbAssistDown() {
-		Devices.getInstance().getTalon(RobotMap.climbMotorL).set(ControlMode.PercentOutput, CLIMBASSISTPOW/2);
-		Devices.getInstance().getTalon(RobotMap.climbMotorL2).set(ControlMode.PercentOutput, CLIMBASSISTPOW/2);
+		Devices.getInstance().getTalon(RobotMap.CLIMB_L1_MOTOR).set(ControlMode.PercentOutput, CLIMBASSISTPOW/2);
+		Devices.getInstance().getTalon(RobotMap.CLIMB_L2_MOTOR).set(ControlMode.PercentOutput, CLIMBASSISTPOW/2);
 	}
 	
 	public void climbPrimaryReverse() {
-		Devices.getInstance().getTalon(RobotMap.climbMotorR).set(ControlMode.PercentOutput, -CLIMBPOW/2);
-		Devices.getInstance().getTalon(RobotMap.climbMotorR2).set(ControlMode.PercentOutput, -CLIMBPOW/2);
+		Devices.getInstance().getTalon(RobotMap.CLIMB_R1_MOTOR).set(ControlMode.PercentOutput, -CLIMBPOW/2);
+		Devices.getInstance().getTalon(RobotMap.CLIMB_R2_MOTOR).set(ControlMode.PercentOutput, -CLIMBPOW/2);
 	}
 
 	public void climbPrimarySlow() {
 		if (hungUp) {
-			Devices.getInstance().getTalon(RobotMap.climbMotorR).set(ControlMode.PercentOutput, CLIMBPOW * .5);
-			Devices.getInstance().getTalon(RobotMap.climbMotorR2).set(ControlMode.PercentOutput, CLIMBPOW * .5);
+			Devices.getInstance().getTalon(RobotMap.CLIMB_R1_MOTOR).set(ControlMode.PercentOutput, CLIMBPOW * .5);
+			Devices.getInstance().getTalon(RobotMap.CLIMB_R2_MOTOR).set(ControlMode.PercentOutput, CLIMBPOW * .5);
 			System.out.println("climbing up");
 		} else {
 			System.out.println("NOT YET U LITTLE SHITE - VICE PRESIDENT");
@@ -103,19 +103,19 @@ public class ClimbSystem extends TrackableSubsystem {
 	public void climbAlly() {
 		// Devices.getInstance().getTalon(RobotMap.climbMotorR).set(ControlMode.PercentOutput,
 		// -CLIMBPOW);
-		Devices.getInstance().getTalon(RobotMap.climbMotorL2).set(ControlMode.PercentOutput, -CLIMBPOW);
+		Devices.getInstance().getTalon(RobotMap.CLIMB_L2_MOTOR).set(ControlMode.PercentOutput, -CLIMBPOW);
 		// Devices.getInstance().getTalon(RobotMap.climbMotorR2).set(ControlMode.PercentOutput,
 		// -CLIMBPOW);
 		// System.out.println("climb down");
-		Devices.getInstance().getTalon(RobotMap.climbMotorL).set(ControlMode.PercentOutput, -CLIMBPOW);
+		Devices.getInstance().getTalon(RobotMap.CLIMB_L1_MOTOR).set(ControlMode.PercentOutput, -CLIMBPOW);
 	}
 
 	public void stopClimbMotor() {
-		Devices.getInstance().getTalon(RobotMap.climbMotorR).stopMotor();
-		Devices.getInstance().getTalon(RobotMap.climbMotorL2).stopMotor();
-		Devices.getInstance().getTalon(RobotMap.climbMotorR2).stopMotor();
+		Devices.getInstance().getTalon(RobotMap.CLIMB_R1_MOTOR).stopMotor();
+		Devices.getInstance().getTalon(RobotMap.CLIMB_L2_MOTOR).stopMotor();
+		Devices.getInstance().getTalon(RobotMap.CLIMB_R2_MOTOR).stopMotor();
 		System.out.println("stopped");
-		Devices.getInstance().getTalon(RobotMap.climbMotorL).stopMotor();
+		Devices.getInstance().getTalon(RobotMap.CLIMB_L1_MOTOR).stopMotor();
 	}
 
 	@Override
@@ -125,23 +125,23 @@ public class ClimbSystem extends TrackableSubsystem {
 
 	@Override
 	public String getState() {
-		return "" + Devices.getInstance().getTalon(RobotMap.climbMotorL).get() + " "
-				+ Devices.getInstance().getTalon(RobotMap.climbMotorR).get() + " "
+		return "" + Devices.getInstance().getTalon(RobotMap.CLIMB_L1_MOTOR).get() + " "
+				+ Devices.getInstance().getTalon(RobotMap.CLIMB_R1_MOTOR).get() + " "
 				+ Devices.getInstance().getTalon(RobotMap.CLIMB_ARM_MOTOR).get();
 	}
 
 	public void setPistonR() {
-		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidClimbF, RobotMap.solenoidClimbR).set(Value.kReverse);
+		Devices.getInstance().getDoubleSolenoid(RobotMap.CLIMB_F_SOLENOID, RobotMap.CLIMB_R_SOLENOID).set(Value.kReverse);
 
 	}
 
 	public void setPistonOff() {
-		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidClimbF, RobotMap.solenoidClimbR).set(Value.kOff);
+		Devices.getInstance().getDoubleSolenoid(RobotMap.CLIMB_F_SOLENOID, RobotMap.CLIMB_R_SOLENOID).set(Value.kOff);
 
 	}
 
 	public void setPistonF() {
-		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidClimbF, RobotMap.solenoidClimbR).set(Value.kForward);
+		Devices.getInstance().getDoubleSolenoid(RobotMap.CLIMB_F_SOLENOID, RobotMap.CLIMB_R_SOLENOID).set(Value.kForward);
 
 	}
 }

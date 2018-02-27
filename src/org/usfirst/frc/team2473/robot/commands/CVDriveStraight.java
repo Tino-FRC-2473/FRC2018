@@ -32,12 +32,13 @@ public class CVDriveStraight extends Command {
 	}
 
 	private double cap(double power) {
-		return (power > maxPow) ? maxPow : (power < minPow ? minPow : power);
+//		return (power > maxPow) ? maxPow : (power < minPow ? minPow : power);
+		return Math.min(maxPow, Math.max(minPow, power));
 	}
 
 	@Override
 	protected void initialize() {
-		System.out.println("initialize running..");
+		System.out.println("initializing CVDriveStraight..");
 		r_startingEncoders = Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0);
 		l_startingEncoders = Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0);
 		// resetEncoders();
@@ -62,9 +63,9 @@ public class CVDriveStraight extends Command {
 	@Override
 	protected boolean isFinished() {
 		return getAverageEnc(
-				l_startingEncoders - Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0),
-				r_startingEncoders
-						- Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0)) >= maxEncoder;
+					l_startingEncoders - Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0),
+					r_startingEncoders - Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0)
+				) >= maxEncoder;
 	}
 
 	@Override
