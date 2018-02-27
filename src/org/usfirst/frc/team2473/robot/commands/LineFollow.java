@@ -4,13 +4,14 @@ import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class LineFollow extends Command {
-	private final double OFFSET = 0;
+	private double offset = 0;
 
 	public LineFollow() {
 		// Use requires() here to declare subsystem dependencies
@@ -31,16 +32,16 @@ public class LineFollow extends Command {
 			SmartDashboard.putNumber("Light Sensor Value" + i, Robot.driveTrain.getAnalogSensorValue(i));
 		}
 
-		Robot.driveTrain.drive(-0.4, Robot.driveTrain.getPIDValue() + OFFSET);
+		Robot.driveTrain.drive(-0.4, Robot.driveTrain.getPIDValue() + offset);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		if (Robot.driveTrain.getDigitalSensorValue(RobotMap.LEFT_DIGITAL_SENSOR)) {
-			new LeftFollow().start();
+			(new LeftFollow()).start();
 			return true;
 		} else if (Robot.driveTrain.getDigitalSensorValue(RobotMap.RIGHT_DIGITAL_SENSOR)) {
-			new RightFollow().start();
+			(new RightFollow()).start();
 			return true;
 		}
 		return false;

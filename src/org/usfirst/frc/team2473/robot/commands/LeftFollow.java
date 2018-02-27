@@ -4,15 +4,18 @@ import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class LeftFollow extends Command {
-	
+
 	private boolean offTheLine = false;
 	
+	private double offset = 0;
+
 	public LeftFollow() {
 		requires(Robot.driveTrain);
 	}
@@ -31,13 +34,13 @@ public class LeftFollow extends Command {
 		if (!Robot.driveTrain.getDigitalSensorValue(RobotMap.MIDDLE_DIGITAL_SENSOR)) {
 			offTheLine = true;
 		}
-		Robot.driveTrain.drive(-0.4, -0.321);
+		Robot.driveTrain.drive(-0.4, -0.321 + offset);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 		if (offTheLine && Robot.driveTrain.getDigitalSensorValue(RobotMap.MIDDLE_DIGITAL_SENSOR)) {
-			new LineFollow().start();
+			(new LineFollow()).start();
 			return true;
 		}
 		return false;
