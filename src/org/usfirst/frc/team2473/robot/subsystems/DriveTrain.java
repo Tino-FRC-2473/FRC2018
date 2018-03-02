@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  *
  */
 public class DriveTrain extends PIDSubsystem {
-	private static final double KP = -0.0011;
+	private static final double KP = 0.0011;
 	private static final double KI = 0;
 	private static final double KD = 0;
 

@@ -27,10 +27,6 @@ public class LeftFollow extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		for (int i = 0; i < 3; i++) {
-			SmartDashboard.putBoolean("Dark Sensor Value " + i, Robot.driveTrain.getDigitalSensorValue(i));
-			SmartDashboard.putNumber("Light Sensor Value" + i, Robot.driveTrain.getAnalogSensorValue(i));
-		}
 		if (!Robot.driveTrain.getDigitalSensorValue(RobotMap.MIDDLE_DIGITAL_SENSOR)) {
 			offTheLine = true;
 		}

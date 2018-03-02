@@ -27,20 +27,16 @@ public class LineFollow extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		for (int i = 0; i < 3; i++) {
-			SmartDashboard.putBoolean("Dark Sensor Value " + i, Robot.driveTrain.getDigitalSensorValue(i));
-			SmartDashboard.putNumber("Light Sensor Value" + i, Robot.driveTrain.getAnalogSensorValue(i));
-		}
-
 		Robot.driveTrain.drive(-0.4, Robot.driveTrain.getPIDValue() + offset);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		if (Robot.driveTrain.getDigitalSensorValue(RobotMap.LEFT_DIGITAL_SENSOR)) {
-			(new LeftFollow()).start();
-			return true;
-		} else if (Robot.driveTrain.getDigitalSensorValue(RobotMap.RIGHT_DIGITAL_SENSOR)) {
+//		if (Robot.driveTrain.getDigitalSensorValue(RobotMap.LEFT_DIGITAL_SENSOR) && Robot.driveTrain.getDigitalSensorValue(RobotMap.MIDDLE_DIGITAL_SENSOR)) {
+//			(new LeftFollow()).start();
+//			return true;
+//		} else 
+			if (Robot.driveTrain.getDigitalSensorValue(RobotMap.RIGHT_DIGITAL_SENSOR) && Robot.driveTrain.getDigitalSensorValue(RobotMap.MIDDLE_DIGITAL_SENSOR)) {
 			(new RightFollow()).start();
 			return true;
 		}
