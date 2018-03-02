@@ -94,14 +94,7 @@ public class Robot extends TrackingRobot {
     	
 	}
 	@Override protected void innerTeleopPeriodic(){
-				//keep printing enconder counts
-		//System.out.println(Devices.getInstance().getTalon(RobotMap.elevatorMotor).getSelectedSensorPosition(0));
-		
-		
-		
-		/*isBeamBroken = Devices.getInstance().getDigitalInput(4).get();
-		if(isBeamBroken) {
-			System.out.println("Box BreakBeam is Broken");*/
+		System.out.println(Devices.getInstance().getDigitalInput(0).get());
 	}
 	@Override protected void innerDisabledInit(){}
 	@Override protected void innerDisabledPeriodic(){}
