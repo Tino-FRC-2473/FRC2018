@@ -5,11 +5,8 @@ import java.io.IOException;
 import java.util.stream.IntStream;
 
 import org.usfirst.frc.team2473.robot.Controls;
-import org.usfirst.frc.team2473.robot.subsystems.PIDriveTrain;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
-import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
@@ -18,12 +15,11 @@ import edu.wpi.first.wpilibj.command.Scheduler;
  *
  * <p>The TrackingRobot class is intended to be subclassed by a user creating a robot program.
  */
-public abstract class TrackingRobot extends IterativeRobot {
-	private static PIDriveTrain driveTrain;
+public abstract class TrackingRobot extends TimedRobot {
 	private static TrackableSubsystem[] subsystems; //array of TrackableSubsystems used in this robot program
-	private static Controls controls; //contains all button mapping and joystick controls
 	private Thread jetsonThread; //thread for communcation with the jetson
 	private Command autoCmd; //command to be run during auto
+	private static Controls controls;
 	
 	/**
 	 * This method must include the Thread used for networking and database-ing, or null if not used.
@@ -39,16 +35,8 @@ public abstract class TrackingRobot extends IterativeRobot {
 	protected abstract String getProgramName();
 	
 	/**
-	 * This method must include the PIDSubsystem, usually a drivetrain, that the program uses,
-	 * or null if there is none.
-	 * @return The PIDSubsystem
-	 */
-	protected abstract PIDriveTrain driveTrain();
-	
-	/**
 	 * This method must include all TrackableSubsystems used in this Robot program.
 	 * @return The array of TrackableSubsystems.
-	 * @return null if there are no subsystems to add
 	 */
 	protected abstract TrackableSubsystem[] tSubsystems();
 	
@@ -81,19 +69,9 @@ public abstract class TrackingRobot extends IterativeRobot {
 	 * Prints to the console each TrackableSubsystem's current state as overridden by the getState() method.
 	 */
 	public static void logCurrentState() {
-		if(driveTrain != null)
-			System.out.println("\tPosition: " + driveTrain.getPosition() + ", Setpoint: " + driveTrain.getSetpoint());
-		if(subsystems != null) 
-			for(TrackableSubsystem i : subsystems) 
-				System.out.println("\t" + i.getClass().getSimpleName() + ": " + i.getState());
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public static PIDriveTrain getDriveTrain() {
-		return driveTrain;
+		for (TrackableSubsystem i: subsystems) {
+			System.out.println("\t" + i.getClass().getSimpleName() + ": " + i.getState());
+		}
 	}
 	
 	/**
@@ -103,22 +81,14 @@ public abstract class TrackingRobot extends IterativeRobot {
 	 * @param cls Class type of the TrackableSubsystem to be returned.
 	 * @return The TrackableSubsystem indicated by the parameter class.
 	 */
-	public static <T extends TrackableSubsystem> T getSubsystem(Class<T > cls) {
+	public static TrackableSubsystem getSubsystem(Class<? extends TrackableSubsystem> cls) {
 		for(int i = 0; i < subsystems.length; i++) {
 			if(subsystems[i].getClass().equals(cls)) {
-				return (T) subsystems[i];
+				return subsystems[i];
 			}
 		}
 		System.out.println("ERROR: SUBSYSTEM CLASS " + cls.getSimpleName() + " NOT FOUND");
 		return null;
-	}
-	
-	/**
-	 * Returns an instance of the controls class, which handles joystick and button information
-	 * @return Such an instance
-	 */
-	public static Controls getControls() {
-		return controls;
 	}
 	
 	/**
@@ -129,7 +99,6 @@ public abstract class TrackingRobot extends IterativeRobot {
 	public void robotInit() {
 		System.out.println("[robot init - start]");
 		try {
-			driveTrain = driveTrain();
 			subsystems = tSubsystems();
 			autoCmd = getAutonomousCommand();
 			jetsonThread = jetsonThread();
@@ -137,32 +106,31 @@ public abstract class TrackingRobot extends IterativeRobot {
 			
 			System.out.println("Running: " + getProgramName());
 			System.out.println("Autonomous: " + ((autoCmd==null) ? "None" : getAutonomousCommand().getClass().getSimpleName()));
-			System.out.println("\tJetson Networking: " + (jetsonThread != null));
+			System.out.println("Jetson Networking: " + (jetsonThread != null));
 			IntStream.range(0, 44).forEach(e -> System.out.print("*")); //tribute to pramukh naduthota
 			System.out.println("");
 			
 			
+			if(jetsonThread != null) jetsonThread.start();
 			
 		} catch (Exception e) {
 			System.out.println("ERROR IN TRACKINGROBOT STARTUP:");
-			System.out.println("GONNA DO IT AGAIN LMFAO");
 			e.printStackTrace();
-			
-			try {
-				jetsonThread = jetsonThread();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
 		}
-		
-		if(jetsonThread != null) jetsonThread.start();
 		
 		innerRobotInit();
 		
 		System.out.println("[robot init - end]");
 	}
+	
+	/**
+	 * 
+	 * @return Controls object
+	 */
+	public static Controls getControls() {
+		return controls;
+	}
+	
 	
 	/**
 	 * This function is called once when the robot enters a disabled state
@@ -178,7 +146,6 @@ public abstract class TrackingRobot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledPeriodic() {
-		for(WPI_TalonSRX talon : Devices.getInstance().getTalons()) talon.set(0);
 		Scheduler.getInstance().run();
 		innerDisabledPeriodic();
 	}
@@ -206,9 +173,6 @@ public abstract class TrackingRobot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		System.out.println("[teleop init]");
-		if (autoCmd != null) {
-			autoCmd.cancel();
-		}
 		innerTeleopInit();
 	}
 

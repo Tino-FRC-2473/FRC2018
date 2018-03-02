@@ -1,177 +1,103 @@
 package org.usfirst.frc.team2473.robot;
 
-import java.io.IOException;
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
+import edu.wpi.first.wpilibj.command.Command;
+
+import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
+import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem;
+import org.usfirst.frc.team2473.robot.subsystems.DriveTrain;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+
+import java.io.IOException;
 import org.usfirst.frc.team2473.framework.DatabaseAndPingThread;
 import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.framework.TrackableSubsystem;
 import org.usfirst.frc.team2473.framework.TrackingRobot;
-import org.usfirst.frc.team2473.robot.RobotMap.Route;
-import org.usfirst.frc.team2473.robot.commands.AutonomousRoute;
-import org.usfirst.frc.team2473.robot.commands.CVCommand;
-import org.usfirst.frc.team2473.robot.commands.ClawCommand;
-import org.usfirst.frc.team2473.robot.commands.DriveCommand;
-import org.usfirst.frc.team2473.robot.commands.ElevatorCommand;
-import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
-import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem;
-import org.usfirst.frc.team2473.robot.subsystems.PIDriveTrain;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+/**
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the TimedRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the build.properties file in the
+ * project.
+ */
 
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TrackingRobot {
+	public static boolean isBeamBroken = false;
 	
-	/* CV TELEOP STUFF */
-	public CVCommand cvDrive;
-	public static DriveCommand drive;
-
-	/* Autonomous command-based stuff */
-	CommandGroup autonomousCommand;
-	private SendableChooser<Route> chooser;
-	private Preferences pref;
-
-	/* Robot modes */
-	public static boolean isNetwork = true;
-
-	@Override
-	protected Thread jetsonThread() throws IOException {
-		return (isNetwork) ? new DatabaseAndPingThread(RobotMap.IP, RobotMap.PORT, false) : null;
-	}
-
-	@Override
-	protected void innerRobotInit() {		
-		/* autonomous calibration */
-		initChooser();
-		initSensors();
-
-		/* tele-op command creation */
-		cvDrive = new CVCommand();
-		drive = new DriveCommand();
-
-		TrackingRobot.getDriveTrain().enable();
-		// TODO this is here only for testing purposes. Prob should be in auto init
-
-		 UsbCamera camera0 = CameraServer.getInstance().startAutomaticCapture("Camera 0 ", 0);
-		 camera0.setBrightness(0);
-		 camera0.setResolution(160, 120);
-		
-//		 UsbCamera camera1 = CameraServer.getInstance().startAutomaticCapture("Camera 1", 1);
-//		 camera1.setBrightness(0);
-//		 camera1.setResolution(160, 120);
-	}
-
-	@Override
-	protected void innerAutonomousInit() {
-		zeroYawIteratively();
-
-		// Handle delay
-		double delay = pref.getDouble("delay", 0);
-		double origTime = System.currentTimeMillis() / 1000;
-		while (System.currentTimeMillis() / 1000 < (delay + origTime))
-			;
-		SmartDashboard.putString("Delay Status", "Delay passed");
-
-		System.out.println("Scheduler cleared...");
-		((AutonomousRoute) autonomousCommand).configure(
-				(DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'R'), chooser.getSelected());
-		autonomousCommand.start();
-	}
-
-	protected void innerTeleopInit() {
-		(new ElevatorCommand()).start();
-		(new ClawCommand()).start();
-		cvDrive.start();
-	}
-
-	protected void innerTeleopPeriodic() {
-		((BoxSystem) getSubsystem(BoxSystem.class)).setLevel(((BoxSystem) getSubsystem(BoxSystem.class)).getCurrPos());
-//		System.out.println("current level: " + ((BoxSystem) getSubsystem(BoxSystem.class)).getLevel());
-	}
-
-	protected void innerDisabledInit() {
+	@Override protected Thread jetsonThread() throws IOException { 
+		//return new DatabaseAndPingThread("10.24.73.19", 5805);
+		return null;
 	}
 	
-	@Override
-	protected void innerDisabledPeriodic() {
-
-	}
-
-	private void initChooser() {
-		System.out.println("Initializing chooser...");
-		chooser = new SendableChooser<Route>();
-		chooser.addObject("Left", Route.LEFT);
-		chooser.addObject("Right", Route.RIGHT);
-		chooser.addObject("Center", Route.CENTER);
-		chooser.addDefault("Testing", Route.TESTING);
-		SmartDashboard.putData("AutoChooser", chooser);
-		Robot.addDevices();
-		pref = Preferences.getInstance();
-	}
-
-	private void initSensors() {
-		// NOTE that the last parameter of configSelectedFeedback should be nonzero, as
-		// a delay is required.
-		zeroYawIteratively();
-		Devices.getInstance().getTalon(RobotMap.BL).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
-
-		Devices.getInstance().getTalon(RobotMap.BR).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
-		Devices.getInstance().getTalon(RobotMap.ELEVATOR_MOTOR).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,
-				0, 5);
-
-		Devices.getInstance().getTalon(RobotMap.BL).setSelectedSensorPosition(0, 0, 5);
-		Devices.getInstance().getTalon(RobotMap.BR).setSelectedSensorPosition(0, 0, 5);
-	}
-
-	private static void addDevices() {
-		Devices.getInstance().addTalon(RobotMap.BR);
-		Devices.getInstance().addTalon(RobotMap.BL);
-		Devices.getInstance().addTalon(RobotMap.FL);
-		Devices.getInstance().addTalon(RobotMap.FR);
-		Devices.getInstance().setNavXGyro();
-	}
-
 	@Override
 	protected String getProgramName() {
-		return "Autonomous";
+		return "Architecture Testing";
 	}
-
+	
 	@Override
 	protected TrackableSubsystem[] tSubsystems() {
-		// TODO Auto-generated method stub
-		return new TrackableSubsystem[] { new ClimbSystem(), new BoxSystem() };
+		return new TrackableSubsystem[] {
+				new ClimbSystem(), new BoxSystem()//, new DriveTrain()
+		};
 	}
-
+	
 	@Override
 	protected Command getAutonomousCommand() {
-		if (autonomousCommand == null) {
-			autonomousCommand = new AutonomousRoute();
-		}
-		return autonomousCommand;
+		//return null;
+	//	return new Type1AutoCommand();
+		//return m_autonomousCommand;
+		//return Climb;
+		//return HookUp;
+		//return HookDown;
+		//return ClimbFaster;
+		//return CloseArms;
+		//return OpenArms;
+		return null;
 	}
-
-	@Override
-	protected PIDriveTrain driveTrain() {
-		return new PIDriveTrain();
+	
+	@Override protected void innerRobotInit() {
+		//Devices.getInstance().addDoubleSolenoid(3, 4);
+		//Devices.getInstance().addDoubleSolenoid(5, 6);
+		//Devices.getInstance().addDigitalInput(7);
 	}
-
-	// For shorthand
-	public static double getYaw() {
-		return Devices.getInstance().getNavXGyro().getYaw();
+	@Override protected void innerAutonomousInit(){
+		//Devices.getInstance().getTalon(2).set(ControlMode.PercentOutput, 0.5);
+		//Devices.getInstance().getTalon(2).set(ControlMode.Current, 10);
+		
 	}
-
-	private void zeroYawIteratively() {
-		Devices.getInstance().getNavXGyro().zeroYaw();
-		System.out.println("Zeroing yaw...");
-		while (Math.abs(Devices.getInstance().getNavXGyro().getYaw()) > 1)
-			;
-		System.out.println("Yaw zeroed.");
+	
+	@Override protected void innerAutonomousPeriodic() {
+		Robot.logCurrentState();
+		//System.out.println(Devices.getInstance().getTalon(2).getOutputCurrent());
+		/*isBeamBroken = Devices.getInstance().getDigitalInput(4).get();
+		if(isBeamBroken) {
+			System.out.println("Box BreakBeam is Broken");
+		}*/
 	}
+	
+	@Override protected void innerTeleopInit(){
+		//declares and sets the encoders
+		//Devices.getInstance().getTalon(RobotMap.elevatorMotor).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5); //do once at start to define encoder
+    	//Devices.getInstance().getTalon(RobotMap.elevatorMotor).setSelectedSensorPosition(0, 0, 10); //whenever resetting
+    	//Devices.getInstance().getTalon(RobotMap.elevatorMotor).set(ControlMode.PercentOutput, -0.2);
+		
+    	
+	}
+	@Override protected void innerTeleopPeriodic(){
+		System.out.println(Devices.getInstance().getDigitalInput(0).get());
+	}
+	@Override protected void innerDisabledInit(){}
+	@Override protected void innerDisabledPeriodic(){}
+	@Override protected void innerTestInit(){}
+	@Override protected void innerTestPeriodic(){}
 }

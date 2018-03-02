@@ -16,18 +16,16 @@ public class DatabaseAndPingThread extends Thread {
 	private UtilitySocket uSocket;
 	private boolean alive;
 	
-	private final boolean DEBUG;	
-	
+	private final boolean DEBUG = true;
 	
 	/**
 	 * Creates a SocketPingThread.
 	 * @throws IOException If an I/O error occurs when creating the socket
 	 */
-	public DatabaseAndPingThread(String ip, int port, boolean debug) throws IOException {
+	public DatabaseAndPingThread(String ip, int port) throws IOException {
 		uSocket = new UtilitySocket(ip, port);
 		System.out.println("connected to server");
 		alive = true;
-		DEBUG = debug;
 	}
 	
 	/**
@@ -74,7 +72,7 @@ public class DatabaseAndPingThread extends Thread {
 								)
 						);
 						
-//						System.out.println(Database.getInstance().getNumeric("dist") + " " + Database.getInstance().getNumeric("ang"));
+						System.out.println(Database.getInstance().getNumeric("dist") + " " + Database.getInstance().getNumeric("ang"));
 					}
 					received = uSocket.getLine();
 					ifDebugPrint("received: " + received);

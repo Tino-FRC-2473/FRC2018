@@ -8,17 +8,16 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ClimbAssistDown extends Command {
+
+public class ClimbUp2 extends Command {
 	private ClimbSystem sub;
-	
-    public ClimbAssistDown() {
+    public ClimbUp2() {
     	sub = (ClimbSystem) Robot.getSubsystem(ClimbSystem.class);
         requires(sub);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	sub.climbAssistDown();
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -1,14 +1,18 @@
 package org.usfirst.frc.team2473.robot;
 
-import org.usfirst.frc.team2473.robot.commands.ChangeElevatorLevel;
-import org.usfirst.frc.team2473.robot.commands.ClimbAssistDown;
-import org.usfirst.frc.team2473.robot.commands.ClimbAssistUp;
+import org.usfirst.frc.team2473.robot.commands.CPistonIn;
+import org.usfirst.frc.team2473.robot.commands.CPistonOut;
 import org.usfirst.frc.team2473.robot.commands.ClimbDown;
-import org.usfirst.frc.team2473.robot.commands.ClimbUp;
-import org.usfirst.frc.team2473.robot.commands.ClimbUpSlow;
-import org.usfirst.frc.team2473.robot.commands.CompressorCommand;
+
+import org.usfirst.frc.team2473.robot.commands.ClimbUp1;
+import org.usfirst.frc.team2473.robot.commands.ClimbUp2;
+import org.usfirst.frc.team2473.robot.commands.CloseArms;
 import org.usfirst.frc.team2473.robot.commands.HookDown;
+import org.usfirst.frc.team2473.robot.commands.HookJump;
 import org.usfirst.frc.team2473.robot.commands.HookUp;
+import org.usfirst.frc.team2473.robot.commands.OpenArms;
+import org.usfirst.frc.team2473.robot.commands.EleDown;
+import org.usfirst.frc.team2473.robot.commands.EleUp;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -18,102 +22,76 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
+
+//// CREATING BUTTONS
+// One type of button is a joystick button which is any button on a
+//// joystick.
+// You create one by telling it which joystick it's on and which button
+// number it is.
+// Joystick stick = new Joystick(port);
+// Button button = new JoystickButton(stick, buttonNumber);
+
+// There are a few additional built in buttons you can use. Additionally,
+// by subclassing Button you can create custom triggers and bind those to
+// commands the same as any other Button.
+
+//// TRIGGERING COMMANDS WITH BUTTONS
+// Once you have a button, it's trivial to bind it to a button in one of
+// three ways:
+
+// Start the command when the button is pressed and let it run the command
+// until it is finished as determined by it's isFinished method.
+// button.whenPressed(new ExampleCommand());
+
+// Run the command while the button is being held down and interrupt it once
+// the button is released.
+// button.whileHeld(new ExampleCommand());
+
+// Start the command when the button is released and let it run the command
+// until it is finished as determined by it's isFinished method.
+// button.whenReleased(new ExampleCommand());
+
 public class Controls {
-
-	Joystick throttle, wheel;
-	private Button buttonCV;
-	public Button armDownButton;
-	public Button armUpButton;
-	public Button climbUp;
-	public Button climbUpSlow;
-	public Button climbDown;
-	public Button climbAssistUp;
-	public Button climbAssistDown;
+	public Joystick stick = new Joystick(RobotMap.joystickNum);
+	public Button armDownButton = new JoystickButton(stick,RobotMap.armDownNum);
+	public Button armUpButton = new JoystickButton(stick,RobotMap.armUpNum);
+	public Button climbUp1 = new JoystickButton(stick,RobotMap.climbUp1);
+	public Button climbUp2 = new JoystickButton(stick,RobotMap.climbUp2);
+	public Button climbDown = new JoystickButton(stick,RobotMap.climbDown);
+	public Button openArmsButton = new JoystickButton(stick,RobotMap.openArmsNum);
+	public Button closeArmsButton = new JoystickButton(stick,RobotMap.closeArmsNum);
+	public Button controlButton = new JoystickButton(stick,RobotMap.controlButtonNum);
+	public Button elevatorUp = new JoystickButton(stick, RobotMap.elevatorUpNum);
+	public Button elevatorDown = new JoystickButton(stick, RobotMap.elevatorDownNum);
+	public Button cPistonInButton = new JoystickButton(stick, RobotMap.cPistonInNum);
+	public Button cPistonOutButton = new JoystickButton(stick, RobotMap.cPistonOutNum);
+	//public Button jumpButton = new JoystickButton(stick,RobotMap.jumpNum);
 	
-	public Button openArmsButton;
-	public Button closeArmsButton;
-	public Button controlButton;
-	public Button elevatorUp;
-	public Button resetElevator;
-	public Button cPistonInButton;
-	public Button cPistonOutButton;
-	public Button slow;
-	public Button compressorOn;
-	public Button compressorOff;
-	public Button levelUpButton;
-	public Button levelDownButton;
-	public Button pickUpButton;
-
 	public Controls() {
-		wheel = new Joystick(0);
-		throttle = new Joystick(1);
-		buttonCV = new JoystickButton(throttle, 7);
+		//climb
+		//armDownButton.whenPressed(new HookDown());
+		//armUpButton.whenPressed(new HookUp());
+		//jumpButton.whenPressed(new HookJump());
+	//	climbUp1.whileHeld(new ClimbUp1());
+	//	climbUp2.whileHeld(new ClimbUp2());
 
-		armDownButton = new JoystickButton(throttle, RobotMap.armDownNum);
-		armUpButton = new JoystickButton(throttle, RobotMap.armUpNum);
-		climbUp = new JoystickButton(throttle, RobotMap.climbUp);
-		climbUpSlow = new JoystickButton(wheel, RobotMap.climbUpSlow);
-		climbDown = new JoystickButton(throttle, RobotMap.climbDown);
+		//climbDown.whileHeld(new ClimbDown());
 		
-		climbAssistUp = new JoystickButton(wheel, 2);
-		climbAssistDown = new JoystickButton(throttle, 12);
+		//claw
+		//openArmsButton.whenPressed(new OpenArms());
+		//closeArmsButton.whenPressed(new CloseArms());
+
 		
-		openArmsButton = new JoystickButton(throttle, RobotMap.openArmsNum);
-		closeArmsButton = new JoystickButton(throttle, RobotMap.closeArmsNum);
-		controlButton = new JoystickButton(throttle, RobotMap.controlButtonNum);
-		elevatorUp = new JoystickButton(throttle, RobotMap.elevatorUpNum);
-		resetElevator = new JoystickButton(throttle, RobotMap.elevatorDownNum);
-		// cPistonInButton = new JoystickButton(throttle, RobotMap.cPistonInNum);
-		// cPistonOutButton = new JoystickButton(throttle, RobotMap.cPistonOutNum);
-		slow = new JoystickButton(wheel, RobotMap.SLOW_BUTTON);
-		compressorOn = new JoystickButton(wheel, RobotMap.COMPRESSOR_ON);
-		compressorOff = new JoystickButton(wheel, RobotMap.COMPRESSOR_OFF);
+		//cPistonInButton.whileHeld(new CPistonIn());
+		//cPistonOutButton.whileHeld(new CPistonOut());
 
-		compressorOn.whenPressed(new CompressorCommand());
-		compressorOff.whenPressed(new CompressorCommand());
-
-		levelUpButton = new JoystickButton(throttle, RobotMap.levelUp);
-		levelDownButton = new JoystickButton(throttle, RobotMap.levelDown);
-//		pickUpButton = new JoystickButton(throttle, RobotMap.pickUpLevel);
-
-		levelUpButton.whenPressed(new ChangeElevatorLevel(true));
-		levelDownButton.whenPressed(new ChangeElevatorLevel(false));
-
-		// climb
-		armDownButton.whenPressed(new HookDown());
-		armUpButton.whenPressed(new HookUp());
-		climbUp.whileHeld(new ClimbUp());
-		climbUpSlow.whileHeld(new ClimbUpSlow());
-		climbDown.whileHeld(new ClimbDown());
-		climbAssistUp.whileHeld(new ClimbAssistUp());
-		climbAssistDown.whileHeld(new ClimbAssistDown());
-
-		// claw
-		// openArmsButton.whenPressed(new OpenArms());
-		// closeArmsButton.whenPressed(new CloseArms());
-
-		// cPistonInButton.whileHeld(new CPistonIn());
-		// cPistonOutButton.whileHeld(new CPistonOut());
-
-		// elevator
-		// elevatorUp.whileHeld(new ElevatorCommand());
-		resetElevator.whenPressed(new ChangeElevatorLevel(0));
+		//elevator
+		elevatorUp.whileHeld(new EleUp());
+		elevatorDown.whileHeld(new EleDown());
+		
 	}
-
-	public Joystick getThrottle() {
-		return throttle;
-	}
-
-	public Joystick getWheel() {
-		return wheel;
-	}
-
-	public Button getCVButton() {
-		return buttonCV;
-	}
-
-	public void runEle() {
-		levelUpButton.whenPressed(new ChangeElevatorLevel(true));
-		levelDownButton.whenPressed(new ChangeElevatorLevel(false));
+	
+	public Joystick getJoy() {
+		return stick;
 	}
 }

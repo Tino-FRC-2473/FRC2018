@@ -21,7 +21,7 @@ global coordstring
 global coordstring1
 coordstring1 = "dist -777 ang -777"
 coordstring = "dist -777 ang -777"
-calcs = block_calcDistAng.CalcDistAng()
+calcs = block_calcDistAng.BlockCalcDistAng()
 rospy.init_node('server')
 
 def callback(data):
@@ -70,12 +70,12 @@ while 1:
         print coordstring1
         if "r" in data:
             if coordstring != coordstring1:
-            	conn.send(coordstring+'\n')
+            	conn.send(coordstring)
             	coordstring1 = str(coordstring)
             else:
             	coordstring = "dist -777 ang -777"
             	coordstring1 = str(coordstring)
-            	conn.send(coordstring+'\n')
+            	conn.send(coordstring)
         if "done" in data: quit()
     else:
         print "gege"

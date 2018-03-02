@@ -11,17 +11,18 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class OpenArms extends Command {
 	private BoxSystem sub;
-
-	public OpenArms() {
+	
+    public OpenArms() {
     	sub = (BoxSystem)Robot.getSubsystem(BoxSystem.class);
     	requires(sub);
+        
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	if(Robot.getControls().openArmsButton.get()) {
     		sub.setPistonF();
-    	} 
+    	}
     }
 
     // Called repeatedly when this Command is scheduled to run

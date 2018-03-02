@@ -1,20 +1,15 @@
 package org.usfirst.frc.team2473.framework;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import com.ctre.CANTalon;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.kauailabs.navx.frc.AHRS;
+//import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.Solenoid;
 
 /**
  * This class stores all existing hardware devices on the robot.
@@ -25,12 +20,10 @@ import edu.wpi.first.wpilibj.Solenoid;
 public class Devices {
 	private ArrayList<WPI_TalonSRX> talons; //collection of talons
 	private AnalogGyro[] analog_gyros; //collection storing the singular gryo, size could be subject to change in the future if needed
-	private AHRS navX; //collection storing the singular navx gyro, size subject to change in the future
+	//private AHRS navX; //collection storing the singular navx gyro, size subject to change in the future
 	private ArrayList<AnalogInput> analogs; //collection of analog input sensors
 	private ArrayList<DigitalInput> digitals; //collection of digital input sensors
 	private ArrayList<Servo> servos;	 //collection of servos
-	private Map<Integer, Solenoid> solenoids;
-	private Map<String, DoubleSolenoid> doubleSolenoids;
 	private static Devices theInstance; //serves as the static instance to use at all times
 	
 	static { //construct theInstance as a static function
@@ -40,11 +33,9 @@ public class Devices {
 	private Devices() { //private constructor prevents the creation of such an object elsewhere, forcing the use of the public static getInstance()
 		talons = new ArrayList<WPI_TalonSRX>();
 		analog_gyros = new AnalogGyro[1];
-		setNavXGyro();
+	//	setNavXGyro();
 		analogs = new ArrayList<AnalogInput>();
 		digitals = new ArrayList<DigitalInput>();
-		solenoids = new HashMap<Integer, Solenoid>();
-		doubleSolenoids = new HashMap<String, DoubleSolenoid>();
 		servos = new ArrayList<Servo>();
 	}
 
@@ -92,9 +83,6 @@ public class Devices {
 		talons.add(new WPI_TalonSRX(id));
 	}
 
-	public ArrayList<WPI_TalonSRX> getTalons() {
-		return talons;
-	}
 	/**
 	 * Removes a given servo from the collection of servos in this class.
 	 * @param port an <code>int</code> value representing the port number of the servo to be removed.
@@ -239,52 +227,26 @@ public class Devices {
 	 * Returns an mxp navX gyro 
 	 * @return an <code>AHRS</code> object with the given channel port
 	 */
-	public AHRS getNavXGyro() {
+	/*public AHRS getNavXGyro() {
 		/* set the NavX gyro for safety
-		 * then return it*/
+		 * then return it
 		 
 		setNavXGyro();
 		return navX;
-	}
+	}*/
 	
 	/**
 	 * Sets the robot' NavX gyro to port MXP
 	 * @param port an <code>int</code> value representing the channel port of the gyro
 	 */
-	public void setNavXGyro() {
+/*	public void setNavXGyro() {
 		if(navX == null) navX = new AHRS(SPI.Port.kMXP);
-	}
+	}*/
 	
 	/**
 	 * Removes the navX gyro object
 	 */
-	public void removeNavXGyro() {
+	/*public void removeNavXGyro() {
 		navX = null;
-	}
-
-	public Solenoid getSolenoid(int channel) {
-		if(!solenoids.keySet().contains(channel)) addSolenoid(channel);
-		return solenoids.get(channel);
-	}
-	
-	public void addSolenoid(int channel) {
-		solenoids.put(channel, new Solenoid(channel));
-	}
-	
-	public void removeSolenoid(int channel) {
-		if(solenoids.keySet().contains(channel)) solenoids.remove(channel);
-	}
-	
-	public DoubleSolenoid getDoubleSolenoid(int forward, int reverse) {
-		if(!doubleSolenoids.containsKey(forward + " " + reverse)) addDoubleSolenoid(forward, reverse);
-		return doubleSolenoids.get(forward + " " + reverse);
-	}
-	
-	public void addDoubleSolenoid(int forward, int reverse) {
-		if(!doubleSolenoids.containsKey(forward + " " + reverse)) doubleSolenoids.put(forward + " " + reverse, new DoubleSolenoid(forward, reverse));		
-	}
-	
-	public void removeDoubleSolenoid(int forward, int reverse) {
-		if(doubleSolenoids.containsKey(forward + " " + reverse)) doubleSolenoids.remove(forward + " " + reverse);				
-	}	
+	}*/
 }
