@@ -3,6 +3,7 @@ package org.usfirst.frc.team2473.robot;
 import edu.wpi.first.wpilibj.RobotController;
 
 public class RobotMap {
+	
 	/*networking constants*/
 	public static final String IP = "10.24.73.19";
 	public static final int PORT = 5805;
