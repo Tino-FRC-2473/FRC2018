@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class LineFollow extends Command {
 	private double offset = 0;
+	
+	String nextCommand = "";
 
 	public LineFollow() {
 		// Use requires() here to declare subsystem dependencies
@@ -33,13 +35,13 @@ public class LineFollow extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
 //		if (Robot.driveTrain.getDigitalSensorValue(RobotMap.LEFT_DIGITAL_SENSOR) && Robot.driveTrain.getDigitalSensorValue(RobotMap.MIDDLE_DIGITAL_SENSOR)) {
-//			(new LeftFollow()).start();
+//			nextCommand = "left";
 //			return true;
 //		} else 
-			if (Robot.driveTrain.getDigitalSensorValue(RobotMap.RIGHT_DIGITAL_SENSOR) && Robot.driveTrain.getDigitalSensorValue(RobotMap.MIDDLE_DIGITAL_SENSOR)) {
-			(new RightFollow()).start();
-			return true;
-		}
+//			if (Robot.driveTrain.getDigitalSensorValue(RobotMap.RIGHT_DIGITAL_SENSOR) && Robot.driveTrain.getDigitalSensorValue(RobotMap.MIDDLE_DIGITAL_SENSOR)) {
+//			nextCommand = "right";
+//			return true;
+//		}
 		return false;
 	}
 
@@ -47,6 +49,12 @@ public class LineFollow extends Command {
 	protected void end() {
 		Robot.driveTrain.disable();
 		Robot.driveTrain.stop();
+		
+//		if (nextCommand.equals("left")) {
+//			(new LeftFollow()).start();
+//		} else if (nextCommand.equals("right")) {
+//			(new RightFollow()).start();
+//		}
 	}
 
 	// Called when another command which requires one or more of the same
