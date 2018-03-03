@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.stream.IntStream;
 
 import org.usfirst.frc.team2473.robot.Controls;
+import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
+import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem;
 import org.usfirst.frc.team2473.robot.subsystems.PIDriveTrain;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -112,6 +114,14 @@ public abstract class TrackingRobot extends IterativeRobot {
 		}
 		System.out.println("ERROR: SUBSYSTEM CLASS " + cls.getSimpleName() + " NOT FOUND");
 		return null;
+	}
+	
+	public static <T extends TrackableSubsystem> BoxSystem getBoxSystem() {
+		return (BoxSystem) getSubsystem(BoxSystem.class);		
+	}
+	
+	public static <T extends TrackableSubsystem> ClimbSystem getClimbSystem() {
+		return (ClimbSystem) getSubsystem(ClimbSystem.class);
 	}
 	
 	/**

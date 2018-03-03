@@ -7,10 +7,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class ReadyClaw extends CommandGroup {
 	public ReadyClaw() {
-		if(!((BoxSystem)Robot.getSubsystem(BoxSystem.class)).clawReadied()) {
+		if(!(Robot.getBoxSystem()).clawReadied()) {
 			addParallel(new ChangeElevatorLevel(1));
 			addSequential(new ReleaseBox());
-			((BoxSystem) Robot.getSubsystem(BoxSystem.class)).clawStatusReady();
+			(Robot.getBoxSystem()).clawStatusReady();
 		}
 	}
 }

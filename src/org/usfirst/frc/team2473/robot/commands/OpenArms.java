@@ -12,7 +12,7 @@ public class OpenArms extends Command {
 	private BoxSystem sub;
 
 	public OpenArms() {
-    	sub = (BoxSystem)Robot.getSubsystem(BoxSystem.class);
+    	sub = Robot.getBoxSystem();
     	requires(sub);
     }
 

@@ -10,7 +10,7 @@ public class GrabBox extends Command {
 	long start;
 
 	public GrabBox() {
-		boxSystem = (BoxSystem) Robot.getSubsystem(BoxSystem.class);
+		boxSystem = Robot.getBoxSystem();;
 	}
 	
 	@Override

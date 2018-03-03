@@ -10,7 +10,7 @@ public class ReleaseBox extends Command {
 	long start;
 
 	public ReleaseBox() {
-		boxSystem = (BoxSystem) Robot.getSubsystem(BoxSystem.class);
+		boxSystem = Robot.getBoxSystem();
 	}
 	
 	@Override
@@ -27,7 +27,7 @@ public class ReleaseBox extends Command {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return System.currentTimeMillis() - start >= 750;
+		return System.currentTimeMillis() - start >= BoxSystem.RELEASE_BOX_TIME;
 	}
 
 	@Override

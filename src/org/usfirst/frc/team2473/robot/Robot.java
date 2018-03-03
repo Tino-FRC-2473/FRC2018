@@ -78,7 +78,7 @@ public class Robot extends TrackingRobot {
 		while(System.currentTimeMillis() / 1000 < (delay + origTime))
 			;
 		SmartDashboard.putString("Delay Status", "Delay passed");
-
+		
 		System.out.println("Scheduler cleared...");
 		((AutonomousRoute) autonomousCommand).configure(
 				(DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'R'), chooser.getSelected()

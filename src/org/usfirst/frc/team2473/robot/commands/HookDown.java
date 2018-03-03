@@ -16,7 +16,7 @@ public class HookDown extends Command {
 	private ClimbSystem sub;
 
 	public HookDown() {
-		sub = (ClimbSystem) Robot.getSubsystem(ClimbSystem.class);
+		sub = Robot.getClimbSystem();
 		requires(sub);
 	}
 

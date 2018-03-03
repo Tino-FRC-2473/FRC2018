@@ -12,7 +12,7 @@ public class CloseArms extends Command {
 	private BoxSystem sub;
 	
     public CloseArms() {
-    	sub = (BoxSystem) Robot.getSubsystem(BoxSystem.class);
+    	sub = Robot.getBoxSystem();
     	requires(sub);
         
     }

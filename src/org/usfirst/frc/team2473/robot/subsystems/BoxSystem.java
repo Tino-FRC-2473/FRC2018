@@ -16,6 +16,7 @@ public class BoxSystem extends TrackableSubsystem {
 	private static final double ELE_SAFE_POWER = 0.3;
 	private static final double ELE_NORMAL_POWER = 1.0;
 	private static final double ELE_AUTOMATED_POWER = 0.9;
+	public static final double RELEASE_BOX_TIME = 750;
 	
 	private int currLevel = 0;
 	public final double POWER = 0.3;

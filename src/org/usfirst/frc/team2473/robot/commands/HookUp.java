@@ -17,7 +17,7 @@ public class HookUp extends Command {
 	private ClimbSystem sub;
 
 	public HookUp() {
-		sub = (ClimbSystem) Robot.getSubsystem(ClimbSystem.class);
+		sub = Robot.getClimbSystem();
 		requires(sub);
 	}
 

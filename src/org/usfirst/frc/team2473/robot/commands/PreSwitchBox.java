@@ -7,16 +7,16 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class PreSwitchBox extends Command {
 
-	double init_enc;
+	double initEnc;
 	BoxSystem boxSystem;
 
 	public PreSwitchBox() {
-		boxSystem = (BoxSystem) Robot.getSubsystem(BoxSystem.class);
+		boxSystem = Robot.getBoxSystem();;
 	}
 	
 	@Override
 	public void initialize() {
-		init_enc = boxSystem.getEncCount();
+		initEnc = boxSystem.getEncCount();
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class PreSwitchBox extends Command {
 	@Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return Math.abs(init_enc - boxSystem.getEncCount()) >= BoxSystem.POS2;
+		return Math.abs(initEnc - boxSystem.getEncCount()) >= BoxSystem.POS2;
 	}
 
 	@Override

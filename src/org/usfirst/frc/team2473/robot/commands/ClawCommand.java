@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ClawCommand extends Command {
 
-	BoxSystem box = (BoxSystem) Robot.getSubsystem(BoxSystem.class);
+	BoxSystem box = Robot.getBoxSystem();
 
 	enum ClawState {
 		RIGHT_CLOSED_ONLY, BOTH_OPEN, BOTH_CLOSED, LEFT_CLOSED_ONLY

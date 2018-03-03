@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class CPistonIn extends Command {
 	private ClimbSystem sub;
     public CPistonIn() {
-    	sub = (ClimbSystem) Robot.getSubsystem(ClimbSystem.class);
+    	sub = Robot.getClimbSystem();;
     	requires(sub);
        
     }

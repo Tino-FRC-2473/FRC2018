@@ -15,7 +15,7 @@ public class CVCommand extends Command {
 
 	static boolean TIMING_DEBUGGING = false; // Prints when you've reached different parts in the code
 	static boolean DEBUG = false; // General debugging
-	BoxSystem box = (BoxSystem) Robot.getSubsystem(BoxSystem.class);
+	BoxSystem box = Robot.getBoxSystem();;
 
 	public CVCommand() {
 		// requires(TrackingRobot.getDriveTrain());

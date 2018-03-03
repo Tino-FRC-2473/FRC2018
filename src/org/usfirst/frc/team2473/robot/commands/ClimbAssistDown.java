@@ -12,7 +12,7 @@ public class ClimbAssistDown extends Command {
 	private ClimbSystem sub;
 	
     public ClimbAssistDown() {
-    	sub = (ClimbSystem) Robot.getSubsystem(ClimbSystem.class);
+    	sub = Robot.getClimbSystem();
         requires(sub);
     }
 
