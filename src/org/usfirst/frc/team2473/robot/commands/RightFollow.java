@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class RightFollow extends Command {
 
 	private boolean offTheLine = false;
-	
+	private int encoderChange = 0;
 	private double offset = 0;
 
 	public RightFollow() {
@@ -30,7 +30,7 @@ public class RightFollow extends Command {
 		if (!Robot.driveTrain.getDigitalSensorValue(RobotMap.MIDDLE_DIGITAL_SENSOR)) {
 			offTheLine = true;
 		}
-		Robot.driveTrain.drive(-0.4, -0.321 + offset);
+		//Robot.driveTrain.drive(-0.4, -0.321 + offset);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
