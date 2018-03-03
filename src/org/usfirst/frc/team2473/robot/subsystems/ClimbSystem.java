@@ -21,6 +21,14 @@ public class ClimbSystem extends TrackableSubsystem {
 	public final double THRESHOLD = 100;
 	public final double ENCCOUNT2 = 2052;
 	public final double ENCCOUNT3 = 150;
+	
+	public static enum PistonDir {
+		IN, OUT;
+	}
+	
+	public static enum ClimbMode {
+		ASSIST_DOWN, ASSIST_UP, DOWN, UP, UP_SLOW
+	}
 
 	private boolean hungUp = false;
 

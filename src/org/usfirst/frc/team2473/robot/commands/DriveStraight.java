@@ -2,29 +2,24 @@ package org.usfirst.frc.team2473.robot.commands;
 
 import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.framework.TrackingRobot;
+import org.usfirst.frc.team2473.robot.Auto;
 import org.usfirst.frc.team2473.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class AutoDriveStraight extends Command {
+public class DriveStraight extends Command {
 
-	private int r_startingEncoders, l_startingEncoders;
-	
-	// TODO put maxPow and minPow in RobotMap
-	private final double maxPow = 0.7;
-	private final double minPow = 0.3;
-	private double maxEncoder; // The maximum encoder count at which the robot
-								// stops
+	private int initEncR;
+	private int initEncL;
+	private double maxEncoder;
 	private double targetAngle;
 	private double power;
 
-	public AutoDriveStraight(double angle, double maxInch, double power) {
+	public DriveStraight(double angle, double maxInch, double power) {
 		requires(TrackingRobot.getDriveTrain());
 		this.maxEncoder = convertInchToEncoder(maxInch);
 		this.power = cap(power);
 		targetAngle = angle;
-//		System.out.println("POWER: " + power);
-//		System.out.println("Simple drive straight constructor passed.");
 	}
 
 	private static double convertInchToEncoder(double inches) {
@@ -32,26 +27,21 @@ public class AutoDriveStraight extends Command {
 	}
 
 	private double cap(double power) {
-		return (power > maxPow) ? maxPow : (power < minPow ? minPow : power);
+		return Math.min(Auto.MAX_POW, Math.max(Auto.MIN_POW, power));
 	}
 
 	@Override
 	protected void initialize() {
-//		System.out.println("initialize running..");
-		r_startingEncoders = Devices.getInstance().getTalon(RobotMap.BR)
+		initEncR = Devices.getInstance().getTalon(RobotMap.BR)
 				.getSelectedSensorPosition(0);
-		l_startingEncoders = Devices.getInstance().getTalon(RobotMap.BL)
+		initEncL = Devices.getInstance().getTalon(RobotMap.BL)
 				.getSelectedSensorPosition(0);
-// 		resetEncoders();
-//		Robot.zeroYawIteratively();
+		
 		TrackingRobot.getDriveTrain().setTargetAngle(targetAngle);
-		System.out.println("SimpleDriveStraight initialized.");
 	}
 
 	@Override
 	protected void execute() {
-//		System.out.println("Driving straight...");
-//		System.out.println("Angle: " + Devices.getInstance().getNavXGyro().getYaw());
 		TrackingRobot.getDriveTrain().drive(power, TrackingRobot.getDriveTrain().getAngleRate());
 	}
 
@@ -61,9 +51,9 @@ public class AutoDriveStraight extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return getAverageEnc(l_startingEncoders - Devices.getInstance().getTalon(RobotMap.BL)
+		return getAverageEnc(initEncL - Devices.getInstance().getTalon(RobotMap.BL)
 				.getSelectedSensorPosition(0),
-				r_startingEncoders - Devices.getInstance().getTalon(RobotMap.BR)
+				initEncR - Devices.getInstance().getTalon(RobotMap.BR)
 				.getSelectedSensorPosition(0)) >= maxEncoder;
 	}
 

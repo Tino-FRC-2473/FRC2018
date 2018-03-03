@@ -165,6 +165,14 @@ public class Robot extends TrackingRobot {
 //	public static double getYaw() {
 //		return Devices.getInstance().getNavXGyro().getYaw();
 //	}
+	
+	public static ClimbSystem getClimb() {
+		return (ClimbSystem) Robot.getSubsystem(ClimbSystem.class);
+	}
+	
+	public static BoxSystem getBox() {
+		return (BoxSystem) Robot.getSubsystem(BoxSystem.class);
+	}
 
 	private void zeroYawIteratively() {
 		Devices.getInstance().getNavXGyro().zeroYaw();

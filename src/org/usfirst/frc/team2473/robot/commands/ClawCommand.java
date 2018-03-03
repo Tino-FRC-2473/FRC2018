@@ -2,18 +2,15 @@ package org.usfirst.frc.team2473.robot.commands;
 
 import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
+import org.usfirst.frc.team2473.robot.subsystems.BoxSystem.ClawState;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ClawCommand extends Command {
 
-	BoxSystem box = (BoxSystem) Robot.getSubsystem(BoxSystem.class);
+	BoxSystem box = Robot.getBox();
 
-	enum ClawState {
-		RIGHT_CLOSED_ONLY, BOTH_OPEN, BOTH_CLOSED, LEFT_CLOSED_ONLY
-	}
-
-	ClawState state = ClawState.BOTH_OPEN;
+	private ClawState state = ClawState.BOTH_OPEN;
 
 	@Override
 	public void execute() {

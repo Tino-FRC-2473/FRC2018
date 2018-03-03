@@ -2,23 +2,31 @@ package org.usfirst.frc.team2473.robot.commands;
 
 import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem;
+import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem.PistonDir;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ClimbUpSlow extends Command {
-	private ClimbSystem sub;
+public class CPiston extends Command {
+	private ClimbSystem climb;
 	
-    public ClimbUpSlow() {
-    	sub = (ClimbSystem) Robot.getSubsystem(ClimbSystem.class);
-        requires(sub);
+	private PistonDir direction;
+	
+    public CPiston(PistonDir dir) {
+    	climb = Robot.getClimb();
+    	requires(climb);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	sub.climbPrimarySlow();
+    	if (Robot.getControls().cPistonInButton.get()) {
+    		if (direction == PistonDir.IN)
+    			climb.setPistonR();
+    		else 
+    			climb.setPistonF();
+    	}
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -27,17 +35,19 @@ public class ClimbUpSlow extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+    	if (direction == PistonDir.IN)
+    		return !Robot.getControls().cPistonInButton.get();
+    	else 
+    		return !Robot.getControls().cPistonOutButton.get();
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	sub.stopClimbMotor();
+    	climb.setPistonOff();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	sub.stopClimbMotor();
     }
 }

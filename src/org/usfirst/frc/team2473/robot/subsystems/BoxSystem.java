@@ -27,6 +27,14 @@ public class BoxSystem extends TrackableSubsystem {
 	public int[] posArray = { POS0, POS1, POS2, POS3, POS4 };
 	private boolean hasZeroed = false;
 	private boolean clawReadyStatus = false;
+	
+	public enum ClawState {
+		RIGHT_CLOSED_ONLY, BOTH_OPEN, BOTH_CLOSED, LEFT_CLOSED_ONLY
+	}
+	
+	public enum ArmState {
+		OPEN, CLOSE
+	}
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
