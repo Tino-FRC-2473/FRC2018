@@ -1,6 +1,8 @@
 package org.usfirst.frc.team2473.robot;
 
 public class Auto {
+	public static final double MAX_POW = 0.7;
+	public static final double MIN_POW = 0.3;
 	// All specifications are in inches
 	
 	//UNCERTAIN

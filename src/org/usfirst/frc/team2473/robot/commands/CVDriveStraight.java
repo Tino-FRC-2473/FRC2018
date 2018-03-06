@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class CVDriveStraight extends Command {
 
-	private int r_startingEncoders, l_startingEncoders;
+	private int initEncR, initEncL;
 
 	// TODO put maxPow and minPow in RobotMap
 	private final double maxPow = 0.7;
@@ -39,8 +39,8 @@ public class CVDriveStraight extends Command {
 	@Override
 	protected void initialize() {
 		System.out.println("initializing CVDriveStraight..");
-		r_startingEncoders = Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0);
-		l_startingEncoders = Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0);
+		initEncR = Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0);
+		initEncL = Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0);
 		// resetEncoders();
 		// Robot.zeroYawIteratively();
 		Robot.drive.cancel();
@@ -51,8 +51,8 @@ public class CVDriveStraight extends Command {
 	@Override
 	protected void execute() {
 		System.out.println(getAverageEnc(
-				l_startingEncoders - Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0),
-				r_startingEncoders - Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0)));
+				initEncL - Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0),
+				initEncR - Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0)));
 		TrackingRobot.getDriveTrain().drive(power, TrackingRobot.getDriveTrain().getAngleRate());
 	}
 
@@ -63,8 +63,8 @@ public class CVDriveStraight extends Command {
 	@Override
 	protected boolean isFinished() {
 		return getAverageEnc(
-					l_startingEncoders - Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0),
-					r_startingEncoders - Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0)
+					initEncL - Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0),
+					initEncR - Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0)
 				) >= maxEncoder;
 	}
 

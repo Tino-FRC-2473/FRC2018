@@ -12,5 +12,10 @@
 	<classpathentry kind="lib" path="build/jars/cscore.jar"/>
 	<classpathentry kind="lib" path="build/jars/navx_frc.jar"/>
 	<classpathentry kind="lib" path="build/jars/WPILib.jar"/>
+<<<<<<< HEAD
+=======
+	<classpathentry kind="var" path="USERLIBS_DIR/navx_frc.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/ThreadingRobot.jar"/>
+>>>>>>> e6239dc91ca179a0cca1e0478e1a9a979dfb4f23
 	<classpathentry kind="output" path="bin"/>
 </classpath>

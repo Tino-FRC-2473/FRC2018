@@ -1,14 +1,11 @@
 package org.usfirst.frc.team2473.robot;
 
 import org.usfirst.frc.team2473.robot.commands.ChangeElevatorLevel;
-import org.usfirst.frc.team2473.robot.commands.ClimbAssistDown;
-import org.usfirst.frc.team2473.robot.commands.ClimbAssistUp;
-import org.usfirst.frc.team2473.robot.commands.ClimbDown;
-import org.usfirst.frc.team2473.robot.commands.ClimbUp;
-import org.usfirst.frc.team2473.robot.commands.ClimbUpSlow;
+import org.usfirst.frc.team2473.robot.commands.Climb;
 import org.usfirst.frc.team2473.robot.commands.CompressorCommand;
 import org.usfirst.frc.team2473.robot.commands.HookDown;
 import org.usfirst.frc.team2473.robot.commands.HookUp;
+import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem.ClimbMode;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -54,7 +51,7 @@ public class Controls {
 		
 //		ask drivers for preferred button then group it with other climb buttons
 		climbUpSlow = new JoystickButton(wheel, 4);
-		climbUpSlow.whileHeld(new ClimbUpSlow());
+		climbUpSlow.whileHeld(new Climb(ClimbMode.UP_SLOW));
 		
 //		???
 		//controlButton = new JoystickButton(throttle, 8);
@@ -103,12 +100,12 @@ public class Controls {
 		climbAssistUp = new JoystickButton(wheel, 2); //idk why one is wheel and other is throttle
 		climbAssistDown = new JoystickButton(throttle, 12);
 		
-		climbUp.whileHeld(new ClimbUp());
+		climbUp.whileHeld(new Climb(ClimbMode.UP));
 		armUpButton.whenPressed(new HookUp());
 		armDownButton.whenPressed(new HookDown());
-		climbDown.whileHeld(new ClimbDown());
-		climbAssistUp.whileHeld(new ClimbAssistUp());
-		climbAssistDown.whileHeld(new ClimbAssistDown());
+		climbDown.whileHeld(new Climb(ClimbMode.DOWN));
+		climbAssistUp.whileHeld(new Climb(ClimbMode.ASSIST_UP));
+		climbAssistDown.whileHeld(new Climb(ClimbMode.ASSIST_DOWN));
 		
 
 		/*----------------

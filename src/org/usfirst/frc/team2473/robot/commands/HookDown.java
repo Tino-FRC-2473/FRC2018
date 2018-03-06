@@ -13,43 +13,37 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class HookDown extends Command {
-	private ClimbSystem sub;
+	private ClimbSystem climb;
 
 	public HookDown() {
+<<<<<<< HEAD
 		sub = Robot.getClimbSystem();
 		requires(sub);
+=======
+		climb = Robot.getClimb();
+		requires(climb);
+>>>>>>> e6239dc91ca179a0cca1e0478e1a9a979dfb4f23
 	}
 
-	// Called just before this Command runs the first time
 	protected void initialize() {
-		Devices.getInstance().getTalon(RobotMap.CLIMB_ARM_MOTOR).set(ControlMode.PercentOutput, sub.ARMPOWDOWN);
+		Devices.getInstance().getTalon(RobotMap.CLIMB_ARM_MOTOR).set(ControlMode.PercentOutput, climb.ARMPOWDOWN);
 	}
 
-	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		// if (Robot.getControls().armDownButton.get()) {
-		Devices.getInstance().getTalon(RobotMap.CLIMB_ARM_MOTOR).set(ControlMode.PercentOutput, sub.getSlowerSpeed(false));
-		// } else {
-		// Devices.getInstance().getTalon(RobotMap.CLIMB_ARM_MOTOR).set(ControlMode.PercentOutput,
-		// 0);
-		// }
+		Devices.getInstance().getTalon(RobotMap.CLIMB_ARM_MOTOR).set(ControlMode.PercentOutput, climb.getSlowerSpeed(false));
 	}
 
-	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return Math.abs(
-				Devices.getInstance().getTalon(RobotMap.CLIMB_ARM_MOTOR).getSelectedSensorPosition(0)) <= sub.ENCCOUNT3;
+		return Math.abs(Devices.getInstance().getTalon(RobotMap.CLIMB_ARM_MOTOR)
+				.getSelectedSensorPosition(0)) <= climb.ENCCOUNT3;
 	}
 
-	// Called once after isFinished returns true
 	protected void end() {
-		sub.stopArmMotor();
-		sub.updateToHung();
+		climb.stopArmMotor();
+		climb.updateToHung();
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
 	protected void interrupted() {
-		sub.stopArmMotor();
+		climb.stopArmMotor();
 	}
 }

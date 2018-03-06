@@ -7,9 +7,15 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ChangeElevatorLevel extends Command {
 
+<<<<<<< HEAD
 	public static BoxSystem box = Robot.getBoxSystem();
 	private boolean up;
 	int initPosition, initLevel, targetLevel, target = -1;
+=======
+	public static BoxSystem box = Robot.getBox();
+	private boolean up;
+	int initPos, initLevel, targetLevel, target = -1;
+>>>>>>> e6239dc91ca179a0cca1e0478e1a9a979dfb4f23
 	private double threshold = 50;
 
 	public ChangeElevatorLevel(boolean up) {
@@ -28,7 +34,11 @@ public class ChangeElevatorLevel extends Command {
 
 	@Override
 	public void initialize() {
+<<<<<<< HEAD
 		initPosition = box.getEncCount();
+=======
+		initPos = box.getEncCount();
+>>>>>>> e6239dc91ca179a0cca1e0478e1a9a979dfb4f23
 		initLevel = box.getCurrPos();
 
 		if (target == -1) {
