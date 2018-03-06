@@ -72,7 +72,6 @@ public class CVDriveStraight extends Command {
 	protected void end() {
 		System.out.println("drive straight ended");
 		TrackingRobot.getDriveTrain().stop();
-		(new GrabAndRaise()).start();
 	}
 
 	@Override

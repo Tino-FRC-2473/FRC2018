@@ -10,7 +10,7 @@ public class ReleaseBox extends Command {
 	long start;
 
 	public ReleaseBox() {
-		boxSystem = Robot.getBoxSystem();
+		boxSystem = Robot.getBox();
 	}
 	
 	@Override

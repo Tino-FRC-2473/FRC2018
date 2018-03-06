@@ -11,7 +11,7 @@ public class PreSwitchBox extends Command {
 	BoxSystem boxSystem;
 
 	public PreSwitchBox() {
-		boxSystem = Robot.getBoxSystem();;
+		boxSystem = Robot.getBox();
 	}
 	
 	@Override

@@ -16,13 +16,8 @@ public class HookDown extends Command {
 	private ClimbSystem climb;
 
 	public HookDown() {
-<<<<<<< HEAD
-		sub = Robot.getClimbSystem();
-		requires(sub);
-=======
 		climb = Robot.getClimb();
 		requires(climb);
->>>>>>> e6239dc91ca179a0cca1e0478e1a9a979dfb4f23
 	}
 
 	protected void initialize() {

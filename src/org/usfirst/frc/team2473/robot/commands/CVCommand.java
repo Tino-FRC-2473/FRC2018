@@ -10,35 +10,15 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CVCommand extends Command {
-	boolean runningCV = false;
-	boolean finished = false;
-	boolean opened = false;
+	private boolean runningCV;
+	private boolean finished;
 
-	static boolean TIMING_DEBUGGING = false; // Prints when you've reached different parts in the code
-	static boolean DEBUG = false; // General debugging
-<<<<<<< HEAD
-	BoxSystem box = Robot.getBoxSystem();;
-=======
-	BoxSystem box;
->>>>>>> e6239dc91ca179a0cca1e0478e1a9a979dfb4f23
+	private final boolean TIMING_DEBUGGING = false; // Prints when you've reached different parts in the code
+	private final boolean DEBUG = false; // General debugging
 
 	public CVCommand() {
-		box = Robot.getBox();
-	}
-
-	public CVCommand(String name) {
-		super(name);
-		// TODO Auto-generated constructor stub
-	}
-
-	public CVCommand(double timeout) {
-		super(timeout);
-		// TODO Auto-generated constructor stub
-	}
-
-	public CVCommand(String name, double timeout) {
-		super(name, timeout);
-		// TODO Auto-generated constructor stub
+		runningCV = false;
+		finished = false;
 	}
 
 	@Override
@@ -79,7 +59,7 @@ public class CVCommand extends Command {
 				if (DEBUG) System.out.println("Distance: " + distance + " Angle: " + bearing);
 				
 				if (distance < CV.DIST_THRESHOLD) {
-					opened = false;
+//					opened = false;
 //					TrackingRobot.getDriveTrain().stop();
 
 					System.out.println("within threshold at " + distance);
@@ -104,7 +84,7 @@ public class CVCommand extends Command {
 					finished = true;
 					runningCV = false;
 //					box.clawStatusNotReady();
-					opened = false;
+//					opened = false;
 //					break;
 				} else {
 					if (distance < CV.CLAW_DIST) {

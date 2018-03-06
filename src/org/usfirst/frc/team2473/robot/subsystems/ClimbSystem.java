@@ -30,6 +30,9 @@ public class ClimbSystem extends TrackableSubsystem {
 		ASSIST_DOWN, ASSIST_UP, DOWN, UP, UP_SLOW
 	}
 
+	public static enum HookDirection {
+		DOWN, UP
+	}
 	private boolean hungUp = false;
 
 	// 2052

@@ -14,7 +14,7 @@ public class ElevatorCommand extends Command {
 //	private double startingEnc;
 
 	public ElevatorCommand() {
-		sub = Robot.getBoxSystem();
+		sub = Robot.getBox();
 		requires(sub);
 	}
 

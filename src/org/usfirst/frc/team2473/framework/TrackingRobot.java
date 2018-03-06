@@ -116,14 +116,6 @@ public abstract class TrackingRobot extends IterativeRobot {
 		return null;
 	}
 	
-	public static <T extends TrackableSubsystem> BoxSystem getBoxSystem() {
-		return (BoxSystem) getSubsystem(BoxSystem.class);		
-	}
-	
-	public static <T extends TrackableSubsystem> ClimbSystem getClimbSystem() {
-		return (ClimbSystem) getSubsystem(ClimbSystem.class);
-	}
-	
 	/**
 	 * Returns an instance of the controls class, which handles joystick and button information
 	 * @return Such an instance

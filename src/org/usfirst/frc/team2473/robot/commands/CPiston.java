@@ -6,17 +6,6 @@ import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem.PistonDir;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
-<<<<<<< HEAD:src/org/usfirst/frc/team2473/robot/commands/CPistonIn.java
-public class CPistonIn extends Command {
-	private ClimbSystem sub;
-    public CPistonIn() {
-    	sub = Robot.getClimbSystem();;
-    	requires(sub);
-       
-=======
 public class CPiston extends Command {
 	private ClimbSystem climb;
 	
@@ -25,7 +14,6 @@ public class CPiston extends Command {
     public CPiston(PistonDir dir) {
     	climb = Robot.getClimb();
     	requires(climb);
->>>>>>> e6239dc91ca179a0cca1e0478e1a9a979dfb4f23:src/org/usfirst/frc/team2473/robot/commands/CPiston.java
     }
 
     // Called just before this Command runs the first time

@@ -6,17 +6,7 @@ import org.usfirst.frc.team2473.robot.subsystems.BoxSystem.ArmState;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-/**
- *
- */
-<<<<<<< HEAD:src/org/usfirst/frc/team2473/robot/commands/OpenArms.java
-public class OpenArms extends Command {
-	private BoxSystem sub;
 
-	public OpenArms() {
-    	sub = Robot.getBoxSystem();
-    	requires(sub);
-=======
 public class ToggleArms extends Command {
 	private BoxSystem box;
 	private ArmState state;
@@ -25,7 +15,6 @@ public class ToggleArms extends Command {
     	box = Robot.getBox();
     	requires(box);
     	this.state = state;
->>>>>>> e6239dc91ca179a0cca1e0478e1a9a979dfb4f23:src/org/usfirst/frc/team2473/robot/commands/ToggleArms.java
     }
 
     // Called just before this Command runs the first time
