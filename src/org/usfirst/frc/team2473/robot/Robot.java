@@ -7,9 +7,9 @@
 
 package org.usfirst.frc.team2473.robot;
 
-import org.usfirst.frc.team2473.robot.commands.LeftFollow;
 import org.usfirst.frc.team2473.robot.commands.LineFollow;
 import org.usfirst.frc.team2473.robot.commands.RightFollow;
+import org.usfirst.frc.team2473.robot.commands.TurnRight90;
 import org.usfirst.frc.team2473.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -67,7 +67,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		command = new LineFollow();
+		command = new LineFollow()
 
 		if (command != null) {
 			command.start();

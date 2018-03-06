@@ -12,33 +12,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class RightFollow extends Command {
 
-	private boolean offTheLine = false;
-	private int encoderChange = 0;
-	private double offset = 0;
-
 	public RightFollow() {
 		requires(Robot.driveTrain);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-
+		if (Robot.driveTrain.getPIDController().isEnabled()) {
+			Robot.driveTrain.disable();
+		}
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		if (!Robot.driveTrain.getDigitalSensorValue(RobotMap.MIDDLE_DIGITAL_SENSOR)) {
-			offTheLine = true;
-		}
-		//Robot.driveTrain.drive(-0.4, -0.321 + offset);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		if (offTheLine && Robot.driveTrain.getDigitalSensorValue(RobotMap.MIDDLE_DIGITAL_SENSOR)) {
-			(new LineFollow()).start();
-			return true;
-		}
 		return false;
 	}
 

@@ -134,7 +134,7 @@ public class DriveTrain extends PIDSubsystem {
 		this.enable();
 	}
 	
-	public int getEncoderClick(int talon) {
+	public int getEncoderCount(int talon) {
 		if (talon == RobotMap.MOTOR_FRONT_LEFT) {
 			return talonFrontLeft.getSelectedSensorPosition(0);
 		} else if (talon == RobotMap.MOTOR_FRONT_RIGHT) {
