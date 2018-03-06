@@ -16,6 +16,7 @@ import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
 import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem;
 import org.usfirst.frc.team2473.robot.subsystems.PIDriveTrain;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import edu.wpi.cscore.UsbCamera;
@@ -87,13 +88,15 @@ public class Robot extends TrackingRobot {
 	}
 
 	protected void innerTeleopInit() {
-		(new ElevatorCommand()).start();
+		Devices.getInstance().getTalon(11).set(ControlMode.PercentOutput, 0.2);
+	/*	(new ElevatorCommand()).start();
 		(new ClawCommand()).start();
-		cvDrive.start();
+		cvDrive.start();*/
 	}
 
 	protected void innerTeleopPeriodic() {
-		((BoxSystem) getSubsystem(BoxSystem.class)).setLevel(((BoxSystem) getSubsystem(BoxSystem.class)).getCurrPos());
+		System.out.println(Devices.getInstance().getDigitalInput(0).get());
+		//((BoxSystem) getSubsystem(BoxSystem.class)).setLevel(((BoxSystem) getSubsystem(BoxSystem.class)).getCurrPos());
 //		System.out.println("current level: " + ((BoxSystem) getSubsystem(BoxSystem.class)).getLevel());
 	}
 

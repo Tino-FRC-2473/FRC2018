@@ -12,7 +12,5 @@
 	<classpathentry kind="lib" path="build/jars/cscore.jar"/>
 	<classpathentry kind="lib" path="build/jars/navx_frc.jar"/>
 	<classpathentry kind="lib" path="build/jars/WPILib.jar"/>
-	<classpathentry kind="var" path="USERLIBS_DIR/navx_frc.jar"/>
-	<classpathentry kind="var" path="USERLIBS_DIR/CTRLib.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
