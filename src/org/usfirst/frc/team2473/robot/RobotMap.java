@@ -16,7 +16,7 @@ package org.usfirst.frc.team2473.robot;
 public class RobotMap {
 
 	//motors
-	public static int elevatorMotor = 2;
+	public static int elevatorMotor = 11;
 	public static int climbArmMotor = 10;
 	public static int climbMotorL = 4;
 	public static int climbMotorL2 = 5;
@@ -28,8 +28,8 @@ public class RobotMap {
 	public static int solenoidBCLRChannel = 2;
 	public static int solenoidBCRFChannel = 1;
 	public static int solenoidBCRRChannel = 3;
-	public static int solenoidClimbF = 8;
-	public static int solenoidClimbR = 9;
+	public static int solenoidClimbF = 6;
+	public static int solenoidClimbR = 7;
 	
 	//joystick
 	public static int joystickNum = 0;
@@ -45,14 +45,13 @@ public class RobotMap {
 	public static int elevatorDownNum = 6;
 	public static int climbUp1 = 1;
 	public static int climbUp2 = 3;
-	public static int climbDown = 10;
-	public static int cPistonInNum = 10;
+	public static int cPistonInNum = 9;
 	public static int cPistonOutNum = 10;
 
 	
 	//digitalInputs
-	public static int eleTopLS = 1;
-	public static int eleBottomLS = 0;
+	public static int eleTopLS = 2;
+	public static int eleBottomLS = 1;
 	public static int hookLS = 3;
 	public static int armBB = 4;
 }

@@ -21,7 +21,8 @@ public class ClimbSystem extends TrackableSubsystem
 	public final double ARMPOWUP2 = -0.25;
 	public final double ARMPOWDOWN1 = 0.25;
 	public final double ARMPOWDOWN2 = 0.1;
-	public final double CLIMBPOW = 0.2;
+	public final double WINCH1POW = 0.9;
+	public final double WINCH2POW = 0.65;
 	public final double ENCCOUNT1 = 638;
 	public final double ENCCOUNT2 = 2000;
 	public final double ENCCOUNT3 = 1950;
@@ -53,27 +54,16 @@ public class ClimbSystem extends TrackableSubsystem
     
     public void climbUp1() 
     {
-    	Devices.getInstance().getTalon(RobotMap.climbMotorR).set(ControlMode.PercentOutput, CLIMBPOW);
-    	Devices.getInstance().getTalon(RobotMap.climbMotorR2).set(ControlMode.PercentOutput, CLIMBPOW);
+    	Devices.getInstance().getTalon(RobotMap.climbMotorR).set(ControlMode.PercentOutput, WINCH1POW);
+    	Devices.getInstance().getTalon(RobotMap.climbMotorR2).set(ControlMode.PercentOutput, WINCH1POW);
     	System.out.println("climbing up");
     }
     
     public void climbUp2() {
-    	Devices.getInstance().getTalon(RobotMap.climbMotorL).set(ControlMode.PercentOutput, -CLIMBPOW);
-    	Devices.getInstance().getTalon(RobotMap.climbMotorL2).set(ControlMode.PercentOutput, -CLIMBPOW);
+    	Devices.getInstance().getTalon(RobotMap.climbMotorL).set(ControlMode.PercentOutput, -WINCH2POW);
+    	Devices.getInstance().getTalon(RobotMap.climbMotorL2).set(ControlMode.PercentOutput, -WINCH2POW);
 
     }
-    
-    
-    public void climbDown() 
-    {
-    	Devices.getInstance().getTalon(RobotMap.climbMotorR).set(ControlMode.PercentOutput, -CLIMBPOW);
-    	Devices.getInstance().getTalon(RobotMap.climbMotorL2).set(ControlMode.PercentOutput, CLIMBPOW);
-    	Devices.getInstance().getTalon(RobotMap.climbMotorR2).set(ControlMode.PercentOutput, -CLIMBPOW);
-    	Devices.getInstance().getTalon(RobotMap.climbMotorL).set(ControlMode.PercentOutput, CLIMBPOW);
-    	System.out.println("climb down");
-    }
-    
    
     public void stopClimbMotor() {
     	Devices.getInstance().getTalon(RobotMap.climbMotorR).stopMotor();

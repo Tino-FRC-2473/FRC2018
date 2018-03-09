@@ -17,11 +17,11 @@ import org.usfirst.frc.team2473.robot.RobotMap;
  */
 public class BoxSystem extends TrackableSubsystem 
 {
-	public final double POWER = 0.3;
+	public final double POWER = 0.2;
 	public static final int POS0 = 0;
-	public static final int POS1 = 10000;
-	public static final int POS2 = 56000;
-	public static final int POS3 = 110000;
+	public static final int POS1 = 1000;
+	public static final int POS2 = 5600;
+	public static final int POS3 = 11000;
 	public int[] posArray = {POS0, POS1, POS2, POS3};
 	private int currPos = 1;
 	private int startPos = 0;
@@ -46,16 +46,13 @@ public class BoxSystem extends TrackableSubsystem
 
 	public void setPistonR() {
 		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kReverse);
-		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kReverse);
 	}
 	public void setPistonOff(){
 		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kOff);
-		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kOff);
 	}
 
 	public void setPistonF() {
 		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCLFChannel,RobotMap.solenoidBCLRChannel).set(Value.kForward);
-		Devices.getInstance().getDoubleSolenoid(RobotMap.solenoidBCRFChannel,RobotMap.solenoidBCRRChannel).set(Value.kForward);
 	}
 
 	public int getCurPos() {
