@@ -2,7 +2,7 @@ package org.usfirst.frc.team2473.robot.subsystems;
 
 import org.usfirst.frc.team2473.framework.TrackableSubsystem;
 import org.usfirst.frc.team2473.robot.Controls;
-import org.usfirst.frc.team2473.robot.Devices;
+import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.RobotMap;
 
@@ -99,4 +99,3 @@ public class ClimbSystem extends TrackableSubsystem
 
     }
 }
-

@@ -1,7 +1,7 @@
 package org.usfirst.frc.team2473.robot.subsystems;
 
 import org.usfirst.frc.team2473.framework.TrackableSubsystem;
-import org.usfirst.frc.team2473.robot.Devices;
+import org.usfirst.frc.team2473.framework.Devices;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -133,6 +133,6 @@ public class BoxSystem extends TrackableSubsystem
 				return i;
 			}
 		}
-		return 3;	}
+		return 3;
+	}
 }
-

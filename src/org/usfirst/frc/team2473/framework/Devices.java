@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package org.usfirst.frc.team2473.framework;
 
 import java.util.ArrayList;
@@ -257,4 +258,3 @@ public class Devices {
 	/*public void removeNavXGyro() {
 		navX = null;
 	}*/
-}
