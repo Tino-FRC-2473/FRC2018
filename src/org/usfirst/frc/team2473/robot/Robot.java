@@ -9,6 +9,7 @@ package org.usfirst.frc.team2473.robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+import org.usfirst.frc.team2473.robot.commands.CompressorCommand;
 import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
 import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem;
 import org.usfirst.frc.team2473.robot.subsystems.DriveTrain;
@@ -71,6 +72,7 @@ public class Robot extends TrackingRobot {
 		//Devices.getInstance().addDigitalInput(7);
 	}
 	@Override protected void innerAutonomousInit(){
+		(new CompressorCommand()).start();
 		//Devices.getInstance().getTalon(2).set(ControlMode.PercentOutput, 0.5);
 		//Devices.getInstance().getTalon(2).set(ControlMode.Current, 10);
 		

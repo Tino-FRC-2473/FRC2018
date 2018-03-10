@@ -75,8 +75,8 @@ public class Controls {
 	//	climbUp2.whileHeld(new ClimbUp2());
 		
 		//claw
-		//openArmsButton.whenPressed(new OpenArms());
-		//closeArmsButton.whenPressed(new CloseArms());
+		openArmsButton.whenPressed(new OpenArms());
+		closeArmsButton.whenPressed(new CloseArms());
 
 		
 		//cPistonInButton.whileHeld(new CPistonIn());

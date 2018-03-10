@@ -179,9 +179,17 @@ public class Devices {
 		 * if the sensor doesn't exist, the loop will go to completion, with nothing returned
 		 * after which the sensor can be added through addDigitalInput and then returned in the next line as the last element in the collection
 		 */
-		for(DigitalInput input : digitals) if(input.getChannel() == channel) return input;
-		addDigitalInput(channel);
-		return digitals.get(digitals.size() - 1);
+		boolean exists = false;
+		for(DigitalInput input : digitals) 
+			if(input.getChannel() == channel) {
+				exists = true;
+				return input;
+			}
+		if(!exists) {
+			addDigitalInput(channel);
+			return digitals.get(digitals.size() - 1);
+		}
+		return null;
 	}
 	
 	/**

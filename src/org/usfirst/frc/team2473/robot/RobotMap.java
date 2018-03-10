@@ -26,8 +26,10 @@ public class RobotMap {
 	//solenoids
 	public static int solenoidBCLFChannel = 0;
 	public static int solenoidBCLRChannel = 2;
+	
 	public static int solenoidBCRFChannel = 1;
 	public static int solenoidBCRRChannel = 3;
+	
 	public static int solenoidClimbF = 6;
 	public static int solenoidClimbR = 7;
 	

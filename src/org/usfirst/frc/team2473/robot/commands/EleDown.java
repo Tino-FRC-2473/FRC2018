@@ -8,7 +8,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team2473.robot.Controls;
-import org.usfirst.frc.team2473.robot.Devices;
+import org.usfirst.frc.team2473.framework.Devices;
 
 
 /**
@@ -50,7 +50,7 @@ public class EleDown extends Command {
 	protected void execute() 
 	{
 	//	sub.updateCurrDownPos();
-		//System.out.println("At position:" + sub.getCurPos()+" enc = "+sub.getEncCount());
+	//System.out.println("At position:" + sub.getCurPos()+" enc = "+sub.getEncCount());
 		/*if(!isControl && Devices.getInstance().getTalon(RobotMap.elevatorMotor).getMotorOutputPercent()!=0)
 		{
 			if(Math.abs(sub.getEncCount())<sub.POS1)
@@ -58,7 +58,7 @@ public class EleDown extends Command {
 				sub.setPow(0.3);
 			}else if(Math.abs(sub.getEncCount())>=sub.POS1)
 			{
-				sub.setPow(0.3);		
+				sub.setPow(0.7);		
 
 			}
 		}*/
