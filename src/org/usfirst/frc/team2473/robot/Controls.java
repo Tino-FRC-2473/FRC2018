@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package org.usfirst.frc.team2473.robot;
 
 import org.usfirst.frc.team2473.robot.commands.CPistonIn;
