@@ -1,10 +1,12 @@
 package org.usfirst.frc.team2473.robot;
 
-import org.usfirst.frc.team2473.robot.commands.ChangeElevatorLevel;
+import org.usfirst.frc.team2473.robot.commands.CPiston;
+import org.usfirst.frc.team2473.robot.commands.ChangeElevatorLevel2;
 import org.usfirst.frc.team2473.robot.commands.Climb;
 import org.usfirst.frc.team2473.robot.commands.CompressorCommand;
 import org.usfirst.frc.team2473.robot.commands.HookDown;
 import org.usfirst.frc.team2473.robot.commands.HookUp;
+import org.usfirst.frc.team2473.robot.commands.ToggleArms;
 import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem.ClimbMode;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -16,16 +18,19 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class Controls {
-	private Joystick throttle, wheel;
+	private Joystick throttle, wheel, panel;
 	
 	private Button buttonCV;
 	private Button armDownButton;
 	private Button armUpButton;
 	private Button climbUp;
 	private Button climbUpSlow;
-	private Button climbDown;
 	private Button climbAssistUp;
-	private Button climbAssistDown;
+	
+	private Button eleLevel0;
+	private Button eleLevel1;
+	private Button eleLevel2;
+	private Button eleLevel3;
 	
 	public Button openArmsButton;
 	public Button closeArmsButton;
@@ -46,40 +51,33 @@ public class Controls {
 		   | JOYSTICKS |
 		-----------------*/
 		wheel = new Joystick(0);
-		throttle = new Joystick(1);
+		throttle = new Joystick(2);
+		panel = new Joystick(3);
 
-		
-//		ask drivers for preferred button then group it with other climb buttons
-		climbUpSlow = new JoystickButton(wheel, 4);
-		climbUpSlow.whileHeld(new Climb(ClimbMode.UP_SLOW));
-		
-//		???
-		//controlButton = new JoystickButton(throttle, 8);
-		
-		
+		climbUpSlow = new JoystickButton(wheel, 4); //FIX
+		climbUpSlow.whileHeld(new Climb(ClimbMode.UP_SLOW)); //FIX
+				
 		/*------------------------
 		   | ELEVATOR BUTTONS |
 		------------------------*/
-		resetElevator = new JoystickButton(throttle, 4); //6
-		levelUpButton = new JoystickButton(throttle, 5);
-		levelDownButton = new JoystickButton(throttle, 6);
-		//pickUpButton = new JoystickButton(throttle, 11);
+		eleLevel0 = new JoystickButton(panel, 7);
+		eleLevel1 = new JoystickButton(panel, 5);
+		eleLevel2 = new JoystickButton(panel, 3);
+		eleLevel3 = new JoystickButton(panel, 1);
 		
-		//i assume you just .get in the command
-		//elevatorUp.whileHeld(new ElevatorCommand());
-		resetElevator.whenPressed(new ChangeElevatorLevel(0));
-		levelUpButton.whenPressed(new ChangeElevatorLevel(true));
-		levelDownButton.whenPressed(new ChangeElevatorLevel(false));
-		//pick up button? just .get in the command?
+		eleLevel0.whenPressed(new ChangeElevatorLevel2(0));
+		eleLevel1.whenPressed(new ChangeElevatorLevel2(1));
+		eleLevel2.whenPressed(new ChangeElevatorLevel2(2));
+		eleLevel3.whenPressed(new ChangeElevatorLevel2(3));
 		
 		/*-------------------
   		   | ARM BUTTONS |
 		-------------------*/
-		//closeArmsButton = new JoystickButton(throttle, 1);
-		//openArmsButton = new JoystickButton(throttle, 2);
-		
-		//openArmsButton.whenPressed(new OpenArms());
-		//closeArmsButton.whenPressed(new CloseArms());
+		openArmsButton = new JoystickButton(panel, 2);
+		closeArmsButton = new JoystickButton(panel, 4);
+	
+		openArmsButton.whenPressed(new ToggleArms(true));
+		closeArmsButton.whenPressed(new ToggleArms(false));
 		
 		
 		/*---------------------
@@ -87,42 +85,37 @@ public class Controls {
 		---------------------*/
 		slow = new JoystickButton(wheel, 6);
 		buttonCV = new JoystickButton(throttle, 7);
-		//no .whenPressed? i assume you just .get from the drive train
 		
 		
 		/*---------------------
 		   | CLIMB BUTTONS |
 		---------------------*/
-		climbUp = new JoystickButton(throttle, 8);
-		armUpButton = new JoystickButton(throttle, 9);
-		armDownButton = new JoystickButton(throttle, 10);
-		climbDown = new JoystickButton(throttle, 11);
-		climbAssistUp = new JoystickButton(wheel, 2); //idk why one is wheel and other is throttle
-		climbAssistDown = new JoystickButton(throttle, 12);
+		climbUp = new JoystickButton(wheel, 1);
+		armUpButton = new JoystickButton(wheel, 4);
+		armDownButton = new JoystickButton(wheel, 3);
+		climbAssistUp = new JoystickButton(wheel, 2);
 		
 		climbUp.whileHeld(new Climb(ClimbMode.UP));
 		armUpButton.whenPressed(new HookUp());
 		armDownButton.whenPressed(new HookDown());
-		climbDown.whileHeld(new Climb(ClimbMode.DOWN));
 		climbAssistUp.whileHeld(new Climb(ClimbMode.ASSIST_UP));
-		climbAssistDown.whileHeld(new Climb(ClimbMode.ASSIST_DOWN));
 		
 
-		/*----------------
-		   | NOT SURE |
-		----------------*/
-		//cPistonInButton = new JoystickButton(throttle, -1);
-		//cPistonOutButton = new JoystickButton(throttle, -1);
+		/*----------------------
+		   | PISTON BUTTONS |
+		----------------------*/
+		cPistonInButton = new JoystickButton(wheel, 10); //FIX
+		cPistonOutButton = new JoystickButton(wheel, 13); //FIX
 
-		//cPistonInButton.whileHeld(new CPistonIn());
-		//cPistonOutButton.whileHeld(new CPistonOut());
+		cPistonInButton.whenPressed(new CPiston());
+		cPistonOutButton.whenPressed(new CPiston());
 
 		
 		/*-------------------------
 		   | COMPRESSOR BUTTONS |
 		-------------------------*/
-		compressorOn = new JoystickButton(wheel, 1);
-		compressorOff = new JoystickButton(wheel, 5);
+		compressorOn = new JoystickButton(wheel, 7); //1
+		compressorOff = new JoystickButton(wheel, 7); //5
 		
 		compressorOn.whenPressed(new CompressorCommand());
 		compressorOff.whenPressed(new CompressorCommand());
@@ -136,13 +129,17 @@ public class Controls {
 	public Joystick getWheel() {
 		return wheel;
 	}
+	
+	public Joystick getPanel() {
+		return panel;
+	}
 
 	public Button getCVButton() {
 		return buttonCV;
 	}
 
-	public void runEle() {
-		levelUpButton.whenPressed(new ChangeElevatorLevel(true));
-		levelDownButton.whenPressed(new ChangeElevatorLevel(false));
-	}
+//	public void runEle() {
+//		levelUpButton.whenPressed(new ChangeElevatorLevel(true));
+//		levelDownButton.whenPressed(new ChangeElevatorLevel(false));
+//	}
 }

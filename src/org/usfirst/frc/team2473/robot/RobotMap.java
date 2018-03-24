@@ -29,12 +29,12 @@ public class RobotMap {
 	public static final int BCRF_SOLENOID = 1;
 	public static final int BCLR_SOLENOID = 2;
 	public static final int BCRR_SOLENOID = 3;
-	public static final int CLIMB_F_SOLENOID = 8;
-	public static final int CLIMB_R_SOLENOID = 9;
+	public static final int CLIMB_F_SOLENOID = 4;
+	public static final int CLIMB_R_SOLENOID = 5;
 
 	//digital input constants
-	public static final int ELE_BOT_LS = 0;
-	public static final int ELE_TOP_LS = 1;
+	public static final int LIMIT_ONE = 0;
+	public static final int LIMIT_ZERO = 1;
 	public static final int HOOK_LS = 3;
 	public static final int ARM_BB = 4;
 	

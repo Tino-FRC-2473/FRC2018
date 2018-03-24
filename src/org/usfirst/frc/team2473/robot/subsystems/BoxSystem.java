@@ -21,31 +21,56 @@ public class BoxSystem extends TrackableSubsystem {
 	private int currLevel = 0;
 	public final double POWER = 0.3;
 	public static final int POS0 = 0;
-	public static final int POS1 = 1150;
-	public static final int POS2 = 5600;
-	public static final int POS3 = 10000;
-	public static final int POS4 = 11000;
+	public static final int POS1 = 800; //1150
+	public static final int POS2 = 3800;
+	public static final int POS3 = 8000;
+	public static final int POS4 = 9900;
 	public int[] posArray = { POS0, POS1, POS2, POS3, POS4 };
 	private boolean hasZeroed = false;
 	private boolean clawReadyStatus = false;
+	public static ArmState openState = ArmState.INIT;
 	
 	public enum ClawState {
 		RIGHT_CLOSED_ONLY, BOTH_OPEN, BOTH_CLOSED, LEFT_CLOSED_ONLY
 	}
 	
 	public enum ArmState {
-		OPEN, CLOSE
+		INIT, OPEN, CLOSED
+	}
+	
+	public static void opened() {
+		openState = ArmState.OPEN;
+	}
+	
+	public static void closed() {
+		openState = ArmState.CLOSED;
 	}
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
-	public void setLevel(int level) {
-		currLevel = level;
-	}
+//	public void setLevel(int level) {
+//		currLevel = level;
+//	}
 
 	public int getLevel() {
-		return currLevel;
+		int enc = getEncCount();
+		
+		if(limitSwitchOne())
+			return 1;
+
+		if(limitSwitchZero()) 
+			return 0;
+		
+		if(enc <=  0.5*(posArray[0]+posArray[1]))
+			return 0;
+		
+		for(int i = 1; i < posArray.length-1; i++) {
+			if(withinRange(enc, 0.5*(posArray[i]+posArray[i+1]), 0.5*(posArray[i]+posArray[i-1])))
+				return i;
+		}
+		
+		return 4;
 	}
 
 	public void initDefaultCommand() {
@@ -73,7 +98,7 @@ public class BoxSystem extends TrackableSubsystem {
 	}
 
 	public int getNextLevel(boolean up) {
-		int currLevel = getCurrPos();
+		int currLevel = getLevel();
 		int returner = -1;
 		if(up) {
 			if (currLevel > 3) {
@@ -124,26 +149,19 @@ public class BoxSystem extends TrackableSubsystem {
 	}
 
 	public double getUpPower() {
-		return (getCurrPos() >= 4 || getCurrPos() < 2) ? -ELE_SAFE_POWER : -ELE_NORMAL_POWER;
+		return (getLevel() > 4 || getLevel() == 0) ? -ELE_SAFE_POWER : -ELE_NORMAL_POWER;
 	}
 
 	public double getDownPower() {
-		return (getCurrPos() < 2) ? ELE_SAFE_POWER : ELE_NORMAL_POWER;
+		return (getLevel() < 2) ? ELE_SAFE_POWER : ELE_NORMAL_POWER;
 	}
 
 	public double getDownAutomatedPower() {
-		return (getCurrPos() < 2) ? ELE_SAFE_POWER : ELE_AUTOMATED_POWER;
+		return (getLevel() < 2) ? ELE_SAFE_POWER : ELE_AUTOMATED_POWER;
 	}
 
 	public double getUpAutomatedPower() {
-		return (getCurrPos() >= 4 || getCurrPos() < 2) ? -ELE_SAFE_POWER : -ELE_AUTOMATED_POWER;
-	}
-
-	public void setPistonR() {
-		Devices.getInstance().getDoubleSolenoid(RobotMap.BCLF_SOLENOID, RobotMap.BCLR_SOLENOID)
-				.set(Value.kReverse);
-		Devices.getInstance().getDoubleSolenoid(RobotMap.BCRF_SOLENOID, RobotMap.BCRR_SOLENOID)
-				.set(Value.kReverse);
+		return (getLevel() > 3) ? -ELE_SAFE_POWER : -ELE_AUTOMATED_POWER;
 	}
 
 	public boolean pistonInR() {
@@ -163,15 +181,22 @@ public class BoxSystem extends TrackableSubsystem {
 	public void setPistonOff() {
 		Devices.getInstance().getDoubleSolenoid(RobotMap.BCLF_SOLENOID, RobotMap.BCLR_SOLENOID)
 				.set(Value.kOff);
-		Devices.getInstance().getDoubleSolenoid(RobotMap.BCRF_SOLENOID, RobotMap.BCRR_SOLENOID)
-				.set(Value.kOff);
+//		Devices.getInstance().getDoubleSolenoid(RobotMap.BCRF_SOLENOID, RobotMap.BCRR_SOLENOID)
+//				.set(Value.kOff);
 	}
 
 	public void setPistonF() {
 		Devices.getInstance().getDoubleSolenoid(RobotMap.BCLF_SOLENOID, RobotMap.BCLR_SOLENOID)
 				.set(Value.kForward);
-		Devices.getInstance().getDoubleSolenoid(RobotMap.BCRF_SOLENOID, RobotMap.BCRR_SOLENOID)
-				.set(Value.kForward);
+//		Devices.getInstance().getDoubleSolenoid(RobotMap.BCRF_SOLENOID, RobotMap.BCRR_SOLENOID)
+//				.set(Value.kForward);
+	}
+
+	public void setPistonR() {
+		Devices.getInstance().getDoubleSolenoid(RobotMap.BCLF_SOLENOID, RobotMap.BCLR_SOLENOID)
+				.set(Value.kReverse);
+//		Devices.getInstance().getDoubleSolenoid(RobotMap.BCRF_SOLENOID, RobotMap.BCRR_SOLENOID)
+//				.set(Value.kReverse);
 	}
 
 	public void setRightClosed() {
@@ -184,12 +209,12 @@ public class BoxSystem extends TrackableSubsystem {
 		.set(Value.kReverse);
 	}
 
-	public boolean limitDown() {
-		return Devices.getInstance().getDigitalInput(RobotMap.ELE_BOT_LS).get();
+	public boolean limitSwitchOne() {
+		return !Devices.getInstance().getDigitalInput(RobotMap.LIMIT_ONE).get();
 	}
-
-	public boolean limitUp() {
-		return Devices.getInstance().getDigitalInput(RobotMap.ELE_TOP_LS).get();
+	
+	public boolean limitSwitchZero() {
+		return Devices.getInstance().getDigitalInput(RobotMap.LIMIT_ZERO).get();
 	}
 
 	@Override
@@ -210,18 +235,24 @@ public class BoxSystem extends TrackableSubsystem {
 	public void resetEnc() {
 		Devices.getInstance().getTalon(RobotMap.ELEVATOR_MOTOR).setSelectedSensorPosition(0, 0, 5);
 	}
-
+/*
 	public int getCurrPos() {
 		int enc = getEncCount();
-		if (enc <= 50)
-			return 0;
-		for (int i = 1; i < posArray.length; i++) {
-			if (withinRange(enc, posArray[i], posArray[i - 1]))
+		if (enc <=  0.5*(posArray[0]+posArray[1])) return 0;
+//		if(enc <= 50)
+//			return 0;
+//		for (int i = 1; i < posArray.length; i++) {
+//			if (withinRange(enc, posArray[i], posArray[i - 1]))
+//				return i;
+//		}
+		for (int i = 1; i < posArray.length-1; i++) {
+			if (withinRange(enc, 0.5*(posArray[i]+posArray[i-1]), 0.5*(posArray[i]+posArray[i+1])))
 				return i;
 		}
-		return 4;
-	}
 
+		return 5;
+	}
+*/
 	// testing only, not for real use
 	public int getCurrPos(int enc) {
 		if (enc == 0)
@@ -233,7 +264,7 @@ public class BoxSystem extends TrackableSubsystem {
 		return 4;
 	}
 
-	public boolean withinRange(int num, int up, int down) {
+	public boolean withinRange(int num, double up, double down) {
 		return num <= up && num >= down;
 	}
 

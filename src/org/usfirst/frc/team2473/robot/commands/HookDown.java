@@ -21,11 +21,13 @@ public class HookDown extends Command {
 	}
 
 	protected void initialize() {
+		System.out.println("hook down");
 		Devices.getInstance().getTalon(RobotMap.CLIMB_ARM_MOTOR).set(ControlMode.PercentOutput, climb.ARMPOWDOWN);
 	}
 
 	protected void execute() {
-		Devices.getInstance().getTalon(RobotMap.CLIMB_ARM_MOTOR).set(ControlMode.PercentOutput, climb.getSlowerSpeed(false));
+		Devices.getInstance().getTalon(RobotMap.CLIMB_ARM_MOTOR).set(ControlMode.PercentOutput,
+				climb.getSlowerSpeed(false));
 	}
 
 	protected boolean isFinished() {

@@ -33,7 +33,9 @@ public class ClimbSystem extends TrackableSubsystem {
 	public static enum HookDirection {
 		DOWN, UP
 	}
-	private boolean hungUp = false;
+	private boolean hungUp = true;
+
+	public static PistonDir pistonState = PistonDir.IN;
 
 	// 2052
 
@@ -75,6 +77,7 @@ public class ClimbSystem extends TrackableSubsystem {
 
 	public void climbPrimary() {
 		if (hungUp) {
+			System.out.println("Climbing primary...");
 			Devices.getInstance().getTalon(RobotMap.CLIMB_R1_MOTOR).set(ControlMode.PercentOutput, CLIMBPOW);
 			Devices.getInstance().getTalon(RobotMap.CLIMB_R2_MOTOR).set(ControlMode.PercentOutput, CLIMBPOW);
 		} else {
@@ -143,7 +146,6 @@ public class ClimbSystem extends TrackableSubsystem {
 
 	public void setPistonR() {
 		Devices.getInstance().getDoubleSolenoid(RobotMap.CLIMB_F_SOLENOID, RobotMap.CLIMB_R_SOLENOID).set(Value.kReverse);
-
 	}
 
 	public void setPistonOff() {

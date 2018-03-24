@@ -22,6 +22,7 @@ public class HookUp extends Command {
 	}
 
 	protected void initialize() {
+		System.out.println("hook up");
 		Devices.getInstance().getTalon(RobotMap.CLIMB_ARM_MOTOR)
 				.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
 		Devices.getInstance().getTalon(RobotMap.CLIMB_ARM_MOTOR).setSelectedSensorPosition(0, 0, 10);
@@ -30,6 +31,9 @@ public class HookUp extends Command {
 	}
 
 	protected void execute() {
+		System.out.println("power: " + Devices.getInstance().getTalon(RobotMap.CLIMB_ARM_MOTOR).get());
+		System.out.println("enc: "
+				+ Math.abs(Devices.getInstance().getTalon(RobotMap.CLIMB_ARM_MOTOR).getSelectedSensorPosition(0)));
 		double pow = (Devices.getInstance().getTalon(RobotMap.CLIMB_ARM_MOTOR).getSelectedSensorPosition(0) <= climb.THRESHOLD
 				? climb.getFasterSpeed(true)
 				: climb.getSlowerSpeed(true));

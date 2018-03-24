@@ -15,7 +15,6 @@ public class ElevatorCommand extends Command {
 
 	public ElevatorCommand() {
 		sub = Robot.getBox();
-		requires(sub);
 	}
 
 	// Called just before this Command runs the first time
@@ -24,18 +23,21 @@ public class ElevatorCommand extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+//		System.out.println(Devices.getInstance().getDigitalInput(RobotMap.LIMIT_ZERO).get());
+//		System.out.println(Devices.getInstance().getDigitalInput(RobotMap.LIMIT_ONE).get());
 		double pow = 0;
 
-		if (sub.limitDown()) {
+		if (sub.limitSwitchZero()) {
 			sub.resetEnc();
 			sub.zero();
 		}
 
 		if (sub.hasZeroed()) {
-			if (Robot.getControls().getThrottle().getY() > 0.3) {
+			if (Robot.getControls().getPanel().getRawButton(6)) {
 				pow = sub.getUpPower();
-			} else if (Robot.getControls().getThrottle().getY() < -0.3) {
-				if (sub.limitDown()) {
+			} else if (Robot.getControls().getPanel().getRawButton(8)) {
+				if (sub.limitSwitchZero()) {
+//					System.out.println("zeroing..."); 
 					sub.resetEnc();
 					sub.zero();
 				} else {
@@ -45,16 +47,16 @@ public class ElevatorCommand extends Command {
 				pow = 0;
 			}
 		} else {
-			if (Robot.getControls().getThrottle().getY() > 0.3) {
+			if (Robot.getControls().getPanel().getRawButton(6)) {
 				pow = -0.3;
-			} else if (Robot.getControls().getThrottle().getY() < -0.3) {
+			} else if (Robot.getControls().getPanel().getRawButton(8)) {
 				pow = 0.3;
 			} else {
 				pow = 0;
 			}
 		}
 		sub.setPow(pow);
-		sub.setLevel(sub.getCurrPos());
+//		if(sub.hasZeroed())	sub.setLevel(sub.getCurrPos());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

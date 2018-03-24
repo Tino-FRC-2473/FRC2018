@@ -9,20 +9,20 @@ import org.usfirst.frc.team2473.framework.TrackingRobot;
 import org.usfirst.frc.team2473.robot.Auto.Route;
 import org.usfirst.frc.team2473.robot.commands.AutonomousRoute;
 import org.usfirst.frc.team2473.robot.commands.CVCommand;
-import org.usfirst.frc.team2473.robot.commands.ClawCommand;
 import org.usfirst.frc.team2473.robot.commands.DriveCommand;
 import org.usfirst.frc.team2473.robot.commands.ElevatorCommand;
 import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
 import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem;
 import org.usfirst.frc.team2473.robot.subsystems.PIDriveTrain;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -38,10 +38,10 @@ public class Robot extends TrackingRobot {
 	private CommandGroup autonomousCommand;
 	private SendableChooser<Route> chooser;
 	private Preferences pref;
+	Relay r = new Relay(2);
 
 	//robot modes
 	public static boolean isNetwork = true;
-
 	@Override
 	protected Thread jetsonThread() throws IOException {
 		return (isNetwork) ? new DatabaseAndPingThread(RobotMap.IP, RobotMap.PORT, false) : null;
@@ -71,6 +71,7 @@ public class Robot extends TrackingRobot {
 
 	@Override
 	protected void innerAutonomousInit() {
+		getBox().zero();
 		this.zeroYawIteratively();
 
 		// Handle delay
@@ -81,26 +82,35 @@ public class Robot extends TrackingRobot {
 		SmartDashboard.putString("Delay Status", "Delay passed");
 		
 		System.out.println("Scheduler cleared...");
+		
 		((AutonomousRoute) autonomousCommand).configure(
-				(DriverStation.getInstance().getGameSpecificMessage().charAt(0) == 'R'), chooser.getSelected()
-		);
+				(DriverStation.getInstance().getGameSpecificMessage().toLowerCase().charAt(0) == 'r')
+				, chooser.getSelected());
 //		autonomousCommand.start(); //already done in trackingrobot
 	}
 
 	protected void innerTeleopInit() {
-		Devices.getInstance().getTalon(11).set(ControlMode.PercentOutput, 0.2);
-	/*	(new ElevatorCommand()).start();
-		(new ClawCommand()).start();
-		cvDrive.start();*/
+		r.set(Value.kForward);
+		(new ElevatorCommand()).start();
+//		(new ClawCommand()).start(); 
+		cvDrive.start();
 	}
 
 	protected void innerTeleopPeriodic() {
-		System.out.println(Devices.getInstance().getDigitalInput(0).get());
+//		System.out.println("Distance: " + Database.getInstance().getNumeric("dist"));
+//		System.out.println("Angle: " + Database.getInstance().getNumeric("ang"));
+//		Devices.getInstance().getTalon(RobotMap.ELEVATOR_MOTOR).set(0.2);
 		//((BoxSystem) getSubsystem(BoxSystem.class)).setLevel(((BoxSystem) getSubsystem(BoxSystem.class)).getCurrPos());
+//		System.out.println(getBox().getLevel());
+//		System.out.println("left enc: " + Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0));
+//		System.out.println("right enc: " + Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0));
+//		System.out.println("limit one: " + ((BoxSystem) getSubsystem(BoxSystem.class)).limitSwitchOne());
+//		System.out.println("limit zero: " + ((BoxSystem) getSubsystem(BoxSystem.class)).limitSwitchZero());
 //		System.out.println("current level: " + ((BoxSystem) getSubsystem(BoxSystem.class)).getLevel());
 	}
-
+	
 	protected void innerDisabledInit() {
+		r.set(Value.kReverse);
 	}
 	
 	@Override
@@ -114,6 +124,9 @@ public class Robot extends TrackingRobot {
 		chooser.addObject("Left", Route.LEFT);
 		chooser.addObject("Right", Route.RIGHT);
 		chooser.addObject("Center", Route.CENTER);
+		chooser.addObject("Reach Left", Route.REACH_LEFT);
+		chooser.addObject("Reach Right", Route.REACH_RIGHT);
+		chooser.addObject("CV Testing", Route.CV_TESTING);
 		chooser.addDefault("Testing", Route.TESTING);
 		SmartDashboard.putData("AutoChooser", chooser);
 		Robot.addDevices();
@@ -132,6 +145,7 @@ public class Robot extends TrackingRobot {
 
 		Devices.getInstance().getTalon(RobotMap.BL).setSelectedSensorPosition(0, 0, 5);
 		Devices.getInstance().getTalon(RobotMap.BR).setSelectedSensorPosition(0, 0, 5);
+		System.out.println("zeroing...");
 	}
 
 	private static void addDevices() {
@@ -156,6 +170,7 @@ public class Robot extends TrackingRobot {
 	protected Command getAutonomousCommand() {
 		if(autonomousCommand == null)
 			autonomousCommand = new AutonomousRoute();
+//		return new ChangeElevatorLevel2(2);
 		return autonomousCommand;
 	}
 

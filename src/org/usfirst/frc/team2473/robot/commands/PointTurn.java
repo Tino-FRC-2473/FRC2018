@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class PointTurn extends Command {
-	public static final double SMALLER_RIGHT_TURN_POWER = (0.55*12.25)/RobotController.getBatteryVoltage();
-	public static final double SMALLER_LEFT_TURN_POWER = (0.48*12.25)/RobotController.getBatteryVoltage();
+	public static final double SMALLER_RIGHT_TURN_POWER = 0.55;
+	public static final double SMALLER_LEFT_TURN_POWER = 0.48;
 	private static final double MAX_POW = 0.8;
 	
 	private final double TARGET_ANGLE;

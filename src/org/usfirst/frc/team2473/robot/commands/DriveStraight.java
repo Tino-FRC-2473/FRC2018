@@ -17,8 +17,10 @@ public class DriveStraight extends Command {
 
 	public DriveStraight(double angle, double maxInch, double power) {
 		requires(TrackingRobot.getDriveTrain());
-		this.maxEncoder = convertInchToEncoder(maxInch);
+		this.maxEncoder = Math.abs(convertInchToEncoder(maxInch));
+		System.out.println("encoder: " + this.maxEncoder);
 		this.power = cap(power);
+		System.out.println("power: " + this.power);
 		targetAngle = angle;
 	}
 
@@ -27,16 +29,14 @@ public class DriveStraight extends Command {
 	}
 
 	private double cap(double power) {
-		return Math.min(Auto.MAX_POW, Math.max(Auto.MIN_POW, power));
+		return Math.signum(power) * Math.min(Auto.MAX_POW, Math.max(Auto.MIN_POW, Math.abs(power)));
 	}
 
 	@Override
 	protected void initialize() {
-		initEncR = Devices.getInstance().getTalon(RobotMap.BR)
-				.getSelectedSensorPosition(0);
-		initEncL = Devices.getInstance().getTalon(RobotMap.BL)
-				.getSelectedSensorPosition(0);
-		
+		initEncR = Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0);
+		initEncL = Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0);
+
 		TrackingRobot.getDriveTrain().setTargetAngle(targetAngle);
 	}
 
@@ -51,10 +51,8 @@ public class DriveStraight extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return getAverageEnc(initEncL - Devices.getInstance().getTalon(RobotMap.BL)
-				.getSelectedSensorPosition(0),
-				initEncR - Devices.getInstance().getTalon(RobotMap.BR)
-				.getSelectedSensorPosition(0)) >= maxEncoder;
+		return getAverageEnc(initEncL - Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0),
+				initEncR - Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0)) >= maxEncoder;
 	}
 
 	@Override

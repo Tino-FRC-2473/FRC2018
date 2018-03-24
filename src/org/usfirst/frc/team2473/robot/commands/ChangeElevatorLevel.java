@@ -19,12 +19,13 @@ public class ChangeElevatorLevel extends Command {
 	}
 
 	public ChangeElevatorLevel(int level) {
-		if (level < 0) {
-			level = 0;
-		} else if (level > 4) {
-			level = 4;
-		}		
-		target = box.posArray[level];
+		System.out.println(level);
+//		if (level < 0) {
+//			level = 0;
+//		} else if (level > 5) {
+//			level = 5;
+//		}
+		target = box.posArray[Math.max(0, Math.min(5, level))];
 	}
 
 	@Override
@@ -32,6 +33,7 @@ public class ChangeElevatorLevel extends Command {
 
 		if (target == -1) {
 			int level = box.getLevel();
+			System.out.println("PREV LVL: " + level);
 
 			if (up)
 				level++;
@@ -40,13 +42,14 @@ public class ChangeElevatorLevel extends Command {
 
 			if (level < 0) {
 				level = 0;
-			} else if (level == 2) {
+			} /*else if (level == 2) {
 				level = (up) ? 3 : 1;
-			} else if (level > 4) {
+			} */else if (level > 4) {
 				level = 4;
 			}
 			
 			target = box.posArray[level];
+			System.out.println("NEW LVL: " + level + ", NEW TARGET" + target + "\n");
 		}
 	}
 

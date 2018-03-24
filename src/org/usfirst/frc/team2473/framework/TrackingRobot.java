@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.stream.IntStream;
 
 import org.usfirst.frc.team2473.robot.Controls;
-import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
-import org.usfirst.frc.team2473.robot.subsystems.ClimbSystem;
 import org.usfirst.frc.team2473.robot.subsystems.PIDriveTrain;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -191,7 +189,7 @@ public abstract class TrackingRobot extends IterativeRobot {
 	public void autonomousInit() {
 		System.out.println("[auto init]");
 		innerAutonomousInit();
-		if (autoCmd != null) autoCmd.start();
+		(getAutonomousCommand()).start();
 	}
 
 	/**

@@ -30,6 +30,7 @@ public class DriveCommand extends Command {
 		adjust = (Robot.getControls().slow.get()) ? 0.5 : 1;
 		throttle = -adjust*Robot.getControls().getThrottle().getZ();
 		twist = adjust*Math.signum(Robot.getControls().getWheel().getX()) * Math.sqrt(Math.abs(Robot.getControls().getWheel().getX()));
+		
 		TrackingRobot.getDriveTrain().drive(throttle, twist);
 	}
 

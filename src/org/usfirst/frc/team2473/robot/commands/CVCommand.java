@@ -1,10 +1,10 @@
 package org.usfirst.frc.team2473.robot.commands;
 
 import org.usfirst.frc.team2473.framework.Database;
+import org.usfirst.frc.team2473.framework.Devices;
 import org.usfirst.frc.team2473.framework.TrackingRobot;
 import org.usfirst.frc.team2473.robot.CV;
 import org.usfirst.frc.team2473.robot.Robot;
-import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -39,58 +39,63 @@ public class CVCommand extends Command {
 				runningCV = true;
 			} else {
 				if (Robot.drive.isRunning() == false) {
-					Robot.drive.start();					
+					Robot.drive.start();
 					finished = false;
 				}
+				runningCV = false;
 			}
 		}
+
 		if (TIMING_DEBUGGING)
 			System.out.println("at cvcommand");
+		
 		double distance;
 		double bearing;
-		if (runningCV && !finished) {			
+		
+		if (runningCV && !finished && Robot.getControls().getCVButton().get()) { //
 			Robot.drive.cancel();
 			if (Database.getInstance().getNumeric("dist") != CV.NO_BOX) {
-				if (TIMING_DEBUGGING) System.out.println("beginning the set");
-				
+				if (TIMING_DEBUGGING)
+					System.out.println("beginning the set");
+
 				distance = Database.getInstance().getNumeric("dist");
 				bearing = Database.getInstance().getNumeric("ang");
-				
-				if (DEBUG) System.out.println("Distance: " + distance + " Angle: " + bearing);
-				
-				if (distance < CV.DIST_THRESHOLD) {
-//					opened = false;
-//					TrackingRobot.getDriveTrain().stop();
 
-					System.out.println("within threshold at " + distance);
-					
+				if (distance < CV.DIST_THRESHOLD) {
+
 					SmartDashboard.putString("CV Sight", "Box in sight: Final drive forward");
-					if (DEBUG) System.out.println("Distance is less than 20");
 					
-					// Add claw commands to open claw/ check to make sure the claw is open
-					if(DEBUG) System.out.println("drive train not yet enabled");
-					
+					if (DEBUG)
+						System.out.println("Distance is less than 20");
+
+					if (DEBUG)
+						System.out.println("drive train not yet enabled");
+
 					TrackingRobot.getDriveTrain().enable();
-					if(DEBUG) System.out.println("drive train enabled");
-					
-					// TeleOpDriveStraight simp = new TeleOpDriveStraight(distance + 1, 0.5);
-//					if (DEBUG) System.out.println("DRIVE STRAIGHT STARTED");
+					if (DEBUG)
+						System.out.println("drive train enabled");
+
+					new DriveStraight(Devices.getInstance().getNavXGyro().getYaw(), distance - 3, 0.5).start();
+
+					if (DEBUG)
+						System.out.println("DRIVE STRAIGHT STARTED");
 
 					// Add claw commands for picking up box
 					TrackingRobot.getDriveTrain().disable();
 					SmartDashboard.putString("CV Sight", "Finished picking up!");
-					if (DEBUG) System.out.println("Drive finished! woot");
-					
+					if (DEBUG)
+						System.out.println("Drive finished! woot");
+
 					finished = true;
 					runningCV = false;
-//					box.clawStatusNotReady();
-//					opened = false;
-//					break;
 				} else {
 					if (distance < CV.CLAW_DIST) {
-						(new ReadyClaw()).start();
+						(new ToggleArms(true)).start();
+						(new ChangeElevatorLevel2(1)).start();
+					} else {
+						(new ChangeElevatorLevel2(2)).start();
 					}
-					
+
 					if (Math.abs(bearing) > CV.BEARING_THRESHOLD) {
 						SmartDashboard.putString("CV Sight",
 								"Box in sight : Turning " + (bearing > 0 ? "Right" : "Left"));
@@ -105,7 +110,8 @@ public class CVCommand extends Command {
 					}
 				}
 			} else {
-				if (DEBUG) System.out.println("No box in sight!");
+				if (DEBUG)
+					System.out.println("No box in sight!");
 				SmartDashboard.putString("CV Sight", "No box in sight");
 				TrackingRobot.getDriveTrain().stop();
 				runningCV = false;
