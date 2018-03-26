@@ -84,7 +84,7 @@ public class Controls {
 		   | DRIVE BUTTONS |
 		---------------------*/
 		slow = new JoystickButton(wheel, 6);
-		buttonCV = new JoystickButton(throttle, 7);
+		buttonCV = new JoystickButton(wheel, 5);
 		
 		
 		/*---------------------

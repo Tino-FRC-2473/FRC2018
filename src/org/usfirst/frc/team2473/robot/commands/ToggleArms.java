@@ -27,7 +27,6 @@ public class ToggleArms extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		System.out.println("INIT");
 		init = System.currentTimeMillis();
 		if (open && BoxSystem.openState != BoxSystem.ArmState.OPEN) {
 			box.setPistonF();
@@ -40,12 +39,12 @@ public class ToggleArms extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		System.out.println("running grabber");
+//		System.out.println("running grabber");
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		System.out.println("DONE");
+//		System.out.println("DONE");
 //		return (Robot.getControls().openArmsButton.get() && Robot.getControls().closeArmsButton.get())
 //				|| (!Robot.getControls().openArmsButton.get() && !Robot.getControls().closeArmsButton.get());
 		return System.currentTimeMillis() - init >= limit;

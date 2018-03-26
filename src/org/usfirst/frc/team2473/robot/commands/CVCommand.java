@@ -39,11 +39,18 @@ public class CVCommand extends Command {
 				runningCV = true;
 			} else {
 				if (Robot.drive.isRunning() == false) {
+//				TrackingRobot.getDriveTrain().enable();
 					Robot.drive.start();
+					//System.out.println("wooho11o");
 					finished = false;
 				}
+				System.out.println("woohoo");
 				runningCV = false;
 			}
+		}
+		if (runningCV && !Robot.getControls().getCVButton().get()){
+			System.out.println("diff finished");
+			runningCV = false;
 		}
 
 		if (TIMING_DEBUGGING)
@@ -51,6 +58,12 @@ public class CVCommand extends Command {
 		
 		double distance;
 		double bearing;
+		
+//		if(!Robot.getControls().getCVButton().get()) {
+//			finished = true;
+//			System.out.println("ret");
+//			return;
+//		}
 		
 		if (runningCV && !finished && Robot.getControls().getCVButton().get()) { //
 			Robot.drive.cancel();
@@ -122,19 +135,22 @@ public class CVCommand extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return finished;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
+		System.out.println("end");
 		TrackingRobot.getDriveTrain().drive(0, 0);
+		TrackingRobot.getDriveTrain().enable();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
+		System.out.println("int");
 		Robot.drive.start();
 	}
 }
