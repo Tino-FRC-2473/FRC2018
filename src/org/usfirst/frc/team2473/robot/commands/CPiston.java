@@ -16,6 +16,7 @@ public class CPiston extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+//		System.out.println("SDGHIO:SEIO:GHIO:");
 		if (Robot.getControls().cPistonInButton.get()) {
 			if (ClimbSystem.pistonState == PistonDir.OUT) {
 				System.out.println("moving to in");

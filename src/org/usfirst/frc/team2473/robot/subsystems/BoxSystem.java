@@ -22,7 +22,7 @@ public class BoxSystem extends TrackableSubsystem {
 	public final double POWER = 0.3;
 	public static final int POS0 = 0;
 	public static final int POS1 = 800; //1150
-	public static final int POS2 = 3800;
+	public static final int POS2 = 3850;
 	public static final int POS3 = 8000;
 	public static final int POS4 = 9900;
 	public int[] posArray = { POS0, POS1, POS2, POS3, POS4 };

@@ -62,8 +62,12 @@ public class Robot extends TrackingRobot {
 
 		 UsbCamera camera0 = CameraServer.getInstance().startAutomaticCapture("Camera 0", 0);
 		 camera0.setBrightness(0);
-		 camera0.setResolution(160, 120);
-		
+		 camera0.setResolution(300, 300);
+
+		 UsbCamera camera1 = CameraServer.getInstance().startAutomaticCapture("Camera 1", 1);
+		 camera1.setBrightness(0);
+		 camera1.setResolution(300, 300);
+
 //		 UsbCamera camera1 = CameraServer.getInstance().startAutomaticCapture("Camera 1", 1);
 //		 camera1.setBrightness(0);
 //		 camera1.setResolution(160, 120);
@@ -102,6 +106,7 @@ public class Robot extends TrackingRobot {
 //		Devices.getInstance().getTalon(RobotMap.ELEVATOR_MOTOR).set(0.2);
 		//((BoxSystem) getSubsystem(BoxSystem.class)).setLevel(((BoxSystem) getSubsystem(BoxSystem.class)).getCurrPos());
 //		System.out.println(getBox().getLevel());
+//		System.out.println(Devices.getInstance().getTalon(RobotMap.ELEVATOR_MOTOR).getSelectedSensorPosition(0));
 //		System.out.println("left enc: " + Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0));
 //		System.out.println("right enc: " + Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0));
 //		System.out.println("limit one: " + ((BoxSystem) getSubsystem(BoxSystem.class)).limitSwitchOne());

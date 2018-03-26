@@ -54,8 +54,8 @@ public class Controls {
 		throttle = new Joystick(2);
 		panel = new Joystick(3);
 
-		climbUpSlow = new JoystickButton(wheel, 4); //FIX
-		climbUpSlow.whileHeld(new Climb(ClimbMode.UP_SLOW)); //FIX
+//		climbUpSlow = new JoystickButton(wheel, 4); //FIX
+//		climbUpSlow.whileHeld(new Climb(ClimbMode.UP_SLOW)); //FIX
 				
 		/*------------------------
 		   | ELEVATOR BUTTONS |
@@ -90,10 +90,10 @@ public class Controls {
 		/*---------------------
 		   | CLIMB BUTTONS |
 		---------------------*/
-		climbUp = new JoystickButton(wheel, 1);
+		climbUp = new JoystickButton(throttle, 8);
 		armUpButton = new JoystickButton(wheel, 4);
-		armDownButton = new JoystickButton(wheel, 3);
-		climbAssistUp = new JoystickButton(wheel, 2);
+		armDownButton = new JoystickButton(wheel, 2);
+		climbAssistUp = new JoystickButton(throttle, 7);
 		
 		climbUp.whileHeld(new Climb(ClimbMode.UP));
 		armUpButton.whenPressed(new HookUp());
@@ -104,8 +104,8 @@ public class Controls {
 		/*----------------------
 		   | PISTON BUTTONS |
 		----------------------*/
-		cPistonInButton = new JoystickButton(wheel, 10); //FIX
-		cPistonOutButton = new JoystickButton(wheel, 13); //FIX
+		cPistonInButton = new JoystickButton(wheel, 3);
+		cPistonOutButton = new JoystickButton(wheel, 1);
 
 		cPistonInButton.whenPressed(new CPiston());
 		cPistonOutButton.whenPressed(new CPiston());

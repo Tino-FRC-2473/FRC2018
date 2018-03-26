@@ -28,7 +28,7 @@ public class DriveCommand extends Command {
 	@Override
 	protected void execute() {
 		adjust = (Robot.getControls().slow.get()) ? 0.5 : 1;
-		throttle = -adjust*Robot.getControls().getThrottle().getZ();
+		throttle = (-Robot.getControls().getThrottle().getZ() < 0.3 && -Robot.getControls().getThrottle().getZ() > -0.05) ? 0 : -adjust*Robot.getControls().getThrottle().getZ();
 		twist = adjust*Math.signum(Robot.getControls().getWheel().getX()) * Math.sqrt(Math.abs(Robot.getControls().getWheel().getX()));
 		
 		TrackingRobot.getDriveTrain().drive(throttle, twist);
