@@ -27,6 +27,7 @@ public class PointTurn extends Command {
 	@Override
 	protected void initialize() {
 //		if (zeroYaw) Robot.zeroYawIteratively();
+//		Devices.getInstance().getNavXGyro().zeroYaw();
 		System.out.println("PointTurn initialized.");
 		System.out.println("current angle: " + Devices.getInstance().getNavXGyro().getYaw());
 		System.out.println("target angle: " + TARGET_ANGLE);
@@ -37,8 +38,9 @@ public class PointTurn extends Command {
 	@Override
 	protected void execute() {
 		difference = TARGET_ANGLE - Devices.getInstance().getNavXGyro().getYaw();
+		System.out.println(difference/initAngleDiff);
 	
-		if(Math.abs(difference/initAngleDiff) <= 0.5)
+		if(difference/initAngleDiff >= 0 && difference/initAngleDiff <= 0.5)
 			if(TARGET_ANGLE >= 0)
 				TrackingRobot.getDriveTrain().tankTurn(Math.signum(left)*SMALLER_RIGHT_TURN_POWER);				
 			else
@@ -49,7 +51,8 @@ public class PointTurn extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return (TARGET_ANGLE - Devices.getInstance().getNavXGyro().getYaw()) / left < 0;
+//		return Math.abs(TARGET_ANGLE - Devices.getInstance().getNavXGyro().getYaw()) <= 1.5;
+		return difference/initAngleDiff <= 0.05;
 	}
 
 	@Override

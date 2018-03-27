@@ -93,6 +93,11 @@ public class Robot extends TrackingRobot {
 //		autonomousCommand.start(); //already done in trackingrobot
 	}
 
+	@Override
+	protected void innerAutonomousPeriodic() {
+
+	}
+	
 	protected void innerTeleopInit() {
 		r.set(Value.kForward);
 		(new ElevatorCommand()).start();

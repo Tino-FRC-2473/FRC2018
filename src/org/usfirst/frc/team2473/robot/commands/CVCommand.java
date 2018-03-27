@@ -39,32 +39,32 @@ public class CVCommand extends Command {
 				runningCV = true;
 			} else {
 				if (Robot.drive.isRunning() == false) {
-//				TrackingRobot.getDriveTrain().enable();
+					// TrackingRobot.getDriveTrain().enable();
 					Robot.drive.start();
-					//System.out.println("wooho11o");
+					// System.out.println("wooho11o");
 					finished = false;
 				}
-//				System.out.println("woohoo");
+
 				runningCV = false;
 			}
 		}
-		if (runningCV && !Robot.getControls().getCVButton().get()){
-//			System.out.println("diff finished");
+		if (runningCV && !Robot.getControls().getCVButton().get()) {
+			// System.out.println("diff finished");
 			runningCV = false;
 		}
 
 		if (TIMING_DEBUGGING)
 			System.out.println("at cvcommand");
-		
+
 		double distance;
 		double bearing;
-		
-//		if(!Robot.getControls().getCVButton().get()) {
-//			finished = true;
-//			System.out.println("ret");
-//			return;
-//		}
-		
+
+		// if(!Robot.getControls().getCVButton().get()) {
+		// finished = true;
+		// System.out.println("ret");
+		// return;
+		// }
+
 		if (runningCV && !finished && Robot.getControls().getCVButton().get()) { //
 			Robot.drive.cancel();
 			if (Database.getInstance().getNumeric("dist") != CV.NO_BOX) {
@@ -77,7 +77,7 @@ public class CVCommand extends Command {
 				if (distance < CV.DIST_THRESHOLD) {
 
 					SmartDashboard.putString("CV Sight", "Box in sight: Final drive forward");
-					
+
 					if (DEBUG)
 						System.out.println("Distance is less than 20");
 
@@ -88,13 +88,17 @@ public class CVCommand extends Command {
 					if (DEBUG)
 						System.out.println("drive train enabled");
 
-					new DriveStraight(Devices.getInstance().getNavXGyro().getYaw(), distance - 3, 0.5).start();
+					System.out.println("running lower and go");
+
+					(new LowerAndGo(distance - 8)).start();
+					// new DriveStraight(Devices.getInstance().getNavXGyro().getYaw(), distance - 3,
+					// 0.5).start();
 
 					if (DEBUG)
 						System.out.println("DRIVE STRAIGHT STARTED");
 
 					// Add claw commands for picking up box
-					TrackingRobot.getDriveTrain().disable();
+//					TrackingRobot.getDriveTrain().disable();
 					SmartDashboard.putString("CV Sight", "Finished picking up!");
 					if (DEBUG)
 						System.out.println("Drive finished! woot");
@@ -103,10 +107,11 @@ public class CVCommand extends Command {
 					runningCV = false;
 				} else {
 					if (distance < CV.CLAW_DIST) {
-						(new ToggleArms(true)).start();
-						(new ChangeElevatorLevel2(1)).start();
+//						(new ToggleArms(true)).start();
+//						(new ChangeElevatorLevel2(1)).start();
 					} else {
-						(new ChangeElevatorLevel2(2)).start();
+						System.out.println("calling change to 3");
+						(new ChangeElevatorLevel2(3)).start();
 					}
 
 					if (Math.abs(bearing) > CV.BEARING_THRESHOLD) {
@@ -135,22 +140,21 @@ public class CVCommand extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return finished;
+		return false;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-//		System.out.println("end");
-		TrackingRobot.getDriveTrain().drive(0, 0);
-		TrackingRobot.getDriveTrain().enable();
+		// System.out.println("end");
+//		TrackingRobot.getDriveTrain().enable();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-//		System.out.println("int");
+		// System.out.println("int");
 		Robot.drive.start();
 	}
 }

@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class AutonomousRoute extends CommandGroup {
 	private static final double DRIVE_STRAIGHT_POWER = 0.5;
-	private static final double LARGER_RIGHT_TURN_POWER = 0.7;
-	private static final double LARGER_LEFT_TURN_POWER = 0.625;
-	
+	private static final double LARGER_RIGHT_TURN_POWER = 0.675;
+	private static final double LARGER_LEFT_TURN_POWER = 0.6;
+	////
 	private final long delay = 250;
 	private double lastAngle;
 
@@ -27,14 +27,14 @@ public class AutonomousRoute extends CommandGroup {
 
 	private void addTurnAndGo(double angle, double dist) {
 		lastAngle = angle;
-		if(angle >= 0)
+		if(angle > 0)
 			addSequential(new PointTurn(angle, LARGER_RIGHT_TURN_POWER));			
 		else if(angle < 0)
 			addSequential(new PointTurn(angle, LARGER_LEFT_TURN_POWER));						
-//		else 
-//			addSequential(new PointTurn(angle, (Devices.getInstance().getNavXGyro().getYaw() < 0) ? LARGER_RIGHT_TURN_POWER : LARGER_LEFT_TURN_POWER));
+		else 
+			addSequential(new PointTurn(angle, (Devices.getInstance().getNavXGyro().getYaw() < 0) ? LARGER_RIGHT_TURN_POWER : LARGER_LEFT_TURN_POWER));
 		
-		addSequential(new PointTurn(angle, LARGER_RIGHT_TURN_POWER));
+//		addSequential(new PointTurn(angle, LARGER_RIGHT_TURN_POWER));
 		addSequential(new Wait(delay));
 		if(dist != 0) {
 			addSequential(new DriveStraight(angle, dist, DRIVE_STRAIGHT_POWER));
@@ -120,7 +120,7 @@ public class AutonomousRoute extends CommandGroup {
 			break;
 		case TESTING:
 			driveStraight(50);			
-			addTurnAndGo(65, 60);
+			addTurnAndGo(65, 40);
 			addTurnAndGo(0, 25);
 			break;
 		case CV_TESTING:

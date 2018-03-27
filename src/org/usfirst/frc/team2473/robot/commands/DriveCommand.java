@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveCommand extends Command {
 	private double throttle, twist, adjust;
+
 	public DriveCommand() {
 		requires(TrackingRobot.getDriveTrain());
 	}
@@ -21,16 +22,19 @@ public class DriveCommand extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		//System.out.println("beginning drive code...");
+		// System.out.println("beginning drive code...");
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
 		adjust = (Robot.getControls().slow.get()) ? 0.5 : 1;
-		throttle = (-Robot.getControls().getThrottle().getZ() < 0.3 && -Robot.getControls().getThrottle().getZ() > -0.05) ? 0 : -adjust*Robot.getControls().getThrottle().getZ();
-		twist = adjust*Math.signum(Robot.getControls().getWheel().getX()) * Math.sqrt(Math.abs(Robot.getControls().getWheel().getX()));
-		
+		throttle = (-Robot.getControls().getThrottle().getZ() < 0.3
+				&& -Robot.getControls().getThrottle().getZ() > -0.05) ? 0
+						: -adjust * Robot.getControls().getThrottle().getZ();
+		twist = adjust * Math.signum(Robot.getControls().getWheel().getX())
+				* Math.sqrt(Math.abs(Robot.getControls().getWheel().getX()));
+
 		TrackingRobot.getDriveTrain().drive(throttle, twist);
 	}
 
@@ -43,11 +47,13 @@ public class DriveCommand extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
+
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
+
 	}
 }

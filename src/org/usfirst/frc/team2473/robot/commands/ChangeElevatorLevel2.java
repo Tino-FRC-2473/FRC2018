@@ -20,10 +20,8 @@ public class ChangeElevatorLevel2 extends Command {
 	}
 
 	public ChangeElevatorLevel2(int level) {
-		System.out.println("new one created");
 		targetLvl = level;
 		target = box.posArray[Math.max(0, Math.min(4, level))];
-		System.out.println("new target: " + target);
 	}
 
 	@Override
