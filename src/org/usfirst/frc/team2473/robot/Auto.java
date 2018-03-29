@@ -20,7 +20,7 @@ public class Auto {
 	public static final double SECURE_BASELINE_LENGTH = 36/3;
 	
 	//CENTER CASE
-	public static final double DIAGONAL_MOVEMENT_LENGTH = 56; //351
+	public static final double DIAGONAL_MOVEMENT_LENGTH = 56;
 	public static final double FIRST_CENTER_DIST = (36);
 	public static final double SECOND_CENTER_DIST = 40;
 	public static final double CENTER_TURN = 75;

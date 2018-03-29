@@ -9,6 +9,8 @@ import org.usfirst.frc.team2473.framework.TrackingRobot;
 import org.usfirst.frc.team2473.robot.Auto.Route;
 import org.usfirst.frc.team2473.robot.commands.AutonomousRoute;
 import org.usfirst.frc.team2473.robot.commands.CVCommand;
+import org.usfirst.frc.team2473.robot.commands.CompressorCommand;
+import org.usfirst.frc.team2473.robot.commands.DiagCommand;
 import org.usfirst.frc.team2473.robot.commands.DriveCommand;
 import org.usfirst.frc.team2473.robot.commands.ElevatorCommand;
 import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
@@ -21,36 +23,37 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TrackingRobot {
-	
-	//CV TELEOP STUFF
+
+	// CV TELEOP STUFF
 	public CVCommand cvDrive;
 	public static DriveCommand drive;
 
-	//autonomous command-based stuff
+	// autonomous command-based stuff
 	private CommandGroup autonomousCommand;
-	private SendableChooser<Route> chooser;
+	private SendableChooser<Route> autoChooser;
+	private SendableChooser<RunState> stateChooser;
 	private Preferences pref;
-	Relay r = new Relay(2);
 
-	//robot modes
+	// robot modes
 	public static boolean isNetwork = true;
+
 	@Override
 	protected Thread jetsonThread() throws IOException {
 		return (isNetwork) ? new DatabaseAndPingThread(RobotMap.IP, RobotMap.PORT, false) : null;
 	}
 
 	@Override
-	protected void innerRobotInit() {		
-		//autonomous calibration
-		this.initChooser();
+	protected void innerRobotInit() {
+		this.initStateChooser();
+
+		// autonomous calibration
+		this.initAutoChooser();
 		this.initSensors();
 
 		/* teleop command creation */
@@ -58,94 +61,96 @@ public class Robot extends TrackingRobot {
 		drive = new DriveCommand();
 
 		TrackingRobot.getDriveTrain().enable();
-		// TODO this is here only for testing purposes. Prob should be in auto init
 
-		 UsbCamera camera0 = CameraServer.getInstance().startAutomaticCapture("Camera 0", 0);
-		 camera0.setBrightness(0);
-		 camera0.setResolution(300, 300);
+		UsbCamera camera0 = CameraServer.getInstance().startAutomaticCapture("Back", 0);
+		camera0.setBrightness(0);
+		camera0.setResolution(300, 300);
 
-		 UsbCamera camera1 = CameraServer.getInstance().startAutomaticCapture("Camera 1", 1);
-		 camera1.setBrightness(0);
-		 camera1.setResolution(300, 300);
+		UsbCamera camera1 = CameraServer.getInstance().startAutomaticCapture("Front", 1);
+		camera1.setBrightness(0);
+		camera1.setResolution(300, 300);
+	}
 
-//		 UsbCamera camera1 = CameraServer.getInstance().startAutomaticCapture("Camera 1", 1);
-//		 camera1.setBrightness(0);
-//		 camera1.setResolution(160, 120);
+	public void initStateChooser() {
+		stateChooser = new SendableChooser<RunState>();
+		stateChooser.addDefault("Competition", RunState.COMPETITION);
+		stateChooser.addObject("Diagnostic", RunState.DIAGNOSTIC);
+		stateChooser.addObject("Reset", RunState.RESET);
+		SmartDashboard.putData(stateChooser);
 	}
 
 	@Override
 	protected void innerAutonomousInit() {
 		getBox().zero();
-		this.zeroYawIteratively();
+		zeroYawIteratively();
 
 		// Handle delay
 		double delay = pref.getDouble("delay", 0);
 		double origTime = System.currentTimeMillis() / 1000;
-		while(System.currentTimeMillis() / 1000 < (delay + origTime))
+		while (System.currentTimeMillis() / 1000 < (delay + origTime))
 			;
 		SmartDashboard.putString("Delay Status", "Delay passed");
-		
+
 		System.out.println("Scheduler cleared...");
-		
+
 		((AutonomousRoute) autonomousCommand).configure(
-				(DriverStation.getInstance().getGameSpecificMessage().toLowerCase().charAt(0) == 'r')
-				, chooser.getSelected());
-//		autonomousCommand.start(); //already done in trackingrobot
+				(DriverStation.getInstance().getGameSpecificMessage().toLowerCase().charAt(0) == 'r'),
+				autoChooser.getSelected());
 	}
 
 	@Override
 	protected void innerAutonomousPeriodic() {
 
 	}
-	
+
 	protected void innerTeleopInit() {
-		r.set(Value.kForward);
-		(new ElevatorCommand()).start();
-//		(new ClawCommand()).start(); 
-		cvDrive.start();
+		switch (getState()) {
+		case COMPETITION:
+			cvDrive.start();
+			(new ElevatorCommand()).start();
+			break;
+		case DIAGNOSTIC:
+			(new DiagCommand()).start();
+			(new ElevatorCommand()).start();
+			break;
+		case RESET:
+			(new CompressorCommand()).start();
+			break;
+		default:
+			break;
+		}
 	}
 
 	protected void innerTeleopPeriodic() {
-//		System.out.println("Distance: " + Database.getInstance().getNumeric("dist"));
-//		System.out.println("Angle: " + Database.getInstance().getNumeric("ang"));
-//		Devices.getInstance().getTalon(RobotMap.ELEVATOR_MOTOR).set(0.2);
-		//((BoxSystem) getSubsystem(BoxSystem.class)).setLevel(((BoxSystem) getSubsystem(BoxSystem.class)).getCurrPos());
-//		System.out.println(getBox().getLevel());
-//		System.out.println(Devices.getInstance().getTalon(RobotMap.ELEVATOR_MOTOR).getSelectedSensorPosition(0));
-//		System.out.println("left enc: " + Devices.getInstance().getTalon(RobotMap.BL).getSelectedSensorPosition(0));
-//		System.out.println("right enc: " + Devices.getInstance().getTalon(RobotMap.BR).getSelectedSensorPosition(0));
-//		System.out.println("limit one: " + ((BoxSystem) getSubsystem(BoxSystem.class)).limitSwitchOne());
-//		System.out.println("limit zero: " + ((BoxSystem) getSubsystem(BoxSystem.class)).limitSwitchZero());
-//		System.out.println("current level: " + ((BoxSystem) getSubsystem(BoxSystem.class)).getLevel());
 	}
-	
+
 	protected void innerDisabledInit() {
-		r.set(Value.kReverse);
+
 	}
-	
+
 	@Override
 	protected void innerDisabledPeriodic() {
-
+		if (getState() != stateChooser.getSelected())
+			changeStateTo(stateChooser.getSelected());
+		setControls();
 	}
 
-	private void initChooser() {
+	private void initAutoChooser() {
 		System.out.println("Initializing chooser...");
-		chooser = new SendableChooser<Route>();
-		chooser.addObject("Left", Route.LEFT);
-		chooser.addObject("Right", Route.RIGHT);
-		chooser.addObject("Center", Route.CENTER);
-		chooser.addObject("Reach Left", Route.REACH_LEFT);
-		chooser.addObject("Reach Right", Route.REACH_RIGHT);
-		chooser.addObject("CV Testing", Route.CV_TESTING);
-		chooser.addDefault("Testing", Route.TESTING);
-		SmartDashboard.putData("AutoChooser", chooser);
+		autoChooser = new SendableChooser<Route>();
+		autoChooser.addObject("Left", Route.LEFT);
+		autoChooser.addObject("Right", Route.RIGHT);
+		autoChooser.addObject("Center", Route.CENTER);
+		autoChooser.addObject("Reach Left", Route.REACH_LEFT);
+		autoChooser.addObject("Reach Right", Route.REACH_RIGHT);
+		autoChooser.addObject("CV Testing", Route.CV_TESTING);
+		autoChooser.addDefault("Testing", Route.TESTING);
+		SmartDashboard.putData("AutoChooser", autoChooser);
 		Robot.addDevices();
 		pref = Preferences.getInstance();
 	}
 
 	private void initSensors() {
-		// NOTE that the last parameter of configSelectedFeedback should be nonzero, as
-		// a delay is required.
 		zeroYawIteratively();
 		Devices.getInstance().getTalon(RobotMap.BL).configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 5);
 
@@ -155,7 +160,6 @@ public class Robot extends TrackingRobot {
 
 		Devices.getInstance().getTalon(RobotMap.BL).setSelectedSensorPosition(0, 0, 5);
 		Devices.getInstance().getTalon(RobotMap.BR).setSelectedSensorPosition(0, 0, 5);
-		System.out.println("zeroing...");
 	}
 
 	private static void addDevices() {
@@ -178,9 +182,8 @@ public class Robot extends TrackingRobot {
 
 	@Override
 	protected Command getAutonomousCommand() {
-		if(autonomousCommand == null)
+		if (autonomousCommand == null)
 			autonomousCommand = new AutonomousRoute();
-//		return new ChangeElevatorLevel2(2);
 		return autonomousCommand;
 	}
 
@@ -189,23 +192,17 @@ public class Robot extends TrackingRobot {
 		return new PIDriveTrain();
 	}
 
-	//UNUSED, REMOVE?
-//	public static double getYaw() {
-//		return Devices.getInstance().getNavXGyro().getYaw();
-//	}
-	
 	public static ClimbSystem getClimb() {
 		return (ClimbSystem) Robot.getSubsystem(ClimbSystem.class);
 	}
-	
+
 	public static BoxSystem getBox() {
 		return (BoxSystem) Robot.getSubsystem(BoxSystem.class);
 	}
 
 	private void zeroYawIteratively() {
 		Devices.getInstance().getNavXGyro().zeroYaw();
-		System.out.println("Zeroing yaw...");
-		while(Math.abs(Devices.getInstance().getNavXGyro().getYaw()) > 1)
+		while (Math.abs(Devices.getInstance().getNavXGyro().getYaw()) > 1)
 			;
 		System.out.println("Yaw zeroed.");
 	}

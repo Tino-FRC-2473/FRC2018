@@ -111,7 +111,7 @@ public class CVCommand extends Command {
 //						(new ChangeElevatorLevel2(1)).start();
 					} else {
 						System.out.println("calling change to 3");
-						(new ChangeElevatorLevel2(3)).start();
+						(new ChangeElevatorLevel(3)).start();
 					}
 
 					if (Math.abs(bearing) > CV.BEARING_THRESHOLD) {

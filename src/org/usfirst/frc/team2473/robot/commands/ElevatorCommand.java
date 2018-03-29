@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2473.robot.commands;
 
+import org.usfirst.frc.team2473.framework.TrackingRobot.RunState;
 import org.usfirst.frc.team2473.robot.Robot;
 import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
 
@@ -28,17 +29,17 @@ public class ElevatorCommand extends Command {
 		double pow = 0;
 
 		if (sub.limitSwitchZero()) {
-			sub.resetEnc();
+//			sub.resetEnc();
 			sub.zero();
 		}
 
-		if (sub.hasZeroed()) {
+		if (sub.hasZeroed() && Robot.getState() == RunState.COMPETITION) {
 			if (Robot.getControls().getPanel().getRawButton(6)) {
 				pow = sub.getUpPower();
 			} else if (Robot.getControls().getPanel().getRawButton(8)) {
 				if (sub.limitSwitchZero()) {
 //					System.out.println("zeroing..."); 
-					sub.resetEnc();
+//					sub.resetEnc();
 					sub.zero();
 				} else {
 					pow = sub.getDownPower();

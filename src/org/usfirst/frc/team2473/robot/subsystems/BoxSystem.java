@@ -138,6 +138,7 @@ public class BoxSystem extends TrackableSubsystem {
 
 	public void zero() {
 		hasZeroed = true;
+		resetEnc();
 	}
 
 	public void setPow(double pow) {

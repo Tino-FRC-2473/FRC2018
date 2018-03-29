@@ -6,12 +6,13 @@ import org.usfirst.frc.team2473.robot.subsystems.BoxSystem;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ChangeElevatorLevel extends Command {
-
-
 	public static BoxSystem box = Robot.getBox();
 	private boolean up;
-	private int target = -1;
+	private int target;
+	private int targetLvl;
 	private double threshold = 50;
+	private int extraClicksDown;
+	private boolean finished;
 
 	public ChangeElevatorLevel(boolean up) {
 		this.up = up;
@@ -19,54 +20,78 @@ public class ChangeElevatorLevel extends Command {
 	}
 
 	public ChangeElevatorLevel(int level) {
-		System.out.println(level);
-//		if (level < 0) {
-//			level = 0;
-//		} else if (level > 5) {
-//			level = 5;
-//		}
-		target = box.posArray[Math.max(0, Math.min(5, level))];
+		targetLvl = level;
+		target = box.posArray[Math.max(0, Math.min(4, level))];
 	}
 
 	@Override
 	public void initialize() {
+		finished = box.getLevel() == targetLvl;
+		up = (box.getLevel() < targetLvl);
 
-		if (target == -1) {
-			int level = box.getLevel();
-			System.out.println("PREV LVL: " + level);
+		// if (target == -1) {
+		// targetLvl = -1;
+		// extraClicksDown = -1;
+		// finished = false;
+		// int oldLevel = box.getLevel();
+		//
+		//
+		// targetLvl = oldLevel;
+		//
+		// if (up)
+		// targetLvl++;
+		// else
+		// targetLvl--;
+		//
+		// if (targetLvl < 0) {
+		// targetLvl = 0;
+		// } /*
+		// * else if (level == 2) { level = (up) ? 3 : 1; }
+		// */else if (targetLvl > 3) {
+		// targetLvl = 4;
+		// }
 
-			if (up)
-				level++;
-			else
-				level--;
+		target = box.posArray[targetLvl];
 
-			if (level < 0) {
-				level = 0;
-			} /*else if (level == 2) {
-				level = (up) ? 3 : 1;
-			} */else if (level > 4) {
-				level = 4;
-			}
-			
-			target = box.posArray[level];
-			System.out.println("NEW LVL: " + level + ", NEW TARGET" + target + "\n");
-		}
+		threshold = (target == 0) ? 10 : 50;
+
 	}
 
 	public void execute() {
 		if (box.hasZeroed()) {
-			if (Math.abs(diff(target)) <= threshold) {
-				// box.setLevel(box.getCurrPos(target));
-				box.setPow(0);
-			} else {
-				if (diff(target) > threshold) {
-					box.setPow(box.getDownAutomatedPower());
+			if (targetLvl == 1) {
+				if (box.limitSwitchOne()) {
+					if (up || extraClicksDown == 0) {
+						box.setPow(0);
+						extraClicksDown = -1;
+						finished = true;
+					} else if (extraClicksDown == -1) {
+						extraClicksDown = 3;
+						box.setPow(box.getDownAutomatedPower());
+					} else {
+						extraClicksDown--;
+						box.setPow(box.getDownAutomatedPower());
+					}
 				} else {
-					box.setPow(box.getUpAutomatedPower());
+					if (!up)
+						box.setPow(box.getDownAutomatedPower());
+					else
+						box.setPow(-0.1);
+				}
+			} else {
+				if (Math.abs(diff(target)) <= threshold) {
+					// box.setLevel(box.getCurrPos(target));
+					box.setPow(0);
+					finished = true;
+				} else {
+					if (!up)
+						box.setPow(box.getDownAutomatedPower());
+					else
+						box.setPow(box.getUpAutomatedPower());
 				}
 			}
 		} else {
-			System.out.println("HASN'T ZEROED YET U LITTLE SHITE");
+			finished = true;
 		}
 	}
 
@@ -76,12 +101,11 @@ public class ChangeElevatorLevel extends Command {
 
 	@Override
 	public boolean isFinished() {
-		return Math.abs(diff(target)) <= threshold;
+		return finished;
 	}
 
 	@Override
-	public void end() {
+	public void end() {		
 		box.stop();
-		target = -1;
 	}
 }

@@ -24,7 +24,20 @@ public abstract class TrackingRobot extends IterativeRobot {
 	private static Controls controls; //contains all button mapping and joystick controls
 	private Thread jetsonThread; //thread for communcation with the jetson
 	private Command autoCmd; //command to be run during auto
+	private static RunState state;
 	
+	public enum RunState {
+		DIAGNOSTIC, COMPETITION, RESET
+	}
+	
+	public static RunState getState() {
+		return state;
+	}
+	
+	public static void changeStateTo(RunState s) {
+		state = s;
+	}
+
 	/**
 	 * This method must include the Thread used for networking and database-ing, or null if not used.
 	 * @return Such a Thread.
@@ -120,6 +133,13 @@ public abstract class TrackingRobot extends IterativeRobot {
 	 */
 	public static Controls getControls() {
 		return controls;
+	}
+	
+	/**
+	 * Resets the controls based on current <code>RunState</code> of robot
+	 */
+	public static void setControls() {
+		controls = new Controls();
 	}
 	
 	/**
